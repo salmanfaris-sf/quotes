@@ -10,6 +10,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
     rel="stylesheet"
   />
+  
   <!-- Ensures Chrome/Android theme color is pure black -->
   <meta name="theme-color" content="#000000" />
   <meta name="msapplication-navbutton-color" content="#000000" />
@@ -47,7 +48,7 @@
       to { opacity: 1; }
     }
 
-    /* --- NEW: Container for all top-right fixed controls --- */
+    /* --- Container for all top-right fixed controls --- */
     #header-controls {
         position: fixed;
         top: 10px;
@@ -61,7 +62,6 @@
     /* ---------------------------------------------------- */
 
     #auto-mode-wrapper {
-        /* Positioning is now handled by the #header-controls parent */
         position: relative; 
         width: 44px; 
         height: 44px;
@@ -98,11 +98,10 @@
     }
 
     /* ---------------------------------------------------- */
-    /* Existing Styles (Updated for new button structure) */
+    /* Existing Styles */
     /* ---------------------------------------------------- */
     
     .header-btn {
-      /* positioning removed here */
       position: relative; 
       background: none;
       border: none;
@@ -117,8 +116,6 @@
     .header-btn:hover {
       opacity: 1;
     }
-    
-    /* Fullscreen button no longer needs explicit right positioning */
     
     #quote-text {
       transition: opacity 0.3s ease-in-out;
@@ -174,12 +171,11 @@
 </head>
 
 <body onclick="handleClick()">
-  <!-- Header Buttons (Fixed UI - will fade in) -->
   
   <!-- Consolidated Control Container -->
   <div id="header-controls" class="fixed-ui">
     
-    <!-- 1. Auto-Mode Button Wrapper with Circular Progress SVG -->
+    <!-- Auto-Mode Button Wrapper with Circular Progress SVG -->
     <div id="auto-mode-wrapper">
       <!-- SVG for circular progress -->
       <!-- viewBox 0 0 44 44 is used for a radius of 20, center 22, and 2px stroke width -->
@@ -298,14 +294,14 @@
     let typingTimer = null;
     let fullText = "";
     let shownChars = 0;
-    let instructionShown = false;
+    let instructionShown = false; // Controls opacity of instruction text
+    let isQuoteReady = false; // Controls whether the quote is fully visible
     
     let autoMode = false; 
     let autoTimer = null; 
     let progressTimer = null;
     let autoStartTime = 0;
-
-
+    
     // --- Core Timer and Progress Bar Logic ---
 
     function startProgressBar() {
@@ -377,7 +373,8 @@
       const secondsPassed = hours * 3600 + minutes * 60 + seconds;
       const secondsRemaining = TIME_TOTAL_SECONDS - secondsPassed;
       
-      timeLeftSecondsEl.textContent = `${secondsRemaining.toLocaleString()} seconds remaining`;
+      const secondsNumberHtml = `<span class="text-white font-medium">${secondsRemaining.toLocaleString()}</span>`;
+      timeLeftSecondsEl.innerHTML = `${secondsNumberHtml} seconds remaining`;
     }
 
     function adjustAlignment(text) {
@@ -399,6 +396,7 @@
       if (shownChars >= fullText.length) {
         isTyping = false;
         quoteTextEl.innerHTML = fullText; 
+        isQuoteReady = true; // Set to true when typing is complete
         
         if (!instructionShown) {
           instructionShown = true;
@@ -408,11 +406,12 @@
         }
         
         typingTimer = null;
+        
         return;
       }
       
       // Variable delay calculation
-      const charDelay = Math.random() * (CHAR_DELAY_MAX - CHAR_DELAY_MIN) + CHAR_DELAY_MIN;
+      const charDelay = Math.random() * (CHAR_DELAY_MIN - CHAR_DELAY_MIN) + CHAR_DELAY_MIN;
       typingTimer = setTimeout(typeText, charDelay);
     }
 
@@ -420,6 +419,7 @@
       if (typingTimer) clearTimeout(typingTimer);
       fullText = nextText;
       shownChars = 0;
+      isQuoteReady = false; // Reset state when starting a new quote
       adjustAlignment(fullText);
       quoteTextEl.style.opacity = "0";
 
@@ -444,11 +444,14 @@
     }
 
     function handleClick() {
+      // 1. Handle typing animation skip
       if (isTyping) {
+        // Skip typing animation
         clearTimeout(typingTimer);
         isTyping = false;
         shownChars = fullText.length;
         quoteTextEl.innerHTML = fullText;
+        isQuoteReady = true; // Quote is now ready
         
         if (!instructionShown) {
           instructionShown = true;
@@ -457,6 +460,7 @@
           }, 300);
         }
       } else {
+        // 2. Show the next quote
         showNextQuote();
         // If in auto mode, reset the timer on manual click
         if (autoMode) {
@@ -506,8 +510,8 @@
       event.stopPropagation(); 
       toggleAutoMode();
     });
-
-    // --- Full Screen Functionality (unchanged) ---
+    
+    // --- Full Screen Functionality ---
 
     function toggleFullScreen() {
       const doc = document.documentElement;
@@ -556,7 +560,6 @@
     document.addEventListener('DOMContentLoaded', function() {
       quoteTextEl.style.opacity = "1";
       showNextQuote();
-
       updateTimeDisplay();
       setInterval(updateTimeDisplay, 1000); 
     });
