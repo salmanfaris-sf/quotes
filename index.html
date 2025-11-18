@@ -10,7 +10,6 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
     rel="stylesheet"
   />
-  <!-- Chrome theme color meta tags -->
   <meta name="theme-color" content="#000000" />
   <meta name="msapplication-navbutton-color" content="#000000" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -84,14 +83,22 @@
     .header-btn:hover {
       opacity: 1;
     }
+    
+    /* --- NEW/UPDATED POSITIONING --- */
 
+    /* Fullscreen button stays 10px from the right edge */
     #fullscreen-btn {
       right: 10px;
     }
-
+    
+    /* Auto-Mode button is now positioned to the left of the Fullscreen button */
     #auto-mode-btn {
-      left: 10px;
+      /* Calculate position: Right edge of fullscreen button (10px) + width/padding of fullscreen button (24px icon + 20px padding) + a small gap (e.g., 5px) */
+      right: 59px; 
+      /* Adjust right value to position it next to the Fullscreen button */
     }
+    
+    /* --- END NEW/UPDATED POSITIONING --- */
     
     /* Time status bar styling */
     #time-status {
@@ -121,31 +128,25 @@
 </head>
 
 <body onclick="handleClick()">
-  <!-- Auto-Play Button -->
   <button id="auto-mode-btn" class="header-btn" aria-label="Toggle Auto-Quote Mode">
-    <!-- Play Icon (Default) -->
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play">
       <polygon points="5 3 19 12 5 21 5 3"></polygon>
     </svg>
   </button>
 
-  <!-- Full Screen Button -->
   <button id="fullscreen-btn" class="header-btn" aria-label="Toggle Fullscreen">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize">
       <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
     </svg>
   </button>
 
-  <!-- Main Content -->
   <div class="container">
-    <!-- The quote area -->
     <div class="mb-8">
       <p
         id="quote-text"
         class="text-xl md:text-2xl lg:text-3xl font-light text-gray-200 leading-relaxed"
       >
-        <!-- Content will be populated by JavaScript -->
-      </p>
+        </p>
     </div>
 
     <p
@@ -157,11 +158,8 @@
     
   </div>
 
-  <!-- FLOATING TIME BAR - Single line, ultra-minimalist and professional -->
-  <!-- bottom-10 lifts the bar 40px from the bottom edge -->
   <div class="fixed bottom-10 left-0 right-0 p-3 flex flex-col items-center justify-center pointer-events-none">
     <p id="time-status" class="text-sm md:text-base">
-        <!-- The placeholder time now reflects only HH:MM format -->
         <span>Time: <span id="current-hms">--:--</span></span> | <span id="time-left-seconds">-- seconds remaining</span>
     </p>
   </div>
@@ -468,4 +466,3 @@
   </script>
 </body>
 </html>
-
