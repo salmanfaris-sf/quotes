@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quote Display</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Chrome theme color meta tags -->
+  <meta name="theme-color" content="#000000" />
+  <meta name="msapplication-navbutton-color" content="#000000" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000000;
+      user-select: none;
+      cursor: pointer;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      /* Removed top padding to pull the centered content lower, closer to the fixed time bar */
+      padding: 0 20px; 
+      /* Adjusted padding to accommodate the fixed time bar raised 40px */
+      padding-bottom: 100px; 
+    }
+
+    #quote-text {
+      transition: opacity 0.3s ease-in-out;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .typing-cursor {
+      display: inline-block;
+      width: 1.5px;
+      height: 1.2em;
+      background-color: #e5e7eb; /* Soft White */
+      margin-left: 1px;
+      vertical-align: middle;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% {
+        opacity: 1;
+      }
+      51%, 100% {
+        opacity: 0;
+      }
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+    }
+
+    #instruction-prompt {
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    /* Styles for the header buttons (Fullscreen and Auto-Play) */
+    .header-btn {
+      position: fixed;
+      top: 10px;
+      background: none;
+      border: none;
+      color: #e5e7eb; /* Soft White */
+      padding: 10px;
+      cursor: pointer;
+      z-index: 1000;
+      opacity: 0.5;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .header-btn:hover {
+      opacity: 1;
+    }
+
+    #fullscreen-btn {
+      right: 10px;
+    }
+
+    #auto-mode-btn {
+      left: 10px;
+    }
+    
+    /* Time status bar styling */
+    #time-status {
+        color: #9ca3af; /* Gray-400 */
+        font-weight: 300; /* Light */
+        letter-spacing: 0.05em; /* Tracking-wide */
+        /* Monospaced font ensures no horizontal shifting when numbers change */
+        font-family: 'Inter', monospace, sans-serif; 
+        white-space: nowrap; /* Ensures the text stays on one line */
+    }
+
+    /* Additional styles to maintain stability for numbers */
+    #time-status span:first-child {
+        /* Removed min-width to prevent wrapping on small screens */
+        display: inline-block;
+        text-align: right;
+        /* Removed padding-right to make the time flush against the pipe */
+    }
+
+    #time-left-seconds {
+        /* Removed min-width to prevent wrapping on small screens */
+        display: inline-block;
+        text-align: left;
+    }
+    
+  </style>
+</head>
+
+<body onclick="handleClick()">
+  <!-- Auto-Play Button -->
+  <button id="auto-mode-btn" class="header-btn" aria-label="Toggle Auto-Quote Mode">
+    <!-- Play Icon (Default) -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play">
+      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+    </svg>
+  </button>
+
+  <!-- Full Screen Button -->
+  <button id="fullscreen-btn" class="header-btn" aria-label="Toggle Fullscreen">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize">
+      <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+    </svg>
+  </button>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- The quote area -->
+    <div class="mb-8">
+      <p
+        id="quote-text"
+        class="text-xl md:text-2xl lg:text-3xl font-light text-gray-200 leading-relaxed"
+      >
+        <!-- Content will be populated by JavaScript -->
+      </p>
+    </div>
+
+    <p
+      id="instruction-prompt"
+      class="text-xs md:text-sm text-gray-200 font-light tracking-wide uppercase mb-4 opacity-70"
+    >
+      Tap to view the next quote
+    </p>
+    
+  </div>
+
+  <!-- FLOATING TIME BAR - Single line, ultra-minimalist and professional -->
+  <!-- bottom-10 lifts the bar 40px from the bottom edge -->
+  <div class="fixed bottom-10 left-0 right-0 p-3 flex flex-col items-center justify-center pointer-events-none">
+    <p id="time-status" class="text-sm md:text-base">
+        <!-- The placeholder time now reflects only HH:MM format -->
+        <span>Time: <span id="current-hms">--:--</span></span> | <span id="time-left-seconds">-- seconds remaining</span>
+    </p>
+  </div>
+
+  <script>
+    const quotes = [
+      { text: "You have 86,400 seconds each day — start using them like your life depends on it, because it does." },
+      { text: "Be better than you were yesterday." },
+      { text: "Don't waste time. You don't get it back." },
+      { text: "Focus." },
+      { text: "Permanently delete your social media accounts and uninstall those apps — success starts when distractions end." },
+      { text: "The problem is, you think you have a lot of time to live." },
+      { text: "Live everyday like it's your last day." },
+      { text: "Consistency." },
+      { text: "Big dreams need big sacrifices." },
+      { text: "Practice makes perfect." },
+      { text: "Do it even when you don't feel like it." },
+      { text: "Nothing changes if nothing changes." },
+      { text: "This is the way." },
+      { text: "Whatever it takes." },
+      { text: "Whether you think you can or you think you can't, you're right." },
+      { text: "Stay different." },
+      { text: "Excuses don't build empires." },
+      { text: "Stop overthinking. Start doing." },
+      { text: "Become addicted to constant improvement." },
+      { text: "Don't stop when you're tired. Stop when you're done." },
+      { text: "Great things never come from comfort zones." },
+      { text: "Your future is created by what you do today." },
+      { text: "Make yourself proud." },
+      { text: "One day or day one. You decide." },
+      { text: "Turn I wish into I will." },
+      { text: "Dream big. Work hard. Stay focused." },
+      { text: "Level up in silence." },
+      { text: "Every pro was once a beginner." },
+      { text: "Wake up with determination. Go to bed with satisfaction." },
+      { text: "Become the hardest worker in the room." },
+      { text: "Stay patient and trust your journey." },
+      { text: "If it was easy, everyone would do it." },
+      { text: "If you want it, work for it." },
+      { text: "Keep going. You’re getting there." },
+      { text: "Become the person who never quits." },
+      { text: "Work until expensive becomes cheap." },
+      { text: "Be the 1% that actually does it." }
+    ];
+
+    const quoteTextEl = document.getElementById("quote-text");
+    const instructionEl = document.getElementById("instruction-prompt");
+    const fullscreenBtn = document.getElementById("fullscreen-btn");
+    const autoModeBtn = document.getElementById("auto-mode-btn"); 
+    
+    // Target the specific span for HMS display
+    const currentTimeHMS = document.getElementById("current-hms"); 
+    const timeLeftSecondsEl = document.getElementById("time-left-seconds"); 
+
+    const TIME_TOTAL_SECONDS = 86400; // 24 hours
+    const AUTO_SWITCH_INTERVAL_MS = 10000; // 10 seconds
+
+    let currentQuoteIndex = -1;
+    let isTyping = false;
+    let typingTimer = null;
+    let fullText = "";
+    let shownChars = 0;
+    let instructionShown = false;
+    
+    let autoMode = false; // State for auto mode
+    let autoTimer = null; // Timer holder
+
+    // Slower, natural typing speed
+    const CHAR_DELAY_MS = 55;
+    const START_DELAY_MS = 300;
+
+    /**
+     * Updates the clock display with the current time and time remaining (in seconds).
+     */
+    function updateTimeDisplay() {
+      const now = new Date();
+      
+      // --- 1. Current Clock Update (HH:MM AM/PM) ---
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds(); 
+      // Note: seconds are retained here to ensure the remaining time calculation is accurate.
+      
+      const ampm = hours >= 12 ? 'pm' : 'am';
+      const displayHours = hours % 12 || 12; // Convert 24hr to 12hr format
+
+      const hms = String(displayHours).padStart(2, '0');
+      const mns = String(minutes).padStart(2, '0');
+      
+      // Updated display format: HH:MMam/pm (seconds removed)
+      currentTimeHMS.textContent = `${hms}:${mns}${ampm}`; 
+
+      // --- 2. Remaining Time Calculation ---
+      const secondsPassed = hours * 3600 + minutes * 60 + seconds;
+      const secondsRemaining = TIME_TOTAL_SECONDS - secondsPassed;
+      
+      // --- 3. Remaining Time DOM Update ---
+      // Display the raw number of seconds remaining with thousand separators. (KEPT)
+      timeLeftSecondsEl.textContent = `${secondsRemaining.toLocaleString()} seconds remaining`;
+    }
+
+
+    function adjustAlignment(text) {
+      // If text is short, center it; if long, left align
+      if (text.length < 35) {
+        quoteTextEl.classList.remove("text-left");
+        quoteTextEl.classList.add("text-center");
+      } else {
+        quoteTextEl.classList.remove("text-center");
+        quoteTextEl.classList.add("text-left");
+      }
+    }
+
+    function typeText() {
+      isTyping = true;
+      shownChars++;
+      const partial = fullText.slice(0, shownChars);
+      quoteTextEl.innerHTML = partial + '<span class="typing-cursor"></span>';
+
+      if (shownChars >= fullText.length) {
+        isTyping = false;
+        quoteTextEl.innerHTML = fullText; // remove cursor when done
+        
+        // Show instruction after first quote is fully typed
+        if (!instructionShown) {
+          instructionShown = true;
+          setTimeout(() => {
+            instructionEl.style.opacity = "1";
+          }, 300);
+        }
+        
+        typingTimer = null;
+        return;
+      }
+      typingTimer = setTimeout(typeText, CHAR_DELAY_MS);
+    }
+
+    function startTyping(nextText) {
+      if (typingTimer) clearTimeout(typingTimer);
+      fullText = nextText;
+      shownChars = 0;
+      adjustAlignment(fullText);
+      quoteTextEl.style.opacity = "0";
+
+      setTimeout(() => {
+        quoteTextEl.style.opacity = "1";
+        typeText();
+      }, START_DELAY_MS);
+    }
+
+    function showNextQuote() {
+      currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+      startTyping(quotes[currentQuoteIndex].text);
+      
+      // Hide instruction when moving to next quote
+      if (instructionShown) {
+        instructionEl.style.opacity = "0";
+      }
+    }
+
+    function handleClick() {
+      // Handles manual tap: skip typing or show next quote
+      if (isTyping) {
+        clearTimeout(typingTimer);
+        isTyping = false;
+        shownChars = fullText.length;
+        quoteTextEl.innerHTML = fullText;
+        
+        // Show instruction if user skips typing on first quote
+        if (!instructionShown) {
+          instructionShown = true;
+          setTimeout(() => {
+            instructionEl.style.opacity = "1";
+          }, 300);
+        }
+      } else {
+        showNextQuote();
+        // If in auto mode, reset the timer on manual click
+        if (autoMode) {
+            clearInterval(autoTimer);
+            autoTimer = setInterval(showNextQuote, AUTO_SWITCH_INTERVAL_MS);
+        }
+      }
+    }
+
+    // --- Auto Mode Functionality ---
+
+    function updateAutoModeIcon() {
+        if (autoMode) {
+            // Pause Icon
+            autoModeBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pause">
+                    <rect x="6" y="4" width="4" height="16"></rect>
+                    <rect x="14" y="4" width="4" height="16"></rect>
+                </svg>
+            `;
+            autoModeBtn.setAttribute('aria-label', 'Pause Auto-Quote Mode');
+        } else {
+            // Play Icon
+            autoModeBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+            `;
+            autoModeBtn.setAttribute('aria-label', 'Start Auto-Quote Mode');
+        }
+    }
+
+    function toggleAutoMode() {
+        autoMode = !autoMode;
+        
+        if (autoMode) {
+            // Start the timer and show the next quote immediately
+            showNextQuote();
+            autoTimer = setInterval(showNextQuote, AUTO_SWITCH_INTERVAL_MS);
+            // Hide the 'Tap to view' prompt while auto-running
+            instructionEl.style.opacity = "0";
+        } else {
+            // Stop the timer
+            clearInterval(autoTimer);
+            autoTimer = null;
+            // Show the 'Tap to view' prompt again
+            instructionEl.style.opacity = "1";
+        }
+        
+        updateAutoModeIcon();
+    }
+    
+    // Attach event listener for the new button
+    autoModeBtn.addEventListener('click', (event) => {
+      event.stopPropagation(); // Prevents the body's handleClick() from firing
+      toggleAutoMode();
+    });
+
+    // --- Full Screen Functionality ---
+
+    function toggleFullScreen() {
+      const doc = document.documentElement;
+      const isFullScreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+      
+      if (!isFullScreen) {
+        // Enter full screen mode
+        if (doc.requestFullscreen) {
+          doc.requestFullscreen();
+        } else if (doc.webkitRequestFullscreen) { /* Safari */
+          doc.webkitRequestFullscreen();
+        } else if (doc.msRequestFullscreen) { /* IE11 */
+          doc.msRequestFullscreen();
+        }
+        
+        // Update button icon to 'shrink'
+        fullscreenBtn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minimize">
+            <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
+          </svg>
+        `;
+      } else {
+        // Exit full screen mode
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+          document.msRequestFullscreen();
+        }
+        
+        // Update button icon back to 'expand'
+        fullscreenBtn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+          </svg>
+        `;
+      }
+    }
+
+    // Attach the event listener to the full-screen button
+    fullscreenBtn.addEventListener('click', (event) => {
+      event.stopPropagation(); // Prevents the body's handleClick() from firing
+      toggleFullScreen();
+    });
+    
+    // Listen for the official full screen change event (handles 'Esc' or back swipe exit)
+    document.addEventListener('fullscreenchange', (event) => {
+      const isFullScreen = document.fullscreenElement;
+      if (!isFullScreen) {
+        // If exited by user action (like 'Esc' or back swipe), reset the icon
+        fullscreenBtn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+          </svg>
+        `;
+      }
+    });
+
+    // Initialize on page load - show first quote automatically
+    document.addEventListener('DOMContentLoaded', function() {
+      quoteTextEl.style.opacity = "1";
+      showNextQuote();
+
+      // Initialize and start the clock updates
+      updateTimeDisplay();
+      // Update every second
+      setInterval(updateTimeDisplay, 1000); 
+    });
+  </script>
+</body>
+</html>
+
