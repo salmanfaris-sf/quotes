@@ -7,6 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <meta name="theme-color" id="theme-color-meta" content="#f8fafc">
+
     <style>
         /* Define the new primary accent color: Maroon/Burgundy (Tailwind Red-700) for LIGHT MODE */
         :root {
@@ -188,7 +191,7 @@
         body.theme-dark ::-webkit-scrollbar-track { background: #000000; }
     </style>
 </head>
-<body class="selection:bg-red-700 selection:text-white theme-dark">
+<body class="selection:bg-red-700 selection:text-white theme-light">
 
     <header class="sticky top-0 z-50 border-b bg-header border-primary theme-transition-element delay-0" id="header-nav">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -282,6 +285,8 @@
         const body = document.body;
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
+        // NEW: Get the meta tag element
+        const themeColorMeta = document.getElementById('theme-color-meta');
 
         /**
          * Initializes the theme based on local storage or system preference.
@@ -289,14 +294,17 @@
         function initializeTheme() {
             // Check local storage for theme preference
             const savedTheme = localStorage.getItem('theme');
-            // Defaulting to Dark Mode for this Technical theme
-            let initialTheme = 'dark'; 
+            // UPDATED: Defaulting to Light Mode
+            let initialTheme = 'light'; 
 
             if (savedTheme) {
                 initialTheme = savedTheme;
             } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-                // Check system preference. We default to dark, but respect system light if set.
+                // Check system preference. If it's light, we use light.
                 initialTheme = 'light'; 
+            } else {
+                 // If no saved theme and system preference is dark or unknown, use light mode default
+                 initialTheme = 'light';
             }
 
             setTheme(initialTheme, false);
@@ -308,21 +316,27 @@
          * @param {boolean} save - Whether to save the preference to local storage
          */
         function setTheme(theme, save = true) {
-            // 1. Update body class
+            // 1. Update body class and Theme Toggle label
             if (theme === 'dark') {
                 body.classList.remove('theme-light');
                 body.classList.add('theme-dark');
                 themeToggle.setAttribute('aria-label', 'Switch to Light Mode');
+                // NEW: Set address bar color to pure black
+                if (themeColorMeta) {
+                    themeColorMeta.setAttribute('content', '#000000'); 
+                }
             } else {
                 body.classList.remove('theme-dark');
                 body.classList.add('theme-light');
                 themeToggle.setAttribute('aria-label', 'Switch to Dark Mode');
+                // NEW: Set address bar color to very light gray/white
+                if (themeColorMeta) {
+                    themeColorMeta.setAttribute('content', '#f8fafc'); 
+                }
             }
 
             // 2. Update icon (using Lucide icons)
             if (themeIcon) {
-                // If current theme is dark (night), show the sun icon (day symbol) to toggle to light.
-                // If current theme is light (day), show the moon icon (night symbol) to toggle to dark.
                 themeIcon.setAttribute('data-lucide', theme === 'dark' ? 'sun' : 'moon');
                 lucide.createIcons();
             }
