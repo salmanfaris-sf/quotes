@@ -86,44 +86,56 @@
     
     /* --- NEW PROGRESS BAR STYLES --- */
     
+    /* Container for the button icon and the progress SVG */
     .progress-wrap {
         position: relative;
         width: 24px; /* Icon size */
         height: 24px; /* Icon size */
+        /* Center the icon within the 24px wrap */
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
+    /* Styles for the button containing the progress wrapper */
     #auto-mode-btn {
         right: 59px; 
+        /* Ensure button content is centered and positioned correctly */
         display: flex;
         align-items: center;
         justify-content: center;
     }
     
+    /* Styles for the SVG progress circle */
     #progress-svg {
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%) rotate(-90deg); /* Center and start from top */
-        width: 44px;
-        height: 44px;
+        /* Center and rotate -90deg so 0% progress starts at 12 o'clock */
+        transform: translate(-50%, -50%) rotate(-90deg); 
+        width: 50px; /* Adjusted to match viewBox (50x50) */
+        height: 50px;
         pointer-events: none; /* Allows click-through to the button */
         opacity: 0.7; /* Progress bar visibility */
         transition: opacity 0.2s ease-in-out;
     }
     
+    /* The circular track */
     #progress-circle-track {
         stroke: rgba(229, 231, 235, 0.15); /* Very light grey, subtle */
         stroke-width: 2;
         fill: none;
     }
 
+    /* The actual progress arc */
     #progress-circle {
         stroke: #e5e7eb; /* Soft White */
         stroke-width: 2;
         fill: none;
-        transition: stroke-dashoffset 1s linear; /* Smooth animation for 1 second updates */
+        transition: stroke-dashoffset 0.1s linear; /* Smoother, more frequent update */
     }
     
+    /* When auto mode is paused, hide the progress bar */
     .progress-paused #progress-svg {
         opacity: 0;
     }
@@ -292,7 +304,7 @@
 
 
     /**
-     * Updates the clock display with the current time and time remaining (in seconds).
+     * Updates the clock display with the current time and time remaining (in seconds.
      */
     function updateTimeDisplay() {
       const now = new Date();
@@ -383,15 +395,16 @@
       if (autoMode) {
         startTime = Date.now();
         if (progressTimer) clearInterval(progressTimer);
-        progressTimer = setInterval(updateProgressBar, 100); // Update every 100ms
+        // Progress bar updates every 100ms for a smoother animation
+        progressTimer = setInterval(updateProgressBar, 100); 
         updateProgressBar(); // Initial update
       }
     }
     
-    // --- Progress Bar Update Function ---
+    // --- Progress Bar Update Function (FIXED LOGIC) ---
     function updateProgressBar() {
         if (!autoMode || !startTime) {
-            // Should not happen, but a safeguard
+            // Reset to empty circle if not running
             progressBarEl.style.strokeDashoffset = CIRCUMFERENCE;
             return;
         }
@@ -399,15 +412,12 @@
         const elapsed = Date.now() - startTime;
         const progressPercent = elapsed / AUTO_SWITCH_INTERVAL_MS;
         
-        if (progressPercent >= 1) {
-            // Should be handled by the autoTimer, but reset if it somehow overshoots
-            progressBarEl.style.strokeDashoffset = 0;
-            // The autoTimer (setInterval) will call showNextQuote() shortly
-        } else {
-            // Progress goes from 100% (offset=0) to 0% (offset=CIRCUMFERENCE)
-            const offset = CIRCUMFERENCE * (1 - progressPercent); 
-            progressBarEl.style.strokeDashoffset = offset;
-        }
+        // Ensure progress doesn't visually overshoot
+        const clampedProgress = Math.min(progressPercent, 1);
+        
+        // Calculate offset: as progressPercent goes from 0 to 1, offset goes from CIRCUMFERENCE to 0
+        const offset = CIRCUMFERENCE * (1 - clampedProgress); 
+        progressBarEl.style.strokeDashoffset = offset;
     }
 
 
@@ -432,7 +442,7 @@
         if (autoMode) {
             clearInterval(autoTimer);
             autoTimer = setInterval(showNextQuote, AUTO_SWITCH_INTERVAL_MS);
-            // The showNextQuote() call above already resets the progress bar
+            // The showNextQuote() call above already resets the progress bar logic
         }
       }
     }
