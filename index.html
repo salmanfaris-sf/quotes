@@ -220,7 +220,8 @@
   <!-- Time Status (Fixed UI - will fade in) -->
   <div class="fixed bottom-10 left-0 right-0 p-3 flex flex-col items-center justify-center pointer-events-none fixed-ui">
     <p id="time-status" class="text-sm md:text-base">
-        <span>Time: <span id="current-hms">--:--</span></span> | <span id="time-left-seconds">-- seconds remaining</span>
+        <!-- WRAPPING #current-hms with the same styling as the seconds -->
+        <span>Time: <span id="current-hms" class="text-white font-medium">--:--</span></span> | <span id="time-left-seconds">-- seconds remaining</span>
     </p>
   </div>
   
@@ -268,6 +269,7 @@
     const instructionEl = document.getElementById("instruction-prompt");
     const fullscreenBtn = document.getElementById("fullscreen-btn");
     const autoModeBtn = document.getElementById("auto-mode-btn"); 
+    // Get the element that wraps the time content itself
     const currentTimeHMS = document.getElementById("current-hms"); 
     const timeLeftSecondsEl = document.getElementById("time-left-seconds"); 
     
@@ -362,14 +364,17 @@
       const minutes = now.getMinutes();
       const seconds = now.getSeconds(); 
       
+      // Determine AM/PM and 12-hour format
       const ampm = hours >= 12 ? 'pm' : 'am';
       const displayHours = hours % 12 || 12; 
 
       const hms = String(displayHours).padStart(2, '0');
       const mns = String(minutes).padStart(2, '0');
       
+      // Update the current time content
       currentTimeHMS.textContent = `${hms}:${mns}${ampm}`; 
 
+      // Calculate and format seconds remaining
       const secondsPassed = hours * 3600 + minutes * 60 + seconds;
       const secondsRemaining = TIME_TOTAL_SECONDS - secondsPassed;
       
