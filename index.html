@@ -24,14 +24,14 @@
       --progress-track: rgba(229, 231, 235, 0.15);
     }
     
-    /* --- LIGHT SEPIA MODE --- */
+    /* --- LIGHT MODE (WHITE & BLACK) --- */
     .light-sepia-mode {
-      /* Light Sepia Colors */
-      --bg-color: #f7f3e8; /* Light Sepia/Beige */
-      --text-color: #3b3020; /* Dark Brown/Sepia Text */
-      --time-text-color: #8a7c6b; /* Muted Sepia Gray */
-      --highlight-color: #3b3020; /* Dark Brown/Sepia Highlight */
-      --progress-track: rgba(59, 48, 32, 0.15); /* Dark Sepia Transparent */
+      /* Changed to pure white background and black text */
+      --bg-color: #ffffff; /* Pure White */
+      --text-color: #000000; /* Black Text */
+      --time-text-color: #6b6b6b; /* Muted Gray for Time */
+      --highlight-color: #000000; /* Black Highlight */
+      --progress-track: rgba(0, 0, 0, 0.15); /* Black Transparent */
     }
 
     body {
@@ -549,9 +549,9 @@
         
         if (isLightMode) {
             bodyEl.classList.add('light-sepia-mode');
-            // Update the theme meta tags for mobile browsers
-            document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f3e8');
-            document.querySelector('meta[name="msapplication-navbutton-color"]').setAttribute('content', '#f7f3e8');
+            // Update the theme meta tags for mobile browsers with the new WHITE color
+            document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff');
+            document.querySelector('meta[name="msapplication-navbutton-color"]').setAttribute('content', '#ffffff');
             document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').setAttribute('content', 'light-content');
         } else {
             bodyEl.classList.remove('light-sepia-mode');
@@ -584,7 +584,7 @@
           </svg>
         `;
       } else {
-        if (document.exitFullscreen) { document.exitFullscreen(); } else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } else if (document.msExitFullscreen) { document.msRequestFullscreen(); }
+        if (document.exitFullscreen) { document.exitFullscreen(); } else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } else if (document.msRequestFullscreen) { document.msRequestFullscreen(); }
         fullscreenBtn.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize">
             <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
