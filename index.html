@@ -10,19 +10,10 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
     rel="stylesheet"
   />
-  
-  <!-- Ensures Chrome/Android theme color is pure black -->
   <meta name="theme-color" content="#000000" />
   <meta name="msapplication-navbutton-color" content="#000000" />
-  <!-- Ensures iOS/Safari status bar is pure black with white content -->
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <style>
-    /* Forces the browser to render the page using a dark color scheme */
-    :root {
-      color-scheme: dark;
-    }
-
     body {
       font-family: 'Inter', sans-serif;
       background-color: #000000;
@@ -33,90 +24,12 @@
       align-items: center;
       justify-content: center;
       margin: 0;
+      /* Removed top padding to pull the centered content lower, closer to the fixed time bar */
       padding: 0 20px; 
+      /* Adjusted padding to accommodate the fixed time bar raised 40px */
       padding-bottom: 100px; 
     }
 
-    /* 2. Smooth Loading Transition for fixed elements */
-    .fixed-ui {
-      opacity: 0;
-      animation: fadeIn 0.5s ease-out forwards;
-      animation-delay: 0.2s; /* Start fading in slightly after load */
-    }
-
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-
-    /* --- Container for all top-right fixed controls --- */
-    #header-controls {
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        display: flex;
-        gap: 5px; /* Space between the two buttons */
-        z-index: 1000;
-    }
-    /* ---------------------------------------------------- */
-    /* 1. Circular Progress Bar Styles */
-    /* ---------------------------------------------------- */
-
-    #auto-mode-wrapper {
-        position: relative; 
-        width: 44px; 
-        height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #progress-svg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        /* Rotate to start the circle animation at the top */
-        transform: rotate(-90deg); 
-        transition: opacity 0.3s ease-in-out;
-        opacity: 0; /* Hidden by default */
-    }
-
-    .progress-circle-bg {
-        fill: none;
-        stroke: rgba(156, 163, 175, 0.2); /* Transparent background for the circle path */
-        stroke-width: 2px;
-    }
-
-    #progress-circle {
-        fill: none;
-        stroke: #9ca3af; /* Light gray progress color */
-        stroke-width: 2px;
-        stroke-linecap: round;
-        /* Updated transition for smooth SVG progress */
-        transition: stroke-dashoffset 0.05s linear; 
-    }
-
-    /* ---------------------------------------------------- */
-    /* Existing Styles */
-    /* ---------------------------------------------------- */
-    
-    .header-btn {
-      position: relative; 
-      background: none;
-      border: none;
-      color: #e5e7eb; 
-      padding: 10px;
-      cursor: pointer;
-      z-index: 10;
-      opacity: 0.5;
-      transition: opacity 0.2s ease-in-out;
-    }
-
-    .header-btn:hover {
-      opacity: 1;
-    }
-    
     #quote-text {
       transition: opacity 0.3s ease-in-out;
       white-space: pre-wrap;
@@ -134,8 +47,12 @@
     }
 
     @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
+      0%, 50% {
+        opacity: 1;
+      }
+      51%, 100% {
+        opacity: 0;
+      }
     }
 
     .container {
@@ -148,15 +65,95 @@
       opacity: 0;
       transition: opacity 0.3s ease-in-out;
     }
-    
-    #time-status {
-        color: #9ca3af; 
-        font-weight: 300; 
-        letter-spacing: 0.05em; 
-        font-family: 'Inter', monospace, sans-serif; 
-        white-space: nowrap; 
+
+    /* Styles for the header buttons (Fullscreen and Auto-Play) */
+    .header-btn {
+      position: fixed;
+      top: 10px;
+      background: none;
+      border: none;
+      color: #e5e7eb; /* Soft White */
+      padding: 10px;
+      cursor: pointer;
+      z-index: 1000;
+      opacity: 0.5;
+      transition: opacity 0.2s ease-in-out;
     }
 
+    .header-btn:hover {
+      opacity: 1;
+    }
+    
+    /* --- NEW PROGRESS BAR STYLES --- */
+    
+    /* Container for the button icon and the progress SVG */
+    .progress-wrap {
+        position: relative;
+        width: 24px; /* Icon size */
+        height: 24px; /* Icon size */
+    }
+
+    /* Styles for the button containing the progress wrapper */
+    #auto-mode-btn {
+        right: 59px; 
+        /* Ensure button content is centered and positioned correctly */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Styles for the SVG progress circle */
+    #progress-svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-90deg); /* Center and start from top */
+        width: 44px; /* Size of the SVG container (24px icon + 2 * 10px padding, slightly less to center better) */
+        height: 44px;
+        pointer-events: none; /* Allows click-through to the button */
+        opacity: 0.7; /* Progress bar visibility */
+        transition: opacity 0.2s ease-in-out;
+    }
+    
+    /* The circular track */
+    #progress-circle-track {
+        stroke: rgba(229, 231, 235, 0.15); /* Very light grey, subtle */
+        stroke-width: 2;
+        fill: none;
+    }
+
+    /* The actual progress arc */
+    #progress-circle {
+        stroke: #e5e7eb; /* Soft White */
+        stroke-width: 2;
+        fill: none;
+        transition: stroke-dashoffset 1s linear; /* Smooth animation for 1 second updates */
+        /* Will be set dynamically by JS: stroke-dasharray: 2 * PI * R */
+    }
+    
+    /* When auto mode is paused, hide the progress bar */
+    .progress-paused #progress-svg {
+        opacity: 0;
+    }
+    
+    /* --- END NEW PROGRESS BAR STYLES --- */
+
+    /* Fullscreen button stays 10px from the right edge */
+    #fullscreen-btn {
+      right: 10px;
+    }
+    
+    /* Time status bar styling */
+    #time-status {
+        color: #9ca3af; /* Gray-400 */
+        font-weight: 300; /* Light */
+        letter-spacing: 0.05em; /* Tracking-wide */
+        /* Monospaced font ensures no horizontal shifting when numbers change */
+        font-family: 'Inter', monospace, sans-serif; 
+        white-space: nowrap; /* Ensures the text stays on one line */
+    }
+
+    /* Additional styles to maintain stability for numbers */
     #time-status span:first-child {
         display: inline-block;
         text-align: right;
@@ -171,60 +168,50 @@
 </head>
 
 <body onclick="handleClick()">
-  
-  <!-- Consolidated Control Container -->
-  <div id="header-controls" class="fixed-ui">
-    
-    <!-- Auto-Mode Button Wrapper with Circular Progress SVG -->
-    <div id="auto-mode-wrapper">
-      <!-- SVG for circular progress -->
-      <!-- viewBox 0 0 44 44 is used for a radius of 20, center 22, and 2px stroke width -->
-      <svg id="progress-svg" viewBox="0 0 44 44">
-          <!-- Background circle (static) -->
-          <circle class="progress-circle-bg" cx="22" cy="22" r="20"></circle>
-          <!-- Animated progress circle -->
-          <circle id="progress-circle" class="progress-circle" cx="22" cy="22" r="20"></circle>
+  <button id="auto-mode-btn" class="header-btn" aria-label="Toggle Auto-Quote Mode">
+    <div class="progress-wrap">
+      <svg id="progress-svg" viewBox="0 0 50 50">
+        <circle id="progress-circle-track" cx="25" cy="25" r="22" />
+        <circle id="progress-circle" cx="25" cy="25" r="22" />
       </svg>
-      
-      <button id="auto-mode-btn" class="header-btn" aria-label="Toggle Auto-Quote Mode">
+      <div id="auto-mode-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play">
           <polygon points="5 3 19 12 5 21 5 3"></polygon>
         </svg>
-      </button>
+      </div>
     </div>
+  </button>
 
-    <button id="fullscreen-btn" class="header-btn" aria-label="Toggle Fullscreen">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize">
-        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-      </svg>
-    </button>
-  </div>
+  <button id="fullscreen-btn" class="header-btn" aria-label="Toggle Fullscreen">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize">
+      <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+    </svg>
+  </button>
 
   <div class="container">
     <div class="mb-8">
       <p
         id="quote-text"
         class="text-xl md:text-2xl lg:text-3xl font-light text-gray-200 leading-relaxed"
-      ></p>
+      >
+        </p>
     </div>
 
     <p
       id="instruction-prompt"
-      class="text-xs md:text-sm text-gray-200 font-light tracking-wide uppercase mt-8 mb-4 opacity-70"
+      class="text-xs md:text-sm text-gray-200 font-light tracking-wide uppercase mb-4 opacity-70"
     >
       Tap to view the next quote
     </p>
     
   </div>
 
-  <!-- Time Status (Fixed UI - will fade in) -->
-  <div class="fixed bottom-10 left-0 right-0 p-3 flex flex-col items-center justify-center pointer-events-none fixed-ui">
+  <div class="fixed bottom-10 left-0 right-0 p-3 flex flex-col items-center justify-center pointer-events-none">
     <p id="time-status" class="text-sm md:text-base">
-        <!-- WRAPPING #current-hms with the same styling as the seconds -->
-        <span>Time: <span id="current-hms" class="text-white font-medium">--:--</span></span> | <span id="time-left-seconds">-- seconds remaining</span>
+        <span>Time: <span id="current-hms">--:--</span></span> | <span id="time-left-seconds">-- seconds remaining</span>
     </p>
   </div>
-  
+
   <script>
     const quotes = [
       { text: "You have 86,400 seconds each day — make sure not a single one goes to waste." },
@@ -269,120 +256,74 @@
     const instructionEl = document.getElementById("instruction-prompt");
     const fullscreenBtn = document.getElementById("fullscreen-btn");
     const autoModeBtn = document.getElementById("auto-mode-btn"); 
-    // Get the element that wraps the time content itself
+    const autoModeIconEl = document.getElementById("auto-mode-icon");
+    
+    // Progress Bar Elements
+    const progressBarEl = document.getElementById("progress-circle");
+    const PROGRESS_RADIUS = 22; // Must match the r value in the SVG
+    const CIRCUMFERENCE = 2 * Math.PI * PROGRESS_RADIUS;
+    
+    // Target the specific span for HMS display
     const currentTimeHMS = document.getElementById("current-hms"); 
     const timeLeftSecondsEl = document.getElementById("time-left-seconds"); 
-    
-    // Updated DOM elements for circular progress
-    const progressCircle = document.getElementById('progress-circle');
-    // Circle radius is 20 in the SVG viewBox (0 0 44 44)
-    const CIRCUMFERENCE = 2 * Math.PI * 20; 
 
-    // Set initial dasharray for the circle
-    progressCircle.style.strokeDasharray = CIRCUMFERENCE;
-    progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
-
-    const TIME_TOTAL_SECONDS = 86400; 
-    const AUTO_SWITCH_INTERVAL_MS = 10000; 
-    const PROGRESS_BAR_UPDATE_INTERVAL_MS = 50;
-
-    // Variable Typing Speed Range (ms) for a more natural feel
-    const CHAR_DELAY_MIN = 40; 
-    const CHAR_DELAY_MAX = 70;
-    const START_DELAY_MS = 300;
+    const TIME_TOTAL_SECONDS = 86400; // 24 hours
+    const AUTO_SWITCH_INTERVAL_MS = 10000; // 10 seconds
 
     let currentQuoteIndex = -1;
     let isTyping = false;
     let typingTimer = null;
     let fullText = "";
     let shownChars = 0;
-    let instructionShown = false; // Controls opacity of instruction text
-    let isQuoteReady = false; // Controls whether the quote is fully visible
+    let instructionShown = false;
     
-    let autoMode = false; 
-    let autoTimer = null; 
-    let progressTimer = null;
-    let autoStartTime = 0;
+    let autoMode = false; // State for auto mode
+    let autoTimer = null; // Timer holder
+    let progressTimer = null; // Timer for progress bar updates
+    let startTime = null; // Timestamp when the auto timer started for the current quote
+
+    // Slower, natural typing speed
+    const CHAR_DELAY_MS = 55;
+    const START_DELAY_MS = 300;
     
-    // --- Core Timer and Progress Bar Logic ---
-
-    function startProgressBar() {
-        // Show the SVG element
-        document.getElementById('progress-svg').style.opacity = '1'; 
-        
-        autoStartTime = Date.now();
-        
-        // Use a continuous interval for smooth animation
-        progressTimer = setInterval(() => {
-            const elapsedTime = Date.now() - autoStartTime;
-            // Progress is a ratio from 0 to 1.0
-            let progress = (elapsedTime / AUTO_SWITCH_INTERVAL_MS); 
-            
-            if (progress > 1) progress = 1; 
-            
-            // Animate the circle using stroke-dashoffset: 
-            // Full offset (CIRCUMFERENCE) means 0% progress, 
-            // Zero offset (0) means 100% progress.
-            const offset = CIRCUMFERENCE - (progress * CIRCUMFERENCE);
-            progressCircle.style.strokeDashoffset = offset;
-        }, PROGRESS_BAR_UPDATE_INTERVAL_MS);
-    }
-
-    function stopProgressBar() {
-        if (progressTimer) {
-            clearInterval(progressTimer);
-            progressTimer = null;
-        }
-        // Reset and hide the circle
-        progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
-        document.getElementById('progress-svg').style.opacity = '0';
-    }
-
-    function resetProgressBarAndStartNext() {
-        // Set the offset back to full circumference immediately (no transition)
-        progressCircle.style.transition = 'none';
-        progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
-        
-        // Force reflow/repaint to ensure reset happens before we start the next animation
-        void progressCircle.offsetWidth; 
-        
-        // Restore transition for smooth animation
-        progressCircle.style.transition = `stroke-dashoffset ${PROGRESS_BAR_UPDATE_INTERVAL_MS}ms linear`;
-
-        // Start the timer and bar for the new quote
-        if (autoTimer) clearInterval(autoTimer);
-        autoTimer = setInterval(showNextQuote, AUTO_SWITCH_INTERVAL_MS);
-        startProgressBar();
-    }
-
-    // --- End Core Timer Logic ---
+    // Initialize progress bar properties
+    progressBarEl.style.strokeDasharray = CIRCUMFERENCE;
+    progressBarEl.style.strokeDashoffset = CIRCUMFERENCE;
 
 
+    /**
+     * Updates the clock display with the current time and time remaining (in seconds).
+     */
     function updateTimeDisplay() {
       const now = new Date();
+      
+      // --- 1. Current Clock Update (HH:MM AM/PM) ---
       const hours = now.getHours();
       const minutes = now.getMinutes();
       const seconds = now.getSeconds(); 
+      // Note: seconds are retained here to ensure the remaining time calculation is accurate.
       
-      // Determine AM/PM and 12-hour format
       const ampm = hours >= 12 ? 'pm' : 'am';
-      const displayHours = hours % 12 || 12; 
+      const displayHours = hours % 12 || 12; // Convert 24hr to 12hr format
 
       const hms = String(displayHours).padStart(2, '0');
       const mns = String(minutes).padStart(2, '0');
       
-      // Update the current time content
+      // Updated display format: HH:MMam/pm (seconds removed)
       currentTimeHMS.textContent = `${hms}:${mns}${ampm}`; 
 
-      // Calculate and format seconds remaining
+      // --- 2. Remaining Time Calculation ---
       const secondsPassed = hours * 3600 + minutes * 60 + seconds;
       const secondsRemaining = TIME_TOTAL_SECONDS - secondsPassed;
       
-      const secondsNumberHtml = `<span class="text-white font-medium">${secondsRemaining.toLocaleString()}</span>`;
-      timeLeftSecondsEl.innerHTML = `${secondsNumberHtml} seconds remaining`;
+      // --- 3. Remaining Time DOM Update ---
+      // Display the raw number of seconds remaining with thousand separators. (KEPT)
+      timeLeftSecondsEl.textContent = `${secondsRemaining.toLocaleString()} seconds remaining`;
     }
 
+
     function adjustAlignment(text) {
+      // If text is short, center it; if long, left align
       if (text.length < 35) {
         quoteTextEl.classList.remove("text-left");
         quoteTextEl.classList.add("text-center");
@@ -400,9 +341,9 @@
 
       if (shownChars >= fullText.length) {
         isTyping = false;
-        quoteTextEl.innerHTML = fullText; 
-        isQuoteReady = true; // Set to true when typing is complete
+        quoteTextEl.innerHTML = fullText; // remove cursor when done
         
+        // Show instruction after first quote is fully typed
         if (!instructionShown) {
           instructionShown = true;
           setTimeout(() => {
@@ -411,20 +352,15 @@
         }
         
         typingTimer = null;
-        
         return;
       }
-      
-      // Variable delay calculation
-      const charDelay = Math.random() * (CHAR_DELAY_MIN - CHAR_DELAY_MIN) + CHAR_DELAY_MIN;
-      typingTimer = setTimeout(typeText, charDelay);
+      typingTimer = setTimeout(typeText, CHAR_DELAY_MS);
     }
 
     function startTyping(nextText) {
       if (typingTimer) clearTimeout(typingTimer);
       fullText = nextText;
       shownChars = 0;
-      isQuoteReady = false; // Reset state when starting a new quote
       adjustAlignment(fullText);
       quoteTextEl.style.opacity = "0";
 
@@ -438,26 +374,52 @@
       currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
       startTyping(quotes[currentQuoteIndex].text);
       
+      // Hide instruction when moving to next quote
       if (instructionShown) {
         instructionEl.style.opacity = "0";
       }
       
-      // If in auto mode, restart the progress bar
+      // Reset and start progress bar update
       if (autoMode) {
-          resetProgressBarAndStartNext();
+        startTime = Date.now();
+        if (progressTimer) clearInterval(progressTimer);
+        progressTimer = setInterval(updateProgressBar, 100); // Update every 100ms
+        updateProgressBar(); // Initial update
       }
     }
+    
+    // --- Progress Bar Update Function ---
+    function updateProgressBar() {
+        if (!autoMode || !startTime) {
+            // Should not happen, but a safeguard
+            progressBarEl.style.strokeDashoffset = CIRCUMFERENCE;
+            return;
+        }
+
+        const elapsed = Date.now() - startTime;
+        const progressPercent = elapsed / AUTO_SWITCH_INTERVAL_MS;
+        
+        if (progressPercent >= 1) {
+            // Should be handled by the autoTimer, but reset if it somehow overshoots
+            progressBarEl.style.strokeDashoffset = 0;
+            // The autoTimer (setInterval) will call showNextQuote() shortly
+        } else {
+            // Progress goes from 100% (offset=0) to 0% (offset=CIRCUMFERENCE)
+            const offset = CIRCUMFERENCE * (1 - progressPercent); 
+            progressBarEl.style.strokeDashoffset = offset;
+        }
+    }
+
 
     function handleClick() {
-      // 1. Handle typing animation skip
+      // Handles manual tap: skip typing or show next quote
       if (isTyping) {
-        // Skip typing animation
         clearTimeout(typingTimer);
         isTyping = false;
         shownChars = fullText.length;
         quoteTextEl.innerHTML = fullText;
-        isQuoteReady = true; // Quote is now ready
         
+        // Show instruction if user skips typing on first quote
         if (!instructionShown) {
           instructionShown = true;
           setTimeout(() => {
@@ -465,33 +427,38 @@
           }, 300);
         }
       } else {
-        // 2. Show the next quote
         showNextQuote();
         // If in auto mode, reset the timer on manual click
         if (autoMode) {
-            resetProgressBarAndStartNext();
+            clearInterval(autoTimer);
+            autoTimer = setInterval(showNextQuote, AUTO_SWITCH_INTERVAL_MS);
+            // The showNextQuote() call above already resets the progress bar
         }
       }
     }
 
-    // --- Auto Mode Toggle ---
+    // --- Auto Mode Functionality ---
 
     function updateAutoModeIcon() {
         if (autoMode) {
-            autoModeBtn.innerHTML = `
+            // Pause Icon
+            autoModeIconEl.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pause">
                     <rect x="6" y="4" width="4" height="16"></rect>
                     <rect x="14" y="4" width="4" height="16"></rect>
                 </svg>
             `;
             autoModeBtn.setAttribute('aria-label', 'Pause Auto-Quote Mode');
+            autoModeBtn.classList.remove('progress-paused'); // Show progress bar
         } else {
-            autoModeBtn.innerHTML = `
+            // Play Icon
+            autoModeIconEl.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play">
                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
                 </svg>
             `;
             autoModeBtn.setAttribute('aria-label', 'Start Auto-Quote Mode');
+            autoModeBtn.classList.add('progress-paused'); // Hide progress bar
         }
     }
 
@@ -499,23 +466,36 @@
         autoMode = !autoMode;
         
         if (autoMode) {
+            // Start the timer and show the next quote immediately
             showNextQuote();
+            autoTimer = setInterval(showNextQuote, AUTO_SWITCH_INTERVAL_MS);
+            // Hide the 'Tap to view' prompt while auto-running
             instructionEl.style.opacity = "0";
+            
         } else {
-            if (autoTimer) clearInterval(autoTimer);
+            // Stop the timers
+            clearInterval(autoTimer);
+            clearInterval(progressTimer);
             autoTimer = null;
-            stopProgressBar(); // Stop the progress bar on pause
+            progressTimer = null;
+            startTime = null;
+            
+            // Reset progress bar to empty state
+            progressBarEl.style.strokeDashoffset = CIRCUMFERENCE; 
+            
+            // Show the 'Tap to view' prompt again
             instructionEl.style.opacity = "1";
         }
         
         updateAutoModeIcon();
     }
     
+    // Attach event listener for the new button
     autoModeBtn.addEventListener('click', (event) => {
-      event.stopPropagation(); 
+      event.stopPropagation(); // Prevents the body's handleClick() from firing
       toggleAutoMode();
     });
-    
+
     // --- Full Screen Functionality ---
 
     function toggleFullScreen() {
@@ -523,20 +503,32 @@
       const isFullScreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
       
       if (!isFullScreen) {
-        if (doc.requestFullscreen) { doc.requestFullscreen(); } 
-        else if (doc.webkitRequestFullscreen) { doc.webkitRequestFullscreen(); } 
-        else if (doc.msRequestFullscreen) { doc.msRequestFullscreen(); }
+        // Enter full screen mode
+        if (doc.requestFullscreen) {
+          doc.requestFullscreen();
+        } else if (doc.webkitRequestFullscreen) { /* Safari */
+          doc.webkitRequestFullscreen();
+        } else if (doc.msRequestFullscreen) { /* IE11 */
+          doc.msRequestFullscreen();
+        }
         
+        // Update button icon to 'shrink'
         fullscreenBtn.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minimize">
             <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
           </svg>
         `;
       } else {
-        if (document.exitFullscreen) { document.exitFullscreen(); } 
-        else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } 
-        else if (document.msRequestFullscreen) { document.msRequestFullscreen(); }
+        // Exit full screen mode
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+          document.msRequestFullscreen();
+        }
         
+        // Update button icon back to 'expand'
         fullscreenBtn.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize">
             <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
@@ -545,14 +537,17 @@
       }
     }
 
+    // Attach the event listener to the full-screen button
     fullscreenBtn.addEventListener('click', (event) => {
-      event.stopPropagation(); 
+      event.stopPropagation(); // Prevents the body's handleClick() from firing
       toggleFullScreen();
     });
     
-    document.addEventListener('fullscreenchange', () => {
+    // Listen for the official full screen change event (handles 'Esc' or back swipe exit)
+    document.addEventListener('fullscreenchange', (event) => {
       const isFullScreen = document.fullscreenElement;
       if (!isFullScreen) {
+        // If exited by user action (like 'Esc' or back swipe), reset the icon
         fullscreenBtn.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize">
             <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
@@ -561,12 +556,18 @@
       }
     });
 
-    // Initialize on page load
+    // Initialize on page load - show first quote automatically
     document.addEventListener('DOMContentLoaded', function() {
       quoteTextEl.style.opacity = "1";
       showNextQuote();
+
+      // Initialize and start the clock updates
       updateTimeDisplay();
+      // Update every second
       setInterval(updateTimeDisplay, 1000); 
+      
+      // Initial icon state (paused/manual mode)
+      updateAutoModeIcon();
     });
   </script>
 </body>
