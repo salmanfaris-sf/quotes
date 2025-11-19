@@ -16,7 +16,7 @@
   <style>
     /* --- DARK MODE DEFAULTS --- */
     :root {
-      /* Default Dark Mode Colors */
+      /* Default Dark Mode Colors - Now the only theme */
       --bg-color: #000000;
       --text-color: #e5e7eb; /* Soft White */
       --time-text-color: #9ca3af; /* Gray */
@@ -24,16 +24,6 @@
       --progress-track: rgba(229, 231, 235, 0.15);
     }
     
-    /* --- LIGHT MODE (WHITE & BLACK) --- */
-    .light-sepia-mode {
-      /* Changed to pure white background and black text */
-      --bg-color: #ffffff; /* Pure White */
-      --text-color: #000000; /* Black Text */
-      --time-text-color: #6b6b6b; /* Muted Gray for Time */
-      --highlight-color: #000000; /* Black Highlight */
-      --progress-track: rgba(0, 0, 0, 0.15); /* Black Transparent */
-    }
-
     body {
       font-family: 'Inter', sans-serif;
       /* Dynamic Background/Text */
@@ -95,7 +85,7 @@
       transition: opacity 0.3s ease-in-out;
     }
 
-    /* Styles for the header buttons (Fullscreen, Auto-Play, Theme) */
+    /* Styles for the header buttons (Fullscreen, Auto-Play) */
     .header-btn {
       position: fixed;
       top: 10px;
@@ -124,14 +114,9 @@
         justify-content: center;
     }
 
-    /* Position Theme Toggle next to Auto-Play */
-    #theme-toggle-btn {
-        right: 59px; /* Matches original auto-mode position */
-    }
-
-    /* Move Auto-Play to the left of Theme Toggle */
+    /* Reposition Auto-Play to the Theme Toggle's old spot */
     #auto-mode-btn {
-        right: 108px; /* 59px + 49px offset */
+        right: 59px; /* Moved from 108px */
         display: flex;
         align-items: center;
         justify-content: center;
@@ -203,20 +188,6 @@
 </head>
 
 <body onclick="handleClick()">
-  <button id="theme-toggle-btn" class="header-btn" aria-label="Toggle Light/Dark Mode">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun">
-      <circle cx="12" cy="12" r="5"></circle>
-      <line x1="12" y1="1" x2="12" y2="3"></line>
-      <line x1="12" y1="21" x2="12" y2="23"></line>
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-      <line x1="1" y1="12" x2="3" y2="12"></line>
-      <line x1="21" y1="12" x2="23" y2="12"></line>
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-    </svg>
-  </button>
-
   <button id="auto-mode-btn" class="header-btn" aria-label="Toggle Auto-Quote Mode">
     <div class="progress-wrap">
       <svg id="progress-svg" viewBox="0 0 50 50">
@@ -307,7 +278,7 @@
     const fullscreenBtn = document.getElementById("fullscreen-btn");
     const autoModeBtn = document.getElementById("auto-mode-btn"); 
     const autoModeIconEl = document.getElementById("auto-mode-icon");
-    const themeToggleBtn = document.getElementById("theme-toggle-btn");
+    // const themeToggleBtn = document.getElementById("theme-toggle-btn"); <-- REMOVED
     
     // Progress Bar Elements
     const progressBarEl = document.getElementById("progress-circle");
@@ -334,8 +305,8 @@
     let progressTimer = null; 
     let startTime = null; 
     
-    // Theme State - Default is Dark Mode
-    let isLightMode = false; 
+    // Theme State removed - always Dark Mode
+    // let isLightMode = false; 
 
     const CHAR_DELAY_MS = 55;
     const START_DELAY_MS = 300;
@@ -514,64 +485,10 @@
       toggleAutoMode();
     });
     
-    // --- THEME TOGGLE FUNCTIONALITY (NEW) ---
+    // --- THEME TOGGLE FUNCTIONALITY REMOVED ---
     
-    function updateThemeIcon() {
-        if (isLightMode) {
-            // Show Moon icon (inviting switch to Dark)
-            themeToggleBtn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
-            `;
-            themeToggleBtn.setAttribute('aria-label', 'Toggle Dark Mode');
-        } else {
-            // Show Sun icon (inviting switch to Light)
-            themeToggleBtn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                </svg>
-            `;
-            themeToggleBtn.setAttribute('aria-label', 'Toggle Light Mode');
-        }
-    }
-
-    function toggleTheme() {
-        isLightMode = !isLightMode;
-        
-        if (isLightMode) {
-            bodyEl.classList.add('light-sepia-mode');
-            // Update the theme meta tags for mobile browsers with the new WHITE color
-            document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff');
-            document.querySelector('meta[name="msapplication-navbutton-color"]').setAttribute('content', '#ffffff');
-            document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').setAttribute('content', 'light-content');
-        } else {
-            bodyEl.classList.remove('light-sepia-mode');
-            // Reset meta tags to dark mode
-            document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000000');
-            document.querySelector('meta[name="msapplication-navbutton-color"]').setAttribute('content', '#000000');
-            document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').setAttribute('content', 'black-translucent');
-        }
-        
-        updateThemeIcon();
-    }
-    
-    themeToggleBtn.addEventListener('click', (event) => {
-      event.stopPropagation();
-      toggleTheme();
-    });
-
     // --- Full Screen Functionality ---
     
-    // (Existing Full Screen Logic remains here)
     function toggleFullScreen() {
       const doc = document.documentElement;
       const isFullScreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
@@ -619,7 +536,7 @@
       
       // Initialize states
       updateAutoModeIcon();
-      updateThemeIcon(); // Show Sun icon by default
+      // updateThemeIcon(); // REMOVED
     });
   </script>
 </body>
