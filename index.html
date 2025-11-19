@@ -86,52 +86,44 @@
     
     /* --- NEW PROGRESS BAR STYLES --- */
     
-    /* Container for the button icon and the progress SVG */
     .progress-wrap {
         position: relative;
         width: 24px; /* Icon size */
         height: 24px; /* Icon size */
     }
 
-    /* Styles for the button containing the progress wrapper */
     #auto-mode-btn {
         right: 59px; 
-        /* Ensure button content is centered and positioned correctly */
         display: flex;
         align-items: center;
         justify-content: center;
     }
     
-    /* Styles for the SVG progress circle */
     #progress-svg {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%) rotate(-90deg); /* Center and start from top */
-        width: 44px; /* Size of the SVG container (24px icon + 2 * 10px padding, slightly less to center better) */
+        width: 44px;
         height: 44px;
         pointer-events: none; /* Allows click-through to the button */
         opacity: 0.7; /* Progress bar visibility */
         transition: opacity 0.2s ease-in-out;
     }
     
-    /* The circular track */
     #progress-circle-track {
         stroke: rgba(229, 231, 235, 0.15); /* Very light grey, subtle */
         stroke-width: 2;
         fill: none;
     }
 
-    /* The actual progress arc */
     #progress-circle {
         stroke: #e5e7eb; /* Soft White */
         stroke-width: 2;
         fill: none;
         transition: stroke-dashoffset 1s linear; /* Smooth animation for 1 second updates */
-        /* Will be set dynamically by JS: stroke-dasharray: 2 * PI * R */
     }
     
-    /* When auto mode is paused, hide the progress bar */
     .progress-paused #progress-svg {
         opacity: 0;
     }
@@ -143,15 +135,22 @@
       right: 10px;
     }
     
-    /* Time status bar styling */
+    /* --- TIME STATUS STYLES --- */
     #time-status {
+        /* Base text color (Time:, |, seconds remaining) */
         color: #9ca3af; /* Gray-400 */
         font-weight: 300; /* Light */
         letter-spacing: 0.05em; /* Tracking-wide */
-        /* Monospaced font ensures no horizontal shifting when numbers change */
         font-family: 'Inter', monospace, sans-serif; 
-        white-space: nowrap; /* Ensures the text stays on one line */
+        white-space: nowrap; 
     }
+    
+    /* Style for the high-visibility white numbers AND am/pm text */
+    .highlight-number {
+        color: #e5e7eb; /* Soft White - Matches quote text */
+        font-weight: 400; /* Make highlighted elements slightly bolder for visibility */
+    }
+
 
     /* Additional styles to maintain stability for numbers */
     #time-status span:first-child {
@@ -208,7 +207,7 @@
 
   <div class="fixed bottom-10 left-0 right-0 p-3 flex flex-col items-center justify-center pointer-events-none">
     <p id="time-status" class="text-sm md:text-base">
-        <span>Time: <span id="current-hms">--:--</span></span> | <span id="time-left-seconds">-- seconds remaining</span>
+        Time: <span id="current-hms" class="highlight-number">--:--</span><span id="current-ampm" class="highlight-number">--</span> | <span id="time-left-seconds" class="highlight-number">--</span> seconds remaining
     </p>
   </div>
 
@@ -265,6 +264,7 @@
     
     // Target the specific span for HMS display
     const currentTimeHMS = document.getElementById("current-hms"); 
+    const currentTimeAMPM = document.getElementById("current-ampm"); 
     const timeLeftSecondsEl = document.getElementById("time-left-seconds"); 
 
     const TIME_TOTAL_SECONDS = 86400; // 24 hours
@@ -301,7 +301,6 @@
       const hours = now.getHours();
       const minutes = now.getMinutes();
       const seconds = now.getSeconds(); 
-      // Note: seconds are retained here to ensure the remaining time calculation is accurate.
       
       const ampm = hours >= 12 ? 'pm' : 'am';
       const displayHours = hours % 12 || 12; // Convert 24hr to 12hr format
@@ -309,16 +308,17 @@
       const hms = String(displayHours).padStart(2, '0');
       const mns = String(minutes).padStart(2, '0');
       
-      // Updated display format: HH:MMam/pm (seconds removed)
-      currentTimeHMS.textContent = `${hms}:${mns}${ampm}`; 
+      // Update the HH:MM and AM/PM spans separately
+      currentTimeHMS.textContent = `${hms}:${mns}`; 
+      currentTimeAMPM.textContent = ampm;
 
       // --- 2. Remaining Time Calculation ---
       const secondsPassed = hours * 3600 + minutes * 60 + seconds;
       const secondsRemaining = TIME_TOTAL_SECONDS - secondsPassed;
       
       // --- 3. Remaining Time DOM Update ---
-      // Display the raw number of seconds remaining with thousand separators. (KEPT)
-      timeLeftSecondsEl.textContent = `${secondsRemaining.toLocaleString()} seconds remaining`;
+      // Update the number of seconds remaining, which has the highlight-number class
+      timeLeftSecondsEl.textContent = `${secondsRemaining.toLocaleString()}`;
     }
 
 
@@ -572,4 +572,3 @@
   </script>
 </body>
 </html>
-
