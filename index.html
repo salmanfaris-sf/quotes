@@ -7,16 +7,39 @@
   <title>Quote Display</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght300;400;600&display=swap"
     rel="stylesheet"
   />
   <meta name="theme-color" content="#000000" />
   <meta name="msapplication-navbutton-color" content="#000000" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <style>
+    /* --- DARK MODE DEFAULTS --- */
+    :root {
+      /* Default Dark Mode Colors */
+      --bg-color: #000000;
+      --text-color: #e5e7eb; /* Soft White */
+      --time-text-color: #9ca3af; /* Gray */
+      --highlight-color: #e5e7eb; /* Soft White */
+      --progress-track: rgba(229, 231, 235, 0.15);
+    }
+    
+    /* --- LIGHT SEPIA MODE --- */
+    .light-sepia-mode {
+      /* Light Sepia Colors */
+      --bg-color: #f7f3e8; /* Light Sepia/Beige */
+      --text-color: #3b3020; /* Dark Brown/Sepia Text */
+      --time-text-color: #8a7c6b; /* Muted Sepia Gray */
+      --highlight-color: #3b3020; /* Dark Brown/Sepia Highlight */
+      --progress-track: rgba(59, 48, 32, 0.15); /* Dark Sepia Transparent */
+    }
+
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #000000;
+      /* Dynamic Background/Text */
+      background-color: var(--bg-color); 
+      color: var(--text-color);
+      
       user-select: none;
       cursor: pointer;
       min-height: 100vh;
@@ -24,23 +47,29 @@
       align-items: center;
       justify-content: center;
       margin: 0;
-      /* Removed top padding to pull the centered content lower, closer to the fixed time bar */
       padding: 0 20px; 
-      /* Adjusted padding to accommodate the fixed time bar raised 40px */
       padding-bottom: 100px; 
+      transition: background-color 0.5s ease-in-out;
     }
 
     #quote-text {
-      transition: opacity 0.3s ease-in-out;
+      transition: opacity 0.3s ease-in-out; 
       white-space: pre-wrap;
       word-break: break-word;
     }
+    
+    /* Quote Text Color */
+    #quote-text,
+    #instruction-prompt {
+        color: var(--text-color);
+    }
 
+    /* TYPING CURSOR */
     .typing-cursor {
       display: inline-block;
       width: 1.5px;
       height: 1.2em;
-      background-color: #e5e7eb; /* Soft White */
+      background-color: var(--text-color); /* Cursor matches text color */
       margin-left: 1px;
       vertical-align: middle;
       animation: blink 1s infinite;
@@ -66,41 +95,43 @@
       transition: opacity 0.3s ease-in-out;
     }
 
-    /* Styles for the header buttons (Fullscreen and Auto-Play) */
+    /* Styles for the header buttons (Fullscreen, Auto-Play, Theme) */
     .header-btn {
       position: fixed;
       top: 10px;
       background: none;
       border: none;
-      color: #e5e7eb; /* Soft White */
+      color: var(--text-color); /* Button icons match text color */
       padding: 10px;
       cursor: pointer;
       z-index: 1000;
       opacity: 0.5;
-      transition: opacity 0.2s ease-in-out;
+      transition: opacity 0.2s ease-in-out, color 0.5s ease-in-out;
     }
 
     .header-btn:hover {
       opacity: 1;
     }
     
-    /* --- NEW PROGRESS BAR STYLES --- */
+    /* --- PROGRESS BAR STYLES --- */
     
-    /* Container for the button icon and the progress SVG */
     .progress-wrap {
         position: relative;
-        width: 24px; /* Icon size */
-        height: 24px; /* Icon size */
-        /* Center the icon within the 24px wrap */
+        width: 24px; 
+        height: 24px; 
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    /* Styles for the button containing the progress wrapper */
+    /* Position Theme Toggle next to Auto-Play */
+    #theme-toggle-btn {
+        right: 59px; /* Matches original auto-mode position */
+    }
+
+    /* Move Auto-Play to the left of Theme Toggle */
     #auto-mode-btn {
-        right: 59px; 
-        /* Ensure button content is centered and positioned correctly */
+        right: 108px; /* 59px + 49px offset */
         display: flex;
         align-items: center;
         justify-content: center;
@@ -111,37 +142,29 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        /* Center and rotate -90deg so 0% progress starts at 12 o'clock */
         transform: translate(-50%, -50%) rotate(-90deg); 
-        width: 50px; /* Adjusted to match viewBox (50x50) */
+        width: 50px; 
         height: 50px;
-        pointer-events: none; /* Allows click-through to the button */
-        opacity: 0.7; /* Progress bar visibility */
+        pointer-events: none; 
+        opacity: 0.7; 
         transition: opacity 0.2s ease-in-out;
     }
     
     /* The circular track */
     #progress-circle-track {
-        stroke: rgba(229, 231, 235, 0.15); /* Very light grey, subtle */
+        stroke: var(--progress-track); /* Dynamic track color */
         stroke-width: 2;
         fill: none;
     }
 
     /* The actual progress arc */
     #progress-circle {
-        stroke: #e5e7eb; /* Soft White */
+        stroke: var(--highlight-color); /* Dynamic progress color */
         stroke-width: 2;
         fill: none;
-        transition: stroke-dashoffset 0.1s linear; /* Smoother, more frequent update */
+        transition: stroke-dashoffset 0.1s linear; 
     }
     
-    /* When auto mode is paused, hide the progress bar */
-    .progress-paused #progress-svg {
-        opacity: 0;
-    }
-    
-    /* --- END NEW PROGRESS BAR STYLES --- */
-
     /* Fullscreen button stays 10px from the right edge */
     #fullscreen-btn {
       right: 10px;
@@ -149,18 +172,19 @@
     
     /* --- TIME STATUS STYLES --- */
     #time-status {
-        /* Base text color (Time:, |, seconds remaining) */
-        color: #9ca3af; /* Gray-400 */
-        font-weight: 300; /* Light */
-        letter-spacing: 0.05em; /* Tracking-wide */
+        color: var(--time-text-color); /* Dynamic time text color */
+        font-weight: 300; 
+        letter-spacing: 0.05em; 
         font-family: 'Inter', monospace, sans-serif; 
         white-space: nowrap; 
+        transition: color 0.5s ease-in-out;
     }
     
-    /* Style for the high-visibility white numbers AND am/pm text */
+    /* Style for the high-visibility numbers and am/pm */
     .highlight-number {
-        color: #e5e7eb; /* Soft White - Matches quote text */
-        font-weight: 400; /* Make highlighted elements slightly bolder for visibility */
+        color: var(--highlight-color); /* Dynamic highlight color */
+        font-weight: 400; 
+        transition: color 0.5s ease-in-out;
     }
 
 
@@ -179,6 +203,20 @@
 </head>
 
 <body onclick="handleClick()">
+  <button id="theme-toggle-btn" class="header-btn" aria-label="Toggle Light/Dark Mode">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </button>
+
   <button id="auto-mode-btn" class="header-btn" aria-label="Toggle Auto-Quote Mode">
     <div class="progress-wrap">
       <svg id="progress-svg" viewBox="0 0 50 50">
@@ -203,20 +241,20 @@
     <div class="mb-8">
       <p
         id="quote-text"
-        class="text-xl md:text-2xl lg:text-3xl font-light text-gray-200 leading-relaxed"
+        class="text-xl md:text-2xl lg:text-3xl font-light leading-relaxed"
       >
         </p>
     </div>
 
     <p
       id="instruction-prompt"
-      class="text-xs md:text-sm text-gray-200 font-light tracking-wide uppercase mb-4 opacity-70"
+      class="text-xs md:text-sm font-light tracking-wide uppercase mb-4 opacity-70"
     >
       Tap to view the next quote
     </p>
     
   </div>
-
+  
   <div class="fixed bottom-10 left-0 right-0 p-3 flex flex-col items-center justify-center pointer-events-none">
     <p id="time-status" class="text-sm md:text-base">
         Time: <span id="current-hms" class="highlight-number">--:--</span><span id="current-ampm" class="highlight-number">--</span> | <span id="time-left-seconds" class="highlight-number">--</span> seconds remaining
@@ -263,15 +301,17 @@
       { text: "Be the 1% that actually does it." }
     ];
 
+    const bodyEl = document.body;
     const quoteTextEl = document.getElementById("quote-text");
     const instructionEl = document.getElementById("instruction-prompt");
     const fullscreenBtn = document.getElementById("fullscreen-btn");
     const autoModeBtn = document.getElementById("auto-mode-btn"); 
     const autoModeIconEl = document.getElementById("auto-mode-icon");
+    const themeToggleBtn = document.getElementById("theme-toggle-btn");
     
     // Progress Bar Elements
     const progressBarEl = document.getElementById("progress-circle");
-    const PROGRESS_RADIUS = 22; // Must match the r value in the SVG
+    const PROGRESS_RADIUS = 22; 
     const CIRCUMFERENCE = 2 * Math.PI * PROGRESS_RADIUS;
     
     // Target the specific span for HMS display
@@ -289,16 +329,17 @@
     let shownChars = 0;
     let instructionShown = false;
     
-    let autoMode = false; // State for auto mode
-    let autoTimer = null; // Timer holder
-    let progressTimer = null; // Timer for progress bar updates
-    let startTime = null; // Timestamp when the auto timer started for the current quote
+    let autoMode = false; 
+    let autoTimer = null; 
+    let progressTimer = null; 
+    let startTime = null; 
+    
+    // Theme State - Default is Dark Mode
+    let isLightMode = false; 
 
-    // Slower, natural typing speed
     const CHAR_DELAY_MS = 55;
     const START_DELAY_MS = 300;
     
-    // Initialize progress bar properties
     progressBarEl.style.strokeDasharray = CIRCUMFERENCE;
     progressBarEl.style.strokeDashoffset = CIRCUMFERENCE;
 
@@ -309,41 +350,25 @@
     function updateTimeDisplay() {
       const now = new Date();
       
-      // --- 1. Current Clock Update (HH:MM AM/PM) ---
       const hours = now.getHours();
       const minutes = now.getMinutes();
       const seconds = now.getSeconds(); 
       
       const ampm = hours >= 12 ? 'pm' : 'am';
-      const displayHours = hours % 12 || 12; // Convert 24hr to 12hr format
+      const displayHours = hours % 12 || 12; 
 
       const hms = String(displayHours).padStart(2, '0');
       const mns = String(minutes).padStart(2, '0');
       
-      // Update the HH:MM and AM/PM spans separately
       currentTimeHMS.textContent = `${hms}:${mns}`; 
       currentTimeAMPM.textContent = ampm;
 
-      // --- 2. Remaining Time Calculation ---
       const secondsPassed = hours * 3600 + minutes * 60 + seconds;
       const secondsRemaining = TIME_TOTAL_SECONDS - secondsPassed;
       
-      // --- 3. Remaining Time DOM Update ---
-      // Update the number of seconds remaining, which has the highlight-number class
       timeLeftSecondsEl.textContent = `${secondsRemaining.toLocaleString()}`;
     }
 
-
-    function adjustAlignment(text) {
-      // If text is short, center it; if long, left align
-      if (text.length < 35) {
-        quoteTextEl.classList.remove("text-left");
-        quoteTextEl.classList.add("text-center");
-      } else {
-        quoteTextEl.classList.remove("text-center");
-        quoteTextEl.classList.add("text-left");
-      }
-    }
 
     function typeText() {
       isTyping = true;
@@ -353,9 +378,8 @@
 
       if (shownChars >= fullText.length) {
         isTyping = false;
-        quoteTextEl.innerHTML = fullText; // remove cursor when done
+        quoteTextEl.innerHTML = fullText; 
         
-        // Show instruction after first quote is fully typed
         if (!instructionShown) {
           instructionShown = true;
           setTimeout(() => {
@@ -369,15 +393,15 @@
       typingTimer = setTimeout(typeText, CHAR_DELAY_MS);
     }
 
+
     function startTyping(nextText) {
       if (typingTimer) clearTimeout(typingTimer);
       fullText = nextText;
       shownChars = 0;
-      adjustAlignment(fullText);
-      quoteTextEl.style.opacity = "0";
+      quoteTextEl.style.opacity = "0"; 
 
       setTimeout(() => {
-        quoteTextEl.style.opacity = "1";
+        quoteTextEl.style.opacity = "1"; 
         typeText();
       }, START_DELAY_MS);
     }
@@ -386,25 +410,20 @@
       currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
       startTyping(quotes[currentQuoteIndex].text);
       
-      // Hide instruction when moving to next quote
       if (instructionShown) {
         instructionEl.style.opacity = "0";
       }
       
-      // Reset and start progress bar update
       if (autoMode) {
         startTime = Date.now();
         if (progressTimer) clearInterval(progressTimer);
-        // Progress bar updates every 100ms for a smoother animation
         progressTimer = setInterval(updateProgressBar, 100); 
-        updateProgressBar(); // Initial update
+        updateProgressBar(); 
       }
     }
     
-    // --- Progress Bar Update Function (FIXED LOGIC) ---
     function updateProgressBar() {
         if (!autoMode || !startTime) {
-            // Reset to empty circle if not running
             progressBarEl.style.strokeDashoffset = CIRCUMFERENCE;
             return;
         }
@@ -412,10 +431,8 @@
         const elapsed = Date.now() - startTime;
         const progressPercent = elapsed / AUTO_SWITCH_INTERVAL_MS;
         
-        // Ensure progress doesn't visually overshoot
         const clampedProgress = Math.min(progressPercent, 1);
         
-        // Calculate offset: as progressPercent goes from 0 to 1, offset goes from CIRCUMFERENCE to 0
         const offset = CIRCUMFERENCE * (1 - clampedProgress); 
         progressBarEl.style.strokeDashoffset = offset;
     }
@@ -429,7 +446,6 @@
         shownChars = fullText.length;
         quoteTextEl.innerHTML = fullText;
         
-        // Show instruction if user skips typing on first quote
         if (!instructionShown) {
           instructionShown = true;
           setTimeout(() => {
@@ -438,11 +454,9 @@
         }
       } else {
         showNextQuote();
-        // If in auto mode, reset the timer on manual click
         if (autoMode) {
             clearInterval(autoTimer);
             autoTimer = setInterval(showNextQuote, AUTO_SWITCH_INTERVAL_MS);
-            // The showNextQuote() call above already resets the progress bar logic
         }
       }
     }
@@ -476,69 +490,101 @@
         autoMode = !autoMode;
         
         if (autoMode) {
-            // Start the timer and show the next quote immediately
             showNextQuote();
             autoTimer = setInterval(showNextQuote, AUTO_SWITCH_INTERVAL_MS);
-            // Hide the 'Tap to view' prompt while auto-running
             instructionEl.style.opacity = "0";
             
         } else {
-            // Stop the timers
             clearInterval(autoTimer);
             clearInterval(progressTimer);
             autoTimer = null;
             progressTimer = null;
             startTime = null;
             
-            // Reset progress bar to empty state
             progressBarEl.style.strokeDashoffset = CIRCUMFERENCE; 
             
-            // Show the 'Tap to view' prompt again
             instructionEl.style.opacity = "1";
         }
         
         updateAutoModeIcon();
     }
     
-    // Attach event listener for the new button
     autoModeBtn.addEventListener('click', (event) => {
-      event.stopPropagation(); // Prevents the body's handleClick() from firing
+      event.stopPropagation(); 
       toggleAutoMode();
+    });
+    
+    // --- THEME TOGGLE FUNCTIONALITY (NEW) ---
+    
+    function updateThemeIcon() {
+        if (isLightMode) {
+            // Show Moon icon (inviting switch to Dark)
+            themeToggleBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            `;
+            themeToggleBtn.setAttribute('aria-label', 'Toggle Dark Mode');
+        } else {
+            // Show Sun icon (inviting switch to Light)
+            themeToggleBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            `;
+            themeToggleBtn.setAttribute('aria-label', 'Toggle Light Mode');
+        }
+    }
+
+    function toggleTheme() {
+        isLightMode = !isLightMode;
+        
+        if (isLightMode) {
+            bodyEl.classList.add('light-sepia-mode');
+            // Update the theme meta tags for mobile browsers
+            document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f3e8');
+            document.querySelector('meta[name="msapplication-navbutton-color"]').setAttribute('content', '#f7f3e8');
+            document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').setAttribute('content', 'light-content');
+        } else {
+            bodyEl.classList.remove('light-sepia-mode');
+            // Reset meta tags to dark mode
+            document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000000');
+            document.querySelector('meta[name="msapplication-navbutton-color"]').setAttribute('content', '#000000');
+            document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').setAttribute('content', 'black-translucent');
+        }
+        
+        updateThemeIcon();
+    }
+    
+    themeToggleBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleTheme();
     });
 
     // --- Full Screen Functionality ---
-
+    
+    // (Existing Full Screen Logic remains here)
     function toggleFullScreen() {
       const doc = document.documentElement;
       const isFullScreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
       
       if (!isFullScreen) {
-        // Enter full screen mode
-        if (doc.requestFullscreen) {
-          doc.requestFullscreen();
-        } else if (doc.webkitRequestFullscreen) { /* Safari */
-          doc.webkitRequestFullscreen();
-        } else if (doc.msRequestFullscreen) { /* IE11 */
-          doc.msRequestFullscreen();
-        }
-        
-        // Update button icon to 'shrink'
+        if (doc.requestFullscreen) { doc.requestFullscreen(); } else if (doc.webkitRequestFullscreen) { doc.webkitRequestFullscreen(); } else if (doc.msRequestFullscreen) { doc.msRequestFullscreen(); }
         fullscreenBtn.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minimize">
             <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
           </svg>
         `;
       } else {
-        // Exit full screen mode
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) { /* Safari */
-          document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { /* IE11 */
-          document.msRequestFullscreen();
-        }
-        
-        // Update button icon back to 'expand'
+        if (document.exitFullscreen) { document.exitFullscreen(); } else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } else if (document.msExitFullscreen) { document.msRequestFullscreen(); }
         fullscreenBtn.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize">
             <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
@@ -546,18 +592,15 @@
         `;
       }
     }
-
-    // Attach the event listener to the full-screen button
+    
     fullscreenBtn.addEventListener('click', (event) => {
-      event.stopPropagation(); // Prevents the body's handleClick() from firing
+      event.stopPropagation(); 
       toggleFullScreen();
     });
     
-    // Listen for the official full screen change event (handles 'Esc' or back swipe exit)
     document.addEventListener('fullscreenchange', (event) => {
       const isFullScreen = document.fullscreenElement;
       if (!isFullScreen) {
-        // If exited by user action (like 'Esc' or back swipe), reset the icon
         fullscreenBtn.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize">
             <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
@@ -566,18 +609,17 @@
       }
     });
 
-    // Initialize on page load - show first quote automatically
+    // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
       quoteTextEl.style.opacity = "1";
       showNextQuote();
 
-      // Initialize and start the clock updates
       updateTimeDisplay();
-      // Update every second
       setInterval(updateTimeDisplay, 1000); 
       
-      // Initial icon state (paused/manual mode)
+      // Initialize states
       updateAutoModeIcon();
+      updateThemeIcon(); // Show Sun icon by default
     });
   </script>
 </body>
