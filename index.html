@@ -16,7 +16,9 @@
       --bg-color: #000000;
       --text-color: #e5e7eb;
       --dim-text: #6b7280;
-      --highlight-color: #ffffff;
+      /* Muted colors for controls to reduce visual prominence */
+      --highlight-color: #9ca3af; /* Subtle grey for hover/progress stroke */
+      --subtle-btn-color: #4b5563; /* Dark grey for default button icons */
     }
     
     body {
@@ -70,7 +72,7 @@
     .header-btn {
       background: none;
       border: none;
-      color: var(--dim-text);
+      color: var(--subtle-btn-color); /* Using the very subtle color */
       padding: 8px;
       cursor: pointer;
       transition: color 0.3s ease, transform 0.2s ease;
@@ -80,8 +82,8 @@
     }
 
     .header-btn:hover {
-      color: var(--highlight-color);
-      transform: scale(1.1);
+      color: var(--highlight-color); /* Using the muted highlight color */
+      transform: scale(1.05); /* Reduced scale for less 'attractive' interaction */
     }
     
     /* --- QUOTE MODE --- */
@@ -126,7 +128,7 @@
     }
     
     #progress-circle {
-        stroke: var(--highlight-color);
+        stroke: var(--highlight-color); /* Using the muted highlight color */
         stroke-width: 2;
         fill: none;
         transition: stroke-dashoffset 0.1s linear; 
@@ -153,11 +155,6 @@
         font-feature-settings: "tnum";
     }
     
-    /* Media Query for Mobile */
-    @media (max-width: 640px) {
-        .quote-text { font-size: 1.5rem; }
-    }
-    
   </style>
   
   <!-- Google tag (gtag.js) for Analytics --> 
@@ -176,7 +173,7 @@
   <div class="header-controls">
     <div class="header-group-right">
 
-        <!-- Screen Rotation Toggle (Hidden by default) -->
+        <!-- Screen Rotation Toggle (Hidden by default, removed if not supported by browser) -->
         <button id="rotation-btn" class="header-btn" aria-label="Toggle Screen Orientation" title="Lock Screen Orientation" style="display: none;">
             <!-- Icon will be dynamically updated based on currentOrientationLock -->
             <div id="rotation-icon">
@@ -212,6 +209,7 @@
     <!-- QUOTE VIEW -->
     <div id="quote-container" onclick="handleQuoteClick()">
       <div class="mb-8">
+        <!-- Text size is controlled responsively by Tailwind classes: text-xl (mobile), md:text-2xl (tablet), lg:text-3xl (desktop) -->
         <p id="quote-text" class="text-xl md:text-2xl lg:text-3xl font-light leading-relaxed"></p>
       </div>
       <p id="instruction-prompt" class="text-xs md:text-sm font-light tracking-wide uppercase mb-4 opacity-70">
@@ -306,13 +304,16 @@
         // Button Listeners
         autoBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleAutoMode(); });
         fullscreenBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleFullScreen(); });
-        rotationBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleScreenOrientation(); }); 
 
-        // Fullscreen Change Listener (handles rotation button visibility)
-        document.addEventListener('fullscreenchange', handleFullscreenChange);
-
-        // Set initial icon state (current lock is portrait, so the button shows the next state: landscape)
-        updateRotationIcon();
+        // Check for Screen Orientation API support, only enable/show button if available.
+        if (window.screen.orientation && window.screen.orientation.lock) {
+            rotationBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleScreenOrientation(); }); 
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            updateRotationIcon();
+        } else {
+            // Remove the button entirely if the orientation lock API is not supported (e.g., desktop)
+            if(rotationBtn) rotationBtn.remove();
+        }
     }
 
     // --- FULLSCREEN & ROTATION LOGIC ---
@@ -338,7 +339,9 @@
         const isFullscreen = !!document.fullscreenElement;
         
         // Toggle visibility of the rotation button
-        rotationBtn.style.display = isFullscreen ? 'flex' : 'none';
+        if (rotationBtn) {
+            rotationBtn.style.display = isFullscreen ? 'flex' : 'none';
+        }
         
         // Attempt to unlock orientation when exiting fullscreen
         if (!isFullscreen) {
