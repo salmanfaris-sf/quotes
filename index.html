@@ -16,9 +16,9 @@
       --bg-color: #000000;
       --text-color: #e5e7eb;
       --dim-text: #6b7280;
-      /* Muted colors for controls to reduce visual prominence */
-      --highlight-color: #9ca3af; /* Subtle grey for hover/progress stroke */
-      --subtle-btn-color: #4b5563; /* Dark grey for default button icons */
+      /* MODIFIED: Softer white colors for buttons (light gray/off-white) */
+      --highlight-color: #d1d5db; /* Softer light gray for hover/progress stroke */
+      --subtle-btn-color: #A0A0A0; /* UPDATED: Medium grey for default button icons (User Request) */
     }
     
     body {
@@ -63,7 +63,7 @@
         pointer-events: auto;
         display: flex;
         gap: 15px;
-        background: rgba(0,0,0,0.5); /* subtle backing for visibility */
+        background: rgba(0,0,0,0.5);
         padding: 8px 16px;
         border-radius: 999px;
         backdrop-filter: blur(4px);
@@ -72,7 +72,7 @@
     .header-btn {
       background: none;
       border: none;
-      color: var(--subtle-btn-color); /* Using the very subtle color */
+      color: var(--subtle-btn-color); /* Now medium grey */
       padding: 8px;
       cursor: pointer;
       transition: color 0.3s ease, transform 0.2s ease;
@@ -82,14 +82,14 @@
     }
 
     .header-btn:hover {
-      color: var(--highlight-color); /* Using the muted highlight color */
-      transform: scale(1.05); /* Reduced scale for less 'attractive' interaction */
+      color: var(--highlight-color); /* Now slightly brighter soft white for hover */
+      transform: scale(1.05);
     }
     
     /* --- QUOTE MODE --- */
     #quote-container {
         transition: opacity 0.5s ease, transform 0.5s ease;
-        cursor: pointer; /* Click anywhere to change quote */
+        cursor: pointer;
         min-height: 60vh;
         display: flex;
         flex-direction: column;
@@ -102,9 +102,9 @@
       white-space: pre-wrap;
     }
     
-    /* MODIFICATION: The instruction prompt color */
+    /* The instruction prompt color */
     #instruction-prompt {
-      color: #67e8f9; /* Aesthetic Cyan */
+      color: #67e8f9;
       transition: opacity 0.3s ease;
     }
 
@@ -128,7 +128,7 @@
     }
     
     #progress-circle {
-        stroke: var(--highlight-color); /* Using the muted highlight color */
+        stroke: var(--highlight-color); /* Uses the new soft highlight color */
         stroke-width: 2;
         fill: none;
         transition: stroke-dashoffset 0.1s linear; 
@@ -157,7 +157,6 @@
     
   </style>
   
-  <!-- Google tag (gtag.js) for Analytics --> 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1K1TKBQFFK"></script> 
   <script> 
     window.dataLayer = window.dataLayer || []; 
@@ -169,19 +168,14 @@
 
 <body>
 
-  <!-- Header -->
   <div class="header-controls">
     <div class="header-group-right">
 
-        <!-- Screen Rotation Toggle (Hidden by default, removed if not supported by browser) -->
         <button id="rotation-btn" class="header-btn" aria-label="Toggle Screen Orientation" title="Lock Screen Orientation" style="display: none;">
-            <!-- Icon will be dynamically updated based on currentOrientationLock -->
             <div id="rotation-icon">
-                <!-- Initial content set by JavaScript init() -->
-            </div>
+                </div>
         </button>
 
-        <!-- Auto Quote Toggle (Play/Pause) -->
         <button id="auto-mode-btn" class="header-btn" aria-label="Toggle Auto-Quote" title="Auto Play Quotes">
             <div class="progress-wrap">
             <svg id="progress-svg" viewBox="0 0 50 50">
@@ -189,7 +183,6 @@
                 <circle id="progress-circle" cx="25" cy="25" r="22" stroke-dasharray="138.2" stroke-dashoffset="138.2" />
             </svg>
             <div id="auto-mode-icon">
-                <!-- Play Icon (Default) -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon>
                 </svg>
@@ -197,7 +190,6 @@
             </div>
         </button>
 
-        <!-- Fullscreen Toggle -->
         <button id="fullscreen-btn" class="header-btn" aria-label="Toggle Fullscreen" title="Fullscreen">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
         </button>
@@ -206,10 +198,8 @@
 
   <div class="container">
     
-    <!-- QUOTE VIEW -->
     <div id="quote-container" onclick="handleQuoteClick()">
       <div class="mb-8">
-        <!-- Text size is controlled responsively by Tailwind classes: text-xl (mobile), md:text-2xl (tablet), lg:text-3xl (desktop) -->
         <p id="quote-text" class="text-xl md:text-2xl lg:text-3xl font-light leading-relaxed"></p>
       </div>
       <p id="instruction-prompt" class="text-xs md:text-sm font-light tracking-wide uppercase mb-4 opacity-70">
@@ -219,7 +209,6 @@
     
   </div>
   
-  <!-- Footer Status -->
   <div class="footer-status">
     <p>
         Time: <span id="current-hms" class="highlight-number">--:--</span><span id="current-ampm" class="highlight-number">--</span> | <span id="time-left-seconds" class="highlight-number">--</span> seconds left today
@@ -266,7 +255,7 @@
     const autoBtn = document.getElementById('auto-mode-btn');
     const fullscreenBtn = document.getElementById('fullscreen-btn');
     const rotationBtn = document.getElementById('rotation-btn'); 
-    const rotationIconEl = document.getElementById('rotation-icon'); // New element reference
+    const rotationIconEl = document.getElementById('rotation-icon');
     const autoIcon = document.getElementById('auto-mode-icon');
     const progressCircle = document.getElementById('progress-circle');
 
@@ -277,15 +266,15 @@
 
     // --- STATE VARIABLES ---
     let currentQuoteIndex = -1;
-    let instructionTapped = false; // Tracks if the user has manually tapped once
-    let currentOrientationLock = 'portrait-primary'; // Tracks the current lock state
+    let instructionTapped = false;
+    let currentOrientationLock = 'portrait-primary';
 
     // Auto Mode State
     let autoMode = false;
     let autoTimer = null;
     let progressTimer = null;
     let startTime = null;
-    const CIRCUMFERENCE = 2 * Math.PI * 22; // For the progress ring
+    const CIRCUMFERENCE = 2 * Math.PI * 22;
 
     // --- ICON SVGs ---
     const ICON_LANDSCAPE = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -318,18 +307,11 @@
 
     // --- FULLSCREEN & ROTATION LOGIC ---
     
-    /**
-     * Updates the rotation icon based on the *next* intended state.
-     * If current lock is 'portrait', button shows ICON_LANDSCAPE (to switch to).
-     * If current lock is 'landscape', button shows ICON_PORTRAIT (to switch to).
-     */
     function updateRotationIcon() {
         if (currentOrientationLock === 'portrait-primary') {
-            // Next click will lock to landscape, so show landscape icon
             rotationIconEl.innerHTML = ICON_LANDSCAPE;
             rotationBtn.title = "Lock to Landscape";
         } else {
-            // Next click will lock to portrait, so show portrait icon
             rotationIconEl.innerHTML = ICON_PORTRAIT;
             rotationBtn.title = "Lock to Portrait";
         }
@@ -348,7 +330,7 @@
             if (screen.orientation && screen.orientation.unlock) {
                 screen.orientation.unlock();
                 currentOrientationLock = 'portrait-primary'; // Reset state
-                updateRotationIcon(); // Update icon back to default (landscape icon)
+                updateRotationIcon();
                 console.log("Screen orientation unlocked.");
             }
         }
@@ -365,7 +347,6 @@
     function toggleScreenOrientation() {
         if (!document.fullscreenElement) return;
 
-        // Determine the next lock state based on the current one
         const nextLock = (currentOrientationLock === 'portrait-primary') ? 'landscape-primary' : 'portrait-primary';
 
         try {
@@ -373,7 +354,7 @@
                 screen.orientation.lock(nextLock)
                     .then(() => {
                         currentOrientationLock = nextLock;
-                        updateRotationIcon(); // Update icon to show the *new* next action
+                        updateRotationIcon();
                         console.log(`Screen orientation locked to: ${nextLock}`);
                     })
                     .catch(error => {
@@ -402,7 +383,7 @@
         if (autoMode) return;
         autoMode = true;
         setAutoIcon(true);
-        showNextQuote(); // Advance immediately on start
+        showNextQuote();
         autoTimer = setInterval(showNextQuote, 5000);
     }
 
@@ -412,7 +393,6 @@
         setAutoIcon(false);
         clearInterval(autoTimer);
         clearInterval(progressTimer);
-        // Reset progress ring visual
         progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
     }
     
@@ -437,7 +417,6 @@
         
         const newText = quotes[currentQuoteIndex].text;
         
-        // Fade main quote text for smooth transition
         quoteTextEl.style.opacity = "0";
 
         setTimeout(() => {
@@ -455,17 +434,13 @@
     function handleQuoteClick() {
         showNextQuote();
         
-        // Handle the instruction prompt visibility (disappears after first tap)
         if (!instructionTapped) {
             instructionTapped = true;
-            // Fade out the instruction
             instructionEl.style.opacity = "0";
-            // Hide permanently after fade completes
             setTimeout(() => instructionEl.style.display = 'none', 300);
         }
         
         if (autoMode) {
-            // Reset the auto-timer on manual tap to give a full 5 seconds delay
             clearInterval(autoTimer);
             autoTimer = setInterval(showNextQuote, 5000);
             startTime = Date.now();
