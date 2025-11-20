@@ -58,6 +58,14 @@
       justify-content: flex-end; 
       pointer-events: none;
       z-index: 50;
+      /* Added transition for smoother hiding */
+      transition: opacity 0.3s ease;
+    }
+
+    /* New class to fully hide controls in fullscreen */
+    .header-controls.controls-hidden {
+        opacity: 0;
+        pointer-events: none;
     }
 
     .header-group-right {
@@ -172,6 +180,13 @@
   <div class="header-controls">
     <div class="header-group-right">
 
+        <!-- NEW: Button to toggle control bar visibility in fullscreen -->
+        <button id="toggle-controls-btn" class="header-btn" aria-label="Toggle Controls Visibility" title="Hide Controls" style="display: none;">
+            <div id="toggle-icon">
+                <!-- Initial Eye Open Icon will be set in JS init -->
+            </div>
+        </button>
+
         <button id="rotation-btn" class="header-btn" aria-label="Toggle Screen Orientation" title="Lock Screen Orientation" style="display: none;">
             <div id="rotation-icon">
                 </div>
@@ -260,6 +275,11 @@
     const autoIcon = document.getElementById('auto-mode-icon');
     const progressCircle = document.getElementById('progress-circle');
 
+    // NEW Control Elements
+    const headerControls = document.querySelector('.header-controls');
+    const toggleControlsBtn = document.getElementById('toggle-controls-btn');
+    const toggleIconEl = document.getElementById('toggle-icon');
+
     // Footer
     const currentTimeHMS = document.getElementById("current-hms"); 
     const currentTimeAMPM = document.getElementById("current-ampm"); 
@@ -269,6 +289,7 @@
     let currentQuoteIndex = -1;
     let instructionTapped = false;
     let currentOrientationLock = 'portrait-primary';
+    let isControlsVisible = true; // NEW state for visibility
 
     // Auto Mode State
     let autoMode = false;
@@ -284,6 +305,10 @@
     const ICON_PORTRAIT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="5" y="3" width="14" height="18" rx="2" ry="2"></rect>
                             </svg>`;
+    
+    const ICON_EYE_OPEN = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+    const ICON_EYE_CLOSED = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6 18l-3-3"></path><path d="M1 1l22 22"></path><path d="M21 17l-3-3"></path></svg>`;
+
 
     // --- INIT ---
     function init() {
@@ -295,6 +320,13 @@
         autoBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleAutoMode(); });
         fullscreenBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleFullScreen(); });
 
+        // NEW: Toggle Controls listener
+        if(toggleControlsBtn) {
+            toggleControlsBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleControlVisibility(); });
+            // Set initial icon
+            toggleIconEl.innerHTML = ICON_EYE_OPEN; 
+        }
+
         // Check for Screen Orientation API support, only enable/show button if available.
         if (window.screen.orientation && window.screen.orientation.lock) {
             rotationBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleScreenOrientation(); }); 
@@ -304,10 +336,26 @@
             // Remove the button entirely if the orientation lock API is not supported (e.g., desktop)
             if(rotationBtn) rotationBtn.remove();
         }
+        
+        // Ensure fullscreen change handler is always attached
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
     }
 
     // --- FULLSCREEN & ROTATION LOGIC ---
     
+    function toggleControlVisibility() {
+        isControlsVisible = !isControlsVisible;
+        if (isControlsVisible) {
+            headerControls.classList.remove('controls-hidden');
+            toggleIconEl.innerHTML = ICON_EYE_OPEN;
+            toggleControlsBtn.title = "Hide Controls";
+        } else {
+            headerControls.classList.add('controls-hidden');
+            toggleIconEl.innerHTML = ICON_EYE_CLOSED;
+            toggleControlsBtn.title = "Show Controls";
+        }
+    }
+
     function updateRotationIcon() {
         if (currentOrientationLock === 'portrait-primary') {
             rotationIconEl.innerHTML = ICON_LANDSCAPE;
@@ -321,9 +369,20 @@
     function handleFullscreenChange() {
         const isFullscreen = !!document.fullscreenElement;
         
-        // Toggle visibility of the rotation button
+        // Toggle visibility of rotation button
         if (rotationBtn) {
             rotationBtn.style.display = isFullscreen ? 'flex' : 'none';
+        }
+        
+        // Toggle visibility and reset state of controls toggle button
+        if (toggleControlsBtn) {
+            toggleControlsBtn.style.display = isFullscreen ? 'flex' : 'none';
+            if (!isFullscreen) {
+                // Reset visibility when exiting fullscreen
+                isControlsVisible = true;
+                headerControls.classList.remove('controls-hidden');
+                toggleIconEl.innerHTML = ICON_EYE_OPEN;
+            }
         }
         
         // Attempt to unlock orientation when exiting fullscreen
