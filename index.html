@@ -1,588 +1,632 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Motivational Quotes</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
-    rel="stylesheet"
-  />
-  <meta name="theme-color" content="#000000" />
-  <style>
-    :root {
-      --bg-color: #000000;
-      --text-color: #e5e7eb;
-      --dim-text: #6b7280;
-      --highlight-color: #d1d5db; 
-      --subtle-btn-color: #A0A0A0; 
-    }
-    
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg-color); 
-      color: var(--text-color);
-      user-select: none;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0;
-      padding: 0 20px; 
-      padding-bottom: 80px; 
-      transition: background-color 0.5s ease;
-      overflow: hidden;
-    }
-
-    /* --- LAYOUT --- */
-    .container {
-      max-width: 800px;
-      width: 100%;
-      text-align: center;
-      position: relative;
-      z-index: 10;
-    }
-
-    /* --- HEADER BUTTONS: FIXED TO ABSOLUTE CORNER --- */
-    .header-controls {
-      position: fixed;
-      top: 20px; /* Spacing from the top edge */
-      right: 20px; /* Spacing from the right edge */
-      pointer-events: none;
-      z-index: 50;
-    }
-
-    /* Control Group: Uses row-reverse to arrange elements right-to-left (Fullscreen on far right) */
-    .control-group {
-        pointer-events: auto;
-        display: flex;
-        align-items: center;
-        gap: 10px; 
-        transition: opacity 0.2s ease, transform 0.2s ease; /* Faster transition */
-        justify-content: flex-end; 
-        flex-direction: row-reverse; /* This makes the last element in HTML appear on the right */
-    }
-    
-    .header-btn {
-      background: none;
-      border: none;
-      color: var(--subtle-btn-color); 
-      padding: 8px;
-      cursor: pointer;
-      transition: color 0.3s ease, transform 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .header-btn:hover {
-      color: var(--text-color); 
-      transform: scale(1.05);
-    }
-    
-    /* Utility class to visually hide elements, crucial for the 3 states */
-    .hidden-state {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        width: 0;
-        padding: 0;
-        margin: 0;
-        /* Ensure transitions don't break the layout when hiding */
-        transition: opacity 0.2s ease, visibility 0.2s ease, width 0.2s ease, padding 0.2s ease, margin 0.2s ease; /* Faster transition */
-    }
-
-    /* --- QUOTE MODE --- */
-    #quote-container {
-        transition: opacity 0.5s ease, transform 0.5s ease;
-        cursor: pointer;
-        min-height: 60vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #quote-text {
-      transition: opacity 0.3s ease;
-      white-space: pre-wrap;
-    }
-    
-    /* The instruction prompt color */
-    #instruction-prompt {
-      color: #67e8f9;
-      transition: opacity 0.3s ease;
-    }
-
-    /* Progress Ring for Auto Button */
-    .progress-wrap {
-        position: relative;
-        width: 24px; 
-        height: 24px; 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    #progress-svg {
-        position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%) rotate(-90deg); 
-        width: 50px; height: 50px;
-        pointer-events: none; 
-        opacity: 0.7;
-    }
-    
-    #progress-circle {
-        stroke: var(--highlight-color); 
-        stroke-width: 2;
-        fill: none;
-        transition: stroke-dashoffset 0.1s linear; 
-    }
-
-    /* --- FOOTER TIME --- */
-    .footer-status {
-        position: fixed;
-        bottom: 20px;
-        left: 0;
-        right: 0;
-        text-align: center;
-        pointer-events: none;
-        color: var(--dim-text);
-        font-size: 0.85rem;
-        font-weight: 300;
-    }
-    
-    .highlight-number {
-        color: var(--text-color);
-        font-weight: 400;
-        font-variant-numeric: tabular-nums; 
-        font-feature-settings: "tnum";
-    }
-    
-  </style>
+  <head>
   
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1K1TKBQFFK"></script> 
-  <script> 
-    window.dataLayer = window.dataLayer || []; 
-    function gtag(){dataLayer.push(arguments);} 
-    gtag('js', new Date()); 
-    gtag('config', 'G-1K1TKBQFFK'); 
-  </script>
-</head>
-
-<body>
-
-  <div class="header-controls">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Motivational Quotes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="theme-color" content="#000000" />
+    <style>
+      :root {
+        --bg-color: #000000;
+        --text-color: #e5e7eb;
+        --dim-text: #6b7280;
+        --highlight-color: #d1d5db;
+        --subtle-btn-color: #A0A0A0;
+      } body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    user-select: none;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0 20px;
+    padding-bottom: 80px;
+    transition: background-color 0.5s ease;
+    overflow: hidden;
+  }
+  
+  /* --- LAYOUT --- */
+  .container {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+  }
+  
+  /* --- HEADER BUTTONS: FIXED TO ABSOLUTE CORNER --- */
+  .header-controls {
+    position: fixed;
+    top: 20px; /* Spacing from the top edge */
+    right: 20px; /* Spacing from the right edge */
+    pointer-events: none;
+    z-index: 50;
+  }
+  
+  /* Control Group: Uses row-reverse to arrange elements right-to-left (Fullscreen on far right) */
+  .control-group {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: opacity 0.2s ease, transform 0.2s ease; /* Faster transition */
+      justify-content: flex-end;
+      flex-direction: row-reverse; /* This makes the last element in HTML appear on the right */
+  }
     
-    <!-- control-group uses flex-direction: row-reverse to ensure visual R-to-L flow -->
-    <div id="control-group" class="control-group">
-
-        <!-- 1. Fullscreen/Exit Button (Visually: Far Right/Edge) -->
-        <button id="fullscreen-btn" class="header-btn" aria-label="Toggle Fullscreen" title="Fullscreen">
-            <div id="fullscreen-icon">
-                <!-- Default: Enter Fullscreen Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
-            </div>
-        </button>
+  .header-btn {
+    background: none;
+    border: none;
+    color: var(--subtle-btn-color);
+    padding: 8px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .header-btn:hover {
+    color: var(--text-color);
+    transform: scale(1.05);
+  }
+    
+  /* Utility class to visually hide elements, crucial for the 3 states */
+  .hidden-state {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      width: 0;
+      padding: 0;
+      margin: 0;
+      /* Ensure transitions don't break the layout when hiding */
+      transition: opacity 0.2s ease, visibility 0.2s ease, width 0.2s ease, padding 0.2s ease, margin 0.2s ease; /* Faster transition */
+  }
+  
+  /* --- QUOTE MODE --- */
+  #quote-container {
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      cursor: pointer;
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  }
+  
+  #quote-text {
+    transition: opacity 0.3s ease;
+    white-space: pre-wrap;
+  }
+    
+  /* The instruction prompt color */
+  #instruction-prompt {
+    color: #67e8f9;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Progress Ring for Auto Button */
+  .progress-wrap {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+    
+  #progress-svg {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotate(-90deg);
+      width: 50px; height: 50px;
+      pointer-events: none;
+      opacity: 0.7;
+  }
+    
+  #progress-circle {
+      stroke: var(--highlight-color);
+      stroke-width: 2;
+      fill: none;
+      transition: stroke-dashoffset 0.1s linear;
+  }
+  
+  /* --- FOOTER TIME --- */
+  .footer-status {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      pointer-events: none;
+      color: var(--dim-text);
+      font-size: 0.85rem;
+      font-weight: 300;
+  }
+    
+  .highlight-number {
+      color: var(--text-color);
+      font-weight: 400;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum";
+  }
+  
+    </style>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1K1TKBQFFK"></script>
+    <script>
+      
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-1K1TKBQFFK');
+      
+    </script>
+  </head>
+  <body>
+    
+    <div class="header-controls">
+  <div id="control-group" class="control-group">
+  
+      <button id="fullscreen-btn" class="header-btn" aria-label="Toggle Fullscreen" title="Fullscreen">
+          <div id="fullscreen-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+          </div>
+      </button>
         
-        <!-- 2. Auto Mode Button (Play Icon) (Visually: Next to Fullscreen) -->
-        <button id="auto-mode-btn" class="header-btn" aria-label="Toggle Auto-Quote" title="Auto Play Quotes">
-            <div class="progress-wrap">
-                <svg id="progress-svg" viewBox="0 0 50 50">
-                    <circle cx="25" cy="25" r="22" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none" />
-                    <circle id="progress-circle" cx="25" cy="25" r="22" stroke-dasharray="138.2" stroke-dashoffset="138.2" />
-                </svg>
-                <div id="auto-mode-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon>
-                    </div>
-                </div>
-            </button>
-
-        <!-- 3. Rotation Button (Visually: Next to Play, only in full-controls) -->
-        <button id="rotation-btn" class="header-btn hidden-state" aria-label="Toggle Screen Orientation" title="Lock Screen Orientation">
-            <div id="rotation-icon"></div>
-        </button>
-
-        <!-- 4. Arrow Button (The one that toggles the menu) (Visually: Far Left, only in fullscreen) -->
-        <button id="toggle-arrow-btn" class="header-btn" aria-label="Hide Controls" title="Hide Controls">
-             <!-- Default Icon: Right Arrow -->
-             <div id="arrow-icon-svg">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-             </div>
-        </button>
-
-    </div>
+      <button id="auto-mode-btn" class="header-btn" aria-label="Toggle Auto-Quote" title="Auto Play Quotes">
+          <div class="progress-wrap">
+              <svg id="progress-svg" viewBox="0 0 50 50">
+                  <circle cx="25" cy="25" r="22" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none" />
+                  <circle id="progress-circle" cx="25" cy="25" r="22" stroke-dasharray="138.2" stroke-dashoffset="138.2" />
+              </svg>
+              <div id="auto-mode-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon>
+                  </div>
+              </div>
+          </button>
+  
+      <button id="rotation-btn" class="header-btn hidden-state" aria-label="Toggle Screen Orientation" title="Lock Screen Orientation">
+          <div id="rotation-icon"></div>
+      </button>
+  
+      <button id="toggle-arrow-btn" class="header-btn" aria-label="Hide Controls" title="Hide Controls">
+           <div id="arrow-icon-svg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+           </div>
+      </button>
+  
   </div>
-
-  <div class="container">
+  
+    </div>
     
-    <div id="quote-container" onclick="handleQuoteClick()">
-      <div class="mb-8">
-        <p id="quote-text" class="text-xl md:text-2xl lg:text-3xl font-light leading-relaxed"></p>
-      </div>
-      <p id="instruction-prompt" class="text-xs md:text-sm font-light tracking-wide uppercase mb-4 opacity-70">
-        Tap to view the next quote
+    <div class="container">
+  <div id="quote-container" onclick="handleQuoteClick()">
+    <div class="mb-8">
+      <p id="quote-text" class="text-xl md:text-2xl lg:text-3xl font-light leading-relaxed"></p>
+    </div>
+    <p id="instruction-prompt" class="text-xs md:text-sm font-light tracking-wide uppercase mb-4 opacity-70">
+      Tap to view the next quote
+    </p>
+  </div>
+    </div>
+    
+    <div class="footer-status">
+      <p>
+          Time: <span id="current-hms" class="highlight-number">--:--</span><span id="current-ampm" class="highlight-number">--</span> | <span id="time-left-seconds" class="highlight-number">--</span> seconds left today
       </p>
     </div>
     
-  </div>
-  
-  <div class="footer-status">
-    <p>
-        Time: <span id="current-hms" class="highlight-number">--:--</span><span id="current-ampm" class="highlight-number">--</span> | <span id="time-left-seconds" class="highlight-number">--</span> seconds left today
-    </p>
-  </div>
-
-  <script>
-    // --- DATA & CONSTANTS ---
-    const quotes = [
-      { text: "You have 86,400 seconds each day — make sure not a single one goes to waste." },
-      { text: "Be better than you were yesterday." },
-      { text: "Don't waste time. You don't get it back." },
-      { text: "Focus." },
-      { text: "The problem is, you think you have a lot of time to live." },
-      { text: "Live everyday like it's your last day." },
-      { text: "Consistency." },
-      { text: "Big dreams need big sacrifices." },
-      { text: "Practice makes perfect." },
-      { text: "Do it even when you don't feel like it." },
-      { text: "Nothing changes if nothing changes." },
-      { text: "This is the way." },
-      { text: "Stay different." },
-      { text: "Excuses don't build empires." },
-      { text: "Stop overthinking. Start doing." },
-      { text: "Become addicted to constant improvement." },
-      { text: "Don't stop when you're tired. Stop when you're done." },
-      { text: "Great things never come from comfort zones." },
-      { text: "Your future is created by what you do today." },
-      { text: "Turn I wish into I will." },
-      { text: "Level up in silence." },
-      { text: "Wake up with determination. Go to bed with satisfaction." },
-      { text: "Stay patient and trust your journey." },
-      { text: "If you want it, work for it." },
-      { text: "Keep going. You’re getting there." },
-      { text: "Work until expensive becomes cheap." }
-    ];
-
-    // --- ELEMENTS ---
-    const quoteContainer = document.getElementById('quote-container');
-    const quoteTextEl = document.getElementById('quote-text');
-    const instructionEl = document.getElementById('instruction-prompt');
+    <script>
+      // --- DATA & CONSTANTS ---
+      const quotes = [
+        { text: "You have 86,400 seconds each day — make sure not a single one goes to waste." },
+        { text: "Be better than you were yesterday." },
+        { text: "Don't waste time. You don't get it back." },
+        { text: "Focus." },
+        { text: "The problem is, you think you have a lot of time to live." },
+        { text: "Live everyday like it's your last day." },
+        { text: "Consistency." },
+        { text: "Big dreams need big sacrifices." },
+        { text: "Practice makes perfect." },
+        { text: "Do it even when you don't feel like it." },
+        { text: "Nothing changes if nothing changes." },
+        { text: "This is the way." },
+        { text: "Stay different." },
+        { text: "Excuses don't build empires." },
+        { text: "Stop overthinking. Start doing." },
+        { text: "Become addicted to constant improvement." },
+        { text: "Don't stop when you're tired. Stop when you're done." },
+        { text: "Great things never come from comfort zones." },
+        { text: "Your future is created by what you do today." },
+        { text: "Turn I wish into I will." },
+        { text: "Level up in silence." },
+        { text: "Wake up with determination. Go to bed with satisfaction." },
+        { text: "Stay patient and trust your journey." },
+        { text: "If you want it, work for it." },
+        { text: "Keep going. You’re getting there." },
+        { text: "Work until expensive becomes cheap." }
+      ];
     
-    // Buttons
-    const controlGroup = document.getElementById('control-group');
-    const autoBtn = document.getElementById('auto-mode-btn');
-    const fullscreenBtn = document.getElementById('fullscreen-btn');
-    const fullscreenIconEl = document.getElementById('fullscreen-icon');
-    const rotationBtn = document.getElementById('rotation-btn'); 
-    const rotationIconEl = document.getElementById('rotation-icon');
-    const autoIcon = document.getElementById('auto-mode-icon');
-    const progressCircle = document.getElementById('progress-circle');
-    const toggleArrowBtn = document.getElementById('toggle-arrow-btn'); 
-    const arrowIconSvg = document.getElementById('arrow-icon-svg');
-
-    // Footer
-    const currentTimeHMS = document.getElementById("current-hms"); 
-    const currentTimeAMPM = document.getElementById("current-ampm"); 
-    const timeLeftSecondsEl = document.getElementById("time-left-seconds"); 
-
-    // --- STATE VARIABLES ---
-    let currentQuoteIndex = -1;
-    let instructionTapped = false;
-    let currentOrientationLock = 'portrait-primary';
+      // --- ELEMENTS ---
+      const quoteContainer = document.getElementById('quote-container');
+      const quoteTextEl = document.getElementById('quote-text');
+      const instructionEl = document.getElementById('instruction-prompt');
+        
+      // Buttons
+      const controlGroup = document.getElementById('control-group');
+      const autoBtn = document.getElementById('auto-mode-btn');
+      const fullscreenBtn = document.getElementById('fullscreen-btn');
+      const fullscreenIconEl = document.getElementById('fullscreen-icon');
+      const rotationBtn = document.getElementById('rotation-btn');
+      const rotationIconEl = document.getElementById('rotation-icon');
+      const autoIcon = document.getElementById('auto-mode-icon');
+      const progressCircle = document.getElementById('progress-circle');
+      const toggleArrowBtn = document.getElementById('toggle-arrow-btn');
+      const arrowIconSvg = document.getElementById('arrow-icon-svg');
     
-    // Auto Mode State
-    let autoMode = false;
-    let autoTimer = null;
-    let progressTimer = null;
-    let startTime = null;
-    const CIRCUMFERENCE = 2 * Math.PI * 22;
-
-    // --- ICON SVGs ---
-    const ICON_FULLSCREEN_ENTER = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>`;
-    const ICON_FULLSCREEN_EXIT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg>`;
-    const ICON_LANDSCAPE = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
-                            </svg>`;
-    const ICON_PORTRAIT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="5" y="3" width="14" height="18" rx="2" ry="2"></rect>
-                            </svg>`;
-    const ICON_ARROW_LEFT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>`;
-    const ICON_ARROW_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>`;
-
-    /**
-     * Hides all control buttons. Used as a cleanup step before setting a new state.
-     */
-    function hideAllControls() {
-        fullscreenBtn.classList.add('hidden-state');
-        autoBtn.classList.add('hidden-state');
-        rotationBtn.classList.add('hidden-state');
-        toggleArrowBtn.classList.add('hidden-state');
-    }
-
-    /**
-     * Sets the visibility and icon state for the three defined control modes.
-     * @param {('normal'|'zen-mode'|'full-controls')} state - The target control state.
-     */
-    function setControlState(state) {
-        hideAllControls();
-
-        if (state === 'normal') {
-            // STATE 1: [Play] [Fullscreen (Enter)]
-            // Visually: Fullscreen (far right), Play (to its left)
-            
-            fullscreenBtn.classList.remove('hidden-state');
-            autoBtn.classList.remove('hidden-state');
-
-            fullscreenIconEl.innerHTML = ICON_FULLSCREEN_ENTER;
-            fullscreenBtn.title = "Fullscreen";
-            
-        } else if (state === 'zen-mode') {
-            // STATE 2: [Arrow Left] (at the far right edge)
-            // Visually: Left Arrow (far right) - The only visible button.
-
-            toggleArrowBtn.classList.remove('hidden-state');
-            arrowIconSvg.innerHTML = ICON_ARROW_LEFT;
-            toggleArrowBtn.title = "Show Controls";
-            
-        } else if (state === 'full-controls') {
-            // STATE 3: [Arrow Right] [Rotation] [Play] [Fullscreen (Exit)]
-            // Visually (R-to-L): Fullscreen Exit, Play, Rotation, Right Arrow
-            
-            fullscreenBtn.classList.remove('hidden-state'); // Fullscreen Exit
-            autoBtn.classList.remove('hidden-state'); // Play
-            
-            // Show rotation only if API is supported
-            if (rotationBtn.dataset.supported === 'true') {
-                rotationBtn.classList.remove('hidden-state');
-            }
-            
-            toggleArrowBtn.classList.remove('hidden-state'); // Right Arrow
-            
-            // Update icons
-            fullscreenIconEl.innerHTML = ICON_FULLSCREEN_EXIT;
-            fullscreenBtn.title = "Exit Fullscreen";
-            
-            arrowIconSvg.innerHTML = ICON_ARROW_RIGHT;
-            toggleArrowBtn.title = "Hide Controls";
-        }
-    }
+      // Footer
+      const currentTimeHMS = document.getElementById("current-hms");
+      const currentTimeAMPM = document.getElementById("current-ampm");
+      const timeLeftSecondsEl = document.getElementById("time-left-seconds");
     
-    /**
-     * Handles the click on the arrow button, toggling between Zen Mode (State 2) and 
-     * Full Controls Mode (State 3) when in fullscreen.
-     */
-    function toggleControlVisibility() {
+      // --- STATE VARIABLES ---
+      let currentQuoteIndex = -1;
+      let instructionTapped = false;
+      let currentOrientationLock = 'portrait-primary';
+        
+      // Auto Mode State
+      let autoMode = false;
+      let autoTimer = null;
+      let progressTimer = null;
+      let startTime = null;
+      const CIRCUMFERENCE = 2 * Math.PI * 22;
+
+      // **NEW: Screen Wake Lock State**
+      let wakeLock = null; 
+    
+      // --- ICON SVGs ---
+      const ICON_FULLSCREEN_ENTER = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>`;
+      const ICON_FULLSCREEN_EXIT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg>`;
+      const ICON_LANDSCAPE = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                  <rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
+                              </svg>`;
+      const ICON_PORTRAIT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                  <rect x="5" y="3" width="14" height="18" rx="2" ry="2"></rect>
+                              </svg>`;
+      const ICON_ARROW_LEFT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>`;
+      const ICON_ARROW_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>`;
+    
+      /**
+       * Hides all control buttons. Used as a cleanup step before setting a new state.
+       */
+      function hideAllControls() {
+          fullscreenBtn.classList.add('hidden-state');
+          autoBtn.classList.add('hidden-state');
+          rotationBtn.classList.add('hidden-state');
+          toggleArrowBtn.classList.add('hidden-state');
+      }
+    
+      /**
+       * Sets the visibility and icon state for the three defined control modes.
+       * @param {('normal'|'zen-mode'|'full-controls')} state - The target control state.
+       */
+      function setControlState(state) {
+          hideAllControls();
+    
+          if (state === 'normal') {
+              // STATE 1: [Play] [Fullscreen (Enter)]
+              // Visually: Fullscreen (far right), Play (to its left)
+                
+              fullscreenBtn.classList.remove('hidden-state');
+              autoBtn.classList.remove('hidden-state');
+    
+              fullscreenIconEl.innerHTML = ICON_FULLSCREEN_ENTER;
+              fullscreenBtn.title = "Fullscreen";
+                
+          } else if (state === 'zen-mode') {
+              // STATE 2: [Arrow Left] (at the far right edge)
+              // Visually: Left Arrow (far right) - The only visible button.
+    
+              toggleArrowBtn.classList.remove('hidden-state');
+              arrowIconSvg.innerHTML = ICON_ARROW_LEFT;
+              toggleArrowBtn.title = "Show Controls";
+                
+          } else if (state === 'full-controls') {
+              // STATE 3: [Arrow Right] [Rotation] [Play] [Fullscreen (Exit)]
+              // Visually (R-to-L): Fullscreen Exit, Play, Rotation, Right Arrow
+                
+              fullscreenBtn.classList.remove('hidden-state'); // Fullscreen Exit
+              autoBtn.classList.remove('hidden-state'); // Play
+                
+              // Show rotation only if API is supported
+              if (rotationBtn.dataset.supported === 'true') {
+                  rotationBtn.classList.remove('hidden-state');
+              }
+                
+              toggleArrowBtn.classList.remove('hidden-state'); // Right Arrow
+                
+              // Update icons
+              fullscreenIconEl.innerHTML = ICON_FULLSCREEN_EXIT;
+              fullscreenBtn.title = "Exit Fullscreen";
+                
+              arrowIconSvg.innerHTML = ICON_ARROW_RIGHT;
+              toggleArrowBtn.title = "Hide Controls";
+          }
+      }
+        
+      /**
+       * Handles the click on the arrow button, toggling between Zen Mode (State 2) and
+       * Full Controls Mode (State 3) when in fullscreen.
+       */
+      function toggleControlVisibility() {
+          if (document.fullscreenElement) {
+              if (toggleArrowBtn.title === "Show Controls") {
+                  // Currently Zen Mode (State 2, Left Arrow). Switch to Full Controls (State 3, Right Arrow)
+                  setControlState('full-controls');
+              } else {
+                  // Currently Full Controls (State 3, Right Arrow). Switch to Zen Mode (State 2, Left Arrow)
+                  setControlState('zen-mode');
+              }
+          }
+      }
+    
+      // --- FULLSCREEN & ROTATION LOGIC ---
+        
+      function handleFullscreenChange() {
+          if (document.fullscreenElement) {
+              // ENTER FULLSCREEN: Move to Zen Mode (State 2: Left Arrow Only)
+              setControlState('zen-mode');
+          } else {
+              // EXIT FULLSCREEN: Return to Normal Mode (State 1: Play + Fullscreen Enter)
+              setControlState('normal');
+                
+              // Attempt to unlock orientation
+              if (screen.orientation && screen.orientation.unlock) {
+                  screen.orientation.unlock();
+                  currentOrientationLock = 'portrait-primary'; // Reset state
+                  updateRotationIcon();
+              }
+          }
+      }
+        
+      function toggleFullScreen() {
+        // If we are in fullscreen, the button acts as Exit Fullscreen
         if (document.fullscreenElement) {
-            if (toggleArrowBtn.title === "Show Controls") {
-                // Currently Zen Mode (State 2, Left Arrow). Switch to Full Controls (State 3, Right Arrow)
-                setControlState('full-controls');
-            } else {
-                // Currently Full Controls (State 3, Right Arrow). Switch to Zen Mode (State 2, Left Arrow)
-                setControlState('zen-mode');
-            }
-        }
-    }
-
-    // --- FULLSCREEN & ROTATION LOGIC ---
-    
-    function handleFullscreenChange() {
-        if (document.fullscreenElement) {
-            // ENTER FULLSCREEN: Move to Zen Mode (State 2: Left Arrow Only)
-            setControlState('zen-mode');
-        } else {
-            // EXIT FULLSCREEN: Return to Normal Mode (State 1: Play + Fullscreen Enter)
-            setControlState('normal');
-            
-            // Attempt to unlock orientation
-            if (screen.orientation && screen.orientation.unlock) {
-                screen.orientation.unlock();
-                currentOrientationLock = 'portrait-primary'; // Reset state
-                updateRotationIcon();
-            }
-        }
-    }
-    
-    function toggleFullScreen() {
-      // If we are in fullscreen, the button acts as Exit Fullscreen
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      } 
-      // If we are not in fullscreen, the button acts as Enter Fullscreen
-      else {
-        // Try requesting fullscreen on the body element first, then document element as fallback
-        if (document.body.requestFullscreen) {
-            document.body.requestFullscreen();
-        } else if (document.documentElement.requestFullscreen) {
-            document.documentElement.requestFullscreen();
-        } else {
-            console.error("Fullscreen API not supported or available.");
+          document.exitFullscreen();
+        } 
+        // If we are not in fullscreen, the button acts as Enter Fullscreen
+        else {
+          // Try requesting fullscreen on the body element first, then document element as fallback
+          if (document.body.requestFullscreen) {
+              document.body.requestFullscreen();
+          } else if (document.documentElement.requestFullscreen) {
+              document.documentElement.requestFullscreen();
+          } else {
+              console.error("Fullscreen API not supported or available.");
+          }
         }
       }
-    }
-
-    function updateRotationIcon() {
-        if (currentOrientationLock === 'portrait-primary') {
-            rotationIconEl.innerHTML = ICON_LANDSCAPE;
-            rotationBtn.title = "Lock to Landscape";
-        } else {
-            rotationIconEl.innerHTML = ICON_PORTRAIT;
-            rotationBtn.title = "Lock to Portrait";
-        }
-    }
-
-    function toggleScreenOrientation() {
-        if (!document.fullscreenElement) return;
-
-        const nextLock = (currentOrientationLock === 'portrait-primary') ? 'landscape-primary' : 'portrait-primary';
-
-        try {
-            if (screen.orientation && screen.orientation.lock) {
-                screen.orientation.lock(nextLock)
-                    .then(() => {
-                        currentOrientationLock = nextLock;
-                        updateRotationIcon();
-                    })
-                    .catch(error => {
-                        console.error("Failed to lock screen orientation:", error.name, error.message);
-                    });
-            } else {
-                console.warn("Screen Orientation API not supported on this device.");
-            }
-        } catch (e) {
-            console.error("Error during screen orientation lock attempt:", e);
-        }
-    }
-
-    // --- AUTO MODE HELPERS ---
-    function setAutoIcon(isStarting) {
-        if (isStarting) {
-            // Pause Icon
-            autoIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16" fill="currentColor"></rect><rect x="14" y="4" width="4" height="16" fill="currentColor"></rect></svg>`;
-        } else {
-            // Play Icon
-            autoIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>`;
-        }
-    }
-
-    function startAutoMode() {
-        if (autoMode) return;
-        autoMode = true;
-        setAutoIcon(true);
-        showNextQuote();
-        autoTimer = setInterval(showNextQuote, 5000);
-    }
-
-    function stopAutoMode() {
-        if (!autoMode) return;
-        autoMode = false;
-        setAutoIcon(false);
-        clearInterval(autoTimer);
-        clearInterval(progressTimer);
-        progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
-    }
     
-    function toggleAutoMode() {
-        if (autoMode) {
-            stopAutoMode();
-        } else {
-            startAutoMode();
-        }
-    }
+      function updateRotationIcon() {
+          if (currentOrientationLock === 'portrait-primary') {
+              rotationIconEl.innerHTML = ICON_LANDSCAPE;
+              rotationBtn.title = "Lock to Landscape";
+          } else {
+              rotationIconEl.innerHTML = ICON_PORTRAIT;
+              rotationBtn.title = "Lock to Portrait";
+          }
+      }
     
-    function updateProgressRing() {
-        if (!autoMode) return;
-        const elapsed = Date.now() - startTime;
-        const percent = Math.min(elapsed / 5000, 1);
-        progressCircle.style.strokeDashoffset = CIRCUMFERENCE * (1 - percent);
-    }
+      function toggleScreenOrientation() {
+          if (!document.fullscreenElement) return;
     
-    // --- QUOTE LOGIC ---
-    function showNextQuote() {
-        currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+          const nextLock = (currentOrientationLock === 'portrait-primary') ? 'landscape-primary' : 'portrait-primary';
+    
+          try {
+              if (screen.orientation && screen.orientation.lock) {
+                  screen.orientation.lock(nextLock)
+                      .then(() => {
+                          currentOrientationLock = nextLock;
+                          updateRotationIcon();
+                      })
+                      .catch(error => {
+                          console.error("Failed to lock screen orientation:", error.name, error.message);
+                      });
+              } else {
+                  console.warn("Screen Orientation API not supported on this device.");
+              }
+          } catch (e) {
+              console.error("Error during screen orientation lock attempt:", e);
+          }
+      }
+    
+      // --- AUTO MODE HELPERS ---
+      function setAutoIcon(isStarting) {
+          if (isStarting) {
+              // Pause Icon
+              autoIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16" fill="currentColor"></rect><rect x="14" y="4" width="4" height="16" fill="currentColor"></rect></svg>`;
+          } else {
+              // Play Icon
+              autoIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>`;
+          }
+      }
+    
+      function startAutoMode() {
+          if (autoMode) return;
+          autoMode = true;
+          setAutoIcon(true);
+          showNextQuote();
+          autoTimer = setInterval(showNextQuote, 5000);
+      }
+    
+      function stopAutoMode() {
+          if (!autoMode) return;
+          autoMode = false;
+          setAutoIcon(false);
+          clearInterval(autoTimer);
+          clearInterval(progressTimer);
+          progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
+      }
         
-        const newText = quotes[currentQuoteIndex].text;
+      function toggleAutoMode() {
+          if (autoMode) {
+              stopAutoMode();
+          } else {
+              startAutoMode();
+          }
+      }
         
-        quoteTextEl.style.opacity = "0";
-
-        setTimeout(() => {
-            quoteTextEl.innerText = newText;
-            quoteTextEl.style.opacity = "1";
-        }, 300);
-
-        if (autoMode) {
-            startTime = Date.now();
-            if (progressTimer) clearInterval(progressTimer);
-            progressTimer = setInterval(updateProgressRing, 100);
-        }
-    }
-
-    function handleQuoteClick() {
-        showNextQuote();
+      function updateProgressRing() {
+          if (!autoMode) return;
+          const elapsed = Date.now() - startTime;
+          const percent = Math.min(elapsed / 5000, 1);
+          progressCircle.style.strokeDashoffset = CIRCUMFERENCE * (1 - percent);
+      }
         
-        if (!instructionTapped) {
-            instructionTapped = true;
-            instructionEl.style.opacity = "0";
-            setTimeout(() => instructionEl.style.display = 'none', 300);
-        }
-        
-        if (autoMode) {
-            clearInterval(autoTimer);
-            autoTimer = setInterval(showNextQuote, 5000);
-            startTime = Date.now();
-        }
-    }
+      // --- QUOTE LOGIC ---
+      function showNextQuote() {
+          currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+            
+          const newText = quotes[currentQuoteIndex].text;
+            
+          quoteTextEl.style.opacity = "0";
+    
+          setTimeout(() => {
+              quoteTextEl.innerText = newText;
+              quoteTextEl.style.opacity = "1";
+          }, 300);
+    
+          if (autoMode) {
+              startTime = Date.now();
+              if (progressTimer) clearInterval(progressTimer);
+              progressTimer = setInterval(updateProgressRing, 100);
+          }
+      }
+    
+      function handleQuoteClick() {
+          showNextQuote();
+            
+          if (!instructionTapped) {
+              instructionTapped = true;
+              instructionEl.style.opacity = "0";
+              setTimeout(() => instructionEl.style.display = 'none', 300);
+          }
+            
+          if (autoMode) {
+              clearInterval(autoTimer);
+              autoTimer = setInterval(showNextQuote, 5000);
+              startTime = Date.now();
+          }
+      }
+    
+      // --- FOOTER TIME ---
+      function updateTimeDisplay() {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+    
+        const displayHours = hours % 12 || 12;
+        const hms = String(displayHours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0');
+          
+        currentTimeHMS.textContent = hms;
+        currentTimeAMPM.textContent = hours >= 12 ? 'pm' : 'am';
+          
+        const secondsPassed = hours * 3600 + minutes * 60 + now.getSeconds();
+        const secondsLeft = 86400 - secondsPassed;
+        timeLeftSecondsEl.textContent = secondsLeft.toLocaleString();
+      }
 
-    // --- FOOTER TIME ---
-    function updateTimeDisplay() {
-      const now = new Date();
-      const hours = now.getHours();
-      const minutes = now.getMinutes();
+      // ----------------------------------------------------------------------
+      // ⭐ NEW: SCREEN WAKE LOCK LOGIC TO PREVENT SCREEN FROM TURNING OFF ⭐
+      // ----------------------------------------------------------------------
 
-      const displayHours = hours % 12 || 12;
-      const hms = String(displayHours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0');
+      /**
+       * Requests a screen wake lock to keep the screen on.
+       */
+      async function requestWakeLock() {
+          if ('wakeLock' in navigator) {
+              try {
+                  wakeLock = await navigator.wakeLock.request('screen');
+                  console.log('Screen Wake Lock acquired.');
+                  
+                  // Add an event listener to re-acquire the lock if it's released 
+                  // by the system (e.g., when the document becomes hidden).
+                  wakeLock.addEventListener('release', () => {
+                      console.log('Screen Wake Lock released by system.');
+                      wakeLock = null; // Important: reset the variable
+                  });
+                  
+              } catch (err) {
+                  // The user denied the request, or the lock failed to be granted.
+                  console.error(`Wake Lock request failed: ${err.name}, ${err.message}`);
+                  wakeLock = null;
+              }
+          } else {
+              console.warn('Wake Lock API not supported on this browser.');
+          }
+      }
+
+      /**
+       * Releases the screen wake lock if it is currently active.
+       * (Only needed if you wanted a button to manually release it, but good practice to define).
+       */
+      function releaseWakeLock() {
+          if (wakeLock) {
+              wakeLock.release();
+              wakeLock = null;
+              console.log('Screen Wake Lock released manually.');
+          }
+      }
       
-      currentTimeHMS.textContent = hms;
-      currentTimeAMPM.textContent = hours >= 12 ? 'pm' : 'am';
-      
-      const secondsPassed = hours * 3600 + minutes * 60 + now.getSeconds();
-      const secondsLeft = 86400 - secondsPassed;
-      timeLeftSecondsEl.textContent = secondsLeft.toLocaleString();
-    }
+      // --- INIT ---
+      function init() {
+          showNextQuote();
+          updateTimeDisplay();
+          setInterval(updateTimeDisplay, 1000);
+            
+          // Button Listeners
+          autoBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleAutoMode(); });
+          fullscreenBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleFullScreen(); });
+          toggleArrowBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleControlVisibility(); });
     
-    // --- INIT ---
-    function init() {
-        showNextQuote();
-        updateTimeDisplay();
-        setInterval(updateTimeDisplay, 1000);
-        
-        // Button Listeners
-        autoBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleAutoMode(); });
-        fullscreenBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleFullScreen(); });
-        toggleArrowBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleControlVisibility(); });
+          // Conditional Rotation Button setup
+          if (window.screen.orientation && window.screen.orientation.lock) {
+              rotationBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleScreenOrientation(); });
+              updateRotationIcon();
+              rotationBtn.dataset.supported = 'true'; // Mark as supported for setControlState logic
+          } else {
+              rotationBtn.dataset.supported = 'false';
+          }
+            
+          // This event handler is key for switching modes after fullscreen is active/deactivated
+          document.addEventListener('fullscreenchange', handleFullscreenChange);
+            
+          // Set initial state to 'normal' (State 1)
+          setControlState('normal');
 
-        // Conditional Rotation Button setup
-        if (window.screen.orientation && window.screen.orientation.lock) {
-            rotationBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleScreenOrientation(); }); 
-            updateRotationIcon();
-            rotationBtn.dataset.supported = 'true'; // Mark as supported for setControlState logic
-        } else {
-            rotationBtn.dataset.supported = 'false';
-        }
+          // ⭐ NEW: Request wake lock on load ⭐
+          requestWakeLock();
+          
+          // ⭐ NEW: Re-request wake lock when the tab/window becomes visible again ⭐
+          // The lock is automatically released by the browser when the page is hidden.
+          document.addEventListener('visibilitychange', () => {
+              if (document.visibilityState === 'visible' && !wakeLock) {
+                  requestWakeLock();
+              }
+          });
+      }
         
-        // This event handler is key for switching modes after fullscreen is active/deactivated
-        document.addEventListener('fullscreenchange', handleFullscreenChange);
-        
-        // Set initial state to 'normal' (State 1)
-        setControlState('normal');
-    }
-    
-    init();
-  </script>
-</body>
+      init();
+    </script>
+  </body>
 </html>
-
