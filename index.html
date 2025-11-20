@@ -43,6 +43,7 @@
     }
 
     #quote-text {
+      /* Only transition opacity for smooth fade effect */
       transition: opacity 0.3s ease-in-out; 
       white-space: pre-wrap;
       word-break: break-word;
@@ -54,25 +55,7 @@
         color: var(--text-color);
     }
 
-    /* TYPING CURSOR */
-    .typing-cursor {
-      display: inline-block;
-      width: 1.5px;
-      height: 1.2em;
-      background-color: var(--text-color); /* Cursor matches text color */
-      margin-left: 1px;
-      vertical-align: middle;
-      animation: blink 1s infinite;
-    }
-
-    @keyframes blink {
-      0%, 50% {
-        opacity: 1;
-      }
-      51%, 100% {
-        opacity: 0;
-      }
-    }
+    /* TYPING CURSOR and related CSS removed */
 
     .container {
       max-width: 800px;
@@ -278,7 +261,6 @@
     const fullscreenBtn = document.getElementById("fullscreen-btn");
     const autoModeBtn = document.getElementById("auto-mode-btn"); 
     const autoModeIconEl = document.getElementById("auto-mode-icon");
-    // const themeToggleBtn = document.getElementById("theme-toggle-btn"); <-- REMOVED
     
     // Progress Bar Elements
     const progressBarEl = document.getElementById("progress-circle");
@@ -291,13 +273,10 @@
     const timeLeftSecondsEl = document.getElementById("time-left-seconds"); 
 
     const TIME_TOTAL_SECONDS = 86400; // 24 hours
-    const AUTO_SWITCH_INTERVAL_MS = 10000; // 10 seconds
+    const AUTO_SWITCH_INTERVAL_MS = 5000; // 5 seconds
 
     let currentQuoteIndex = -1;
-    let isTyping = false;
-    let typingTimer = null;
     let fullText = "";
-    let shownChars = 0;
     let instructionShown = false;
     
     let autoMode = false; 
@@ -305,18 +284,15 @@
     let progressTimer = null; 
     let startTime = null; 
     
-    // Theme State removed - always Dark Mode
-    // let isLightMode = false; 
+    // Removed CHAR_DELAY_MS and START_DELAY_MS, only need a small delay for fade
+    const FADE_DELAY_MS = 300; 
 
-    const CHAR_DELAY_MS = 55;
-    const START_DELAY_MS = 300;
-    
     progressBarEl.style.strokeDasharray = CIRCUMFERENCE;
     progressBarEl.style.strokeDashoffset = CIRCUMFERENCE;
 
 
     /**
-     * Updates the clock display with the current time and time remaining (in seconds.
+     * Updates the clock display with the current time and time remaining (in seconds).
      */
     function updateTimeDisplay() {
       const now = new Date();
@@ -341,40 +317,27 @@
     }
 
 
-    function typeText() {
-      isTyping = true;
-      shownChars++;
-      const partial = fullText.slice(0, shownChars);
-      quoteTextEl.innerHTML = partial + '<span class="typing-cursor"></span>';
+    /**
+     * Displays the full quote text instantly after a short fade out delay.
+     * @param {string} nextText - The quote text to display.
+     */
+    function startTyping(nextText) {
+      fullText = nextText;
+      quoteTextEl.style.opacity = "0"; 
 
-      if (shownChars >= fullText.length) {
-        isTyping = false;
+      setTimeout(() => {
+        // Display the full text instantly
         quoteTextEl.innerHTML = fullText; 
+        quoteTextEl.style.opacity = "1"; 
         
+        // Show instruction prompt if it hasn't been shown yet
         if (!instructionShown) {
           instructionShown = true;
           setTimeout(() => {
             instructionEl.style.opacity = "1";
           }, 300);
         }
-        
-        typingTimer = null;
-        return;
-      }
-      typingTimer = setTimeout(typeText, CHAR_DELAY_MS);
-    }
-
-
-    function startTyping(nextText) {
-      if (typingTimer) clearTimeout(typingTimer);
-      fullText = nextText;
-      shownChars = 0;
-      quoteTextEl.style.opacity = "0"; 
-
-      setTimeout(() => {
-        quoteTextEl.style.opacity = "1"; 
-        typeText();
-      }, START_DELAY_MS);
+      }, FADE_DELAY_MS);
     }
 
     function showNextQuote() {
@@ -410,25 +373,12 @@
 
 
     function handleClick() {
-      // Handles manual tap: skip typing or show next quote
-      if (isTyping) {
-        clearTimeout(typingTimer);
-        isTyping = false;
-        shownChars = fullText.length;
-        quoteTextEl.innerHTML = fullText;
-        
-        if (!instructionShown) {
-          instructionShown = true;
-          setTimeout(() => {
-            instructionEl.style.opacity = "1";
-          }, 300);
-        }
-      } else {
-        showNextQuote();
-        if (autoMode) {
-            clearInterval(autoTimer);
-            autoTimer = setInterval(showNextQuote, AUTO_SWITCH_INTERVAL_MS);
-        }
+      // In instant mode, every click/tap shows the next quote
+      showNextQuote();
+      if (autoMode) {
+          // Reset auto timer on manual interaction
+          clearInterval(autoTimer);
+          autoTimer = setInterval(showNextQuote, AUTO_SWITCH_INTERVAL_MS);
       }
     }
 
@@ -485,8 +435,6 @@
       toggleAutoMode();
     });
     
-    // --- THEME TOGGLE FUNCTIONALITY REMOVED ---
-    
     // --- Full Screen Functionality ---
     
     function toggleFullScreen() {
@@ -536,8 +484,8 @@
       
       // Initialize states
       updateAutoModeIcon();
-      // updateThemeIcon(); // REMOVED
     });
   </script>
 </body>
 </html>
+
