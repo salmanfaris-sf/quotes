@@ -110,9 +110,9 @@
       white-space: pre-wrap;
     }
     
-    /* The instruction prompt color */
+    /* The instruction prompt color (updated to subtle premium grey) */
     #instruction-prompt {
-      color: #67e8f9;
+      color: #9ca3af;
       transition: opacity 0.3s ease;
     }
 
@@ -176,65 +176,45 @@
 <body>
 
   <div class="header-controls">
-    
-    
+    <div id="control-group" class="control-group">
+      <button id="fullscreen-btn" class="header-btn" aria-label="Toggle Fullscreen" title="Fullscreen">
+        <div id="fullscreen-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+        </div>
+      </button>
 
-<div id="control-group" class="control-group">
+      <button id="auto-mode-btn" class="header-btn" aria-label="Toggle Auto-Quote" title="Auto Play Quotes">
+        <div class="progress-wrap">
+          <svg id="progress-svg" viewBox="0 0 50 50">
+            <circle cx="25" cy="25" r="22" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none" />
+            <circle id="progress-circle" cx="25" cy="25" r="22" stroke-dasharray="138.2" stroke-dashoffset="138.2" />
+          </svg>
+          <div id="auto-mode-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon>
+            </svg>
+          </div>
+        </div>
+      </button>
 
-        
+      <button id="rotation-btn" class="header-btn hidden-state" aria-label="Toggle Screen Orientation" title="Lock Screen Orientation">
+        <div id="rotation-icon"></div>
+      </button>
 
-<button id="fullscreen-btn" class="header-btn" aria-label="Toggle Fullscreen" title="Fullscreen">
-            <div id="fullscreen-icon">
-                
+      <button id="prev-quote-btn" class="header-btn hidden-state" aria-label="Previous Quote" title="Previous Quote">
+        <!-- UPDATED ICON: Skip Back / Rewind -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
+      </button>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
-            </div>
-        </button>
-        
-        
-
-<button id="auto-mode-btn" class="header-btn" aria-label="Toggle Auto-Quote" title="Auto Play Quotes">
-            <div class="progress-wrap">
-                <svg id="progress-svg" viewBox="0 0 50 50">
-                    <circle cx="25" cy="25" r="22" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none" />
-                    <circle id="progress-circle" cx="25" cy="25" r="22" stroke-dasharray="138.2" stroke-dashoffset="138.2" />
-                </svg>
-                <div id="auto-mode-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon>
-                    </svg>
-                </div>
-            </div>
-        </button>
-
-        
-
-<button id="rotation-btn" class="header-btn hidden-state" aria-label="Toggle Screen Orientation" title="Lock Screen Orientation">
-            <div id="rotation-icon"></div>
-        </button>
-
-        
-
-<button id="prev-quote-btn" class="header-btn hidden-state" aria-label="Previous Quote" title="Previous Quote">
-            <!-- UPDATED ICON: Skip Back / Rewind -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
-        </button>
-
-        
-
-<button id="toggle-arrow-btn" class="header-btn" aria-label="Hide Controls" title="Hide Controls">
-             
-
-<div id="arrow-icon-svg">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-             </div>
-        </button>
-
+      <button id="toggle-arrow-btn" class="header-btn" aria-label="Hide Controls" title="Hide Controls">
+        <div id="arrow-icon-svg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </button>
     </div>
   </div>
 
   <div class="container">
-    
     <div id="quote-container" onclick="handleQuoteClick()">
       <div class="mb-8">
         <p id="quote-text" class="text-xl md:text-2xl lg:text-3xl font-light leading-relaxed"></p>
@@ -243,12 +223,11 @@
         Tap to view the next quote
       </p>
     </div>
-    
   </div>
   
   <div class="footer-status">
     <p>
-        Time: <span id="current-hms" class="highlight-number">--:--</span><span id="current-ampm" class="highlight-number">--</span> | <span id="time-left-seconds" class="highlight-number">--</span> seconds left today
+      Time: <span id="current-hms" class="highlight-number">--:--</span><span id="current-ampm" class="highlight-number">--</span> | <span id="time-left-seconds" class="highlight-number">--</span> seconds left today
     </p>
   </div>
 
@@ -351,8 +330,6 @@
 
         if (state === 'normal') {
             // STATE 1: [Play] [Fullscreen (Enter)]
-            // Visually (R-to-L): Fullscreen Enter, Play
-            
             fullscreenBtn.classList.remove('hidden-state');
             autoBtn.classList.remove('hidden-state');
 
@@ -361,16 +338,12 @@
             
         } else if (state === 'zen-mode') {
             // STATE 2: [Arrow Left] (at the far right edge)
-            // Visually (R-to-L): Left Arrow (The only visible button)
-
             toggleArrowBtn.classList.remove('hidden-state');
             arrowIconSvg.innerHTML = ICON_ARROW_LEFT_SINGLE; // Use single left arrow for 'Show Controls'
             toggleArrowBtn.title = "Show Controls";
             
         } else if (state === 'full-controls') {
             // STATE 3: [Arrow Right] [Previous Quote] [Rotation] [Play] [Fullscreen (Exit)]
-            // Visually (R-to-L): Exit Fullscreen, Auto Play, Rotation, Previous Quote, Hide Controls
-            
             fullscreenBtn.classList.remove('hidden-state'); // Fullscreen Exit
             autoBtn.classList.remove('hidden-state'); // Play
             
@@ -398,10 +371,8 @@
     function toggleControlVisibility() {
         if (document.fullscreenElement) {
             if (toggleArrowBtn.title === "Show Controls") {
-                // Currently Zen Mode (State 2, Left Arrow). Switch to Full Controls (State 3, Right Arrow)
                 setControlState('full-controls');
             } else {
-                // Currently Full Controls (State 3, Right Arrow). Switch to Zen Mode (State 2, Left Arrow)
                 setControlState('zen-mode');
             }
         }
@@ -427,13 +398,9 @@
     }
     
     function toggleFullScreen() {
-      // If we are in fullscreen, the button acts as Exit Fullscreen
       if (document.fullscreenElement) {
         document.exitFullscreen();
-      } 
-      // If we are not in fullscreen, the button acts as Enter Fullscreen
-      else {
-        // Try requesting fullscreen on the body element first, then document element as fallback
+      } else {
         if (document.body.requestFullscreen) {
             document.body.requestFullscreen();
         } else if (document.documentElement.requestFullscreen) {
@@ -522,9 +489,6 @@
     
     // --- QUOTE LOGIC ---
     
-    /**
-     * Shows the next quote in the list, wrapping around.
-     */
     function showNextQuote() {
         currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
         
@@ -544,18 +508,13 @@
         }
     }
     
-    /**
-     * Shows the previous quote in the list, wrapping around. 
-     */
     function showPreviousQuote() {
-        // Reset auto mode timer if active
         if (autoMode) {
             clearInterval(autoTimer);
             autoTimer = setInterval(showNextQuote, AUTO_INTERVAL);
             startTime = Date.now();
         }
         
-        // Decrement index, wrapping around to the end of the array
         currentQuoteIndex = (currentQuoteIndex - 1 + quotes.length) % quotes.length;
         
         const newText = quotes[currentQuoteIndex].text;
@@ -568,7 +527,7 @@
         }, 300);
         
         if (autoMode) {
-            startTime = Date.now(); // Restart progress ring from 0
+            startTime = Date.now();
             if (progressTimer) clearInterval(progressTimer);
             progressTimer = setInterval(updateProgressRing, 100);
         }
@@ -583,7 +542,6 @@
             setTimeout(() => instructionEl.style.display = 'none', 300);
         }
         
-        // If in auto mode, manually clicking should reset the 5s timer
         if (autoMode) {
             clearInterval(autoTimer);
             autoTimer = setInterval(showNextQuote, AUTO_INTERVAL);
@@ -615,25 +573,21 @@
         updateTimeDisplay();
         setInterval(updateTimeDisplay, 1000);
         
-        // Button Listeners
         autoBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleAutoMode(); });
         fullscreenBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleFullScreen(); });
         toggleArrowBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleControlVisibility(); });
         prevQuoteBtn.addEventListener('click', (e) => { e.stopPropagation(); showPreviousQuote(); }); 
 
-        // Conditional Rotation Button setup
         if (window.screen.orientation && window.screen.orientation.lock) {
             rotationBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleScreenOrientation(); }); 
             updateRotationIcon();
-            rotationBtn.dataset.supported = 'true'; // Mark as supported for setControlState logic
+            rotationBtn.dataset.supported = 'true';
         } else {
             rotationBtn.dataset.supported = 'false';
         }
         
-        // This event handler is key for switching modes after fullscreen is active/deactivated
         document.addEventListener('fullscreenchange', handleFullscreenChange);
         
-        // Set initial state to 'normal' (State 1)
         setControlState('normal');
     }
     
@@ -641,4 +595,3 @@
   </script>
 </body>
 </html>
-
