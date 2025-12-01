@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Minimal Tasbih Counter</title>
+    <!-- Dynamic theme-color for browser's address/status bar -->
+    <meta name="theme-color" content="#000000"> 
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent; 
+        }
+        
+        :root {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --control-color: #ffffff;
+            --instruction-color: rgba(255, 255, 255, 0.5);
+        }
+
+        body.light-mode {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --control-color: #000000;
+            --instruction-color: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            user-select: none; 
+            touch-action: manipulation; 
+            position: relative; 
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #main-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-5%); 
+            pointer-events: none; 
+        }
+
+        #counter {
+            /* Initial size, will be immediately adjusted by JS */
+            font-size: 35vw; 
+            font-weight: 300;
+            line-height: 1;
+            /* Added font-size to transition for smooth scaling */
+            transition: transform 0.1s ease-out, font-size 0.3s;
+        }
+
+        .pulse {
+            transform: scale(0.95);
+        }
+
+        #instruction {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: var(--instruction-color); 
+            transition: opacity 0.5s ease;
+            margin-top: 10px; 
+        }
+
+        /* --- HEADER CONTROLS --- */
+        .header-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        .control-group {
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+            justify-content: flex-end; 
+        }
+        
+        .header-btn {
+            background: none;
+            border: none;
+            color: var(--control-color); 
+            padding: 10px; 
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px; 
+            /* Let the Reset text button be wider */
+            min-width: 40px; 
+            height: 40px;
+            font-size: 0.9rem; /* For RESET text */
+        }
+        
+        /* Specific styles for icon buttons */
+        #fullscreen-btn, #edit-btn, #theme-btn, #toggle-arrow-btn {
+            width: 40px; 
+        }
+
+        .header-btn:hover, .header-btn:active {
+            color: var(--instruction-color); 
+            transform: scale(1.05);
+        }
+        
+        .hidden-state {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            width: 0;
+            padding: 0;
+            margin: 0; 
+            overflow: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease, width 0.2s ease, padding 0.2s ease, margin 0.2s ease;
+        }
+
+        #toggle-arrow-btn {
+             opacity: 1 !important; 
+             visibility: visible !important;
+             pointer-events: auto !important;
+             width: 40px !important;
+             margin: 0 !important;
+             padding: 10px !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-controls">
+        <div id="control-group" class="control-group">
+            
+            <!-- 1. Theme Toggle -->
+            <button id="theme-btn" class="header-btn hidden-state" aria-label="Toggle Theme" title="Toggle Dark/Light Theme">
+                <div id="theme-icon">
+                    <!-- Default: Moon icon (for dark mode) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                </div>
+            </button>
+
+            <!-- 2. Reset Button (Text) -->
+            <button id="reset-btn" class="header-btn hidden-state" aria-label="Reset Counter" title="Reset Counter">
+                RESET
+            </button>
+            
+            <!-- 3. Edit Number Button -->
+            <button id="edit-btn" class="header-btn hidden-state" aria-label="Edit Number" title="Edit Number">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+            </button>
+
+            <!-- 4. Fullscreen/Exit Button -->
+            <button id="fullscreen-btn" class="header-btn hidden-state" aria-label="Toggle Fullscreen" title="Fullscreen">
+                <div id="fullscreen-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                </div>
+            </button>
+            
+            <!-- 5. Arrow Button (ALWAYS VISIBLE - Toggles the menu) -->
+            <button id="toggle-arrow-btn" class="header-btn" aria-label="Show Controls" title="Show Controls">
+                 <div id="arrow-icon-svg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                 </div>
+            </button>
+
+        </div>
+    </div>
+
+    <div id="main-content-wrapper">
+        <div id="counter">0</div>
+        <div id="instruction">Tap anywhere to count</div>
+    </div>
+
+    <script>
+        const counterElement = document.getElementById('counter');
+        const instructionElement = document.getElementById('instruction');
+        const themeMeta = document.querySelector('meta[name="theme-color"]');
+        
+        // Control Elements
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const fullscreenIconEl = document.getElementById('fullscreen-icon');
+        const editBtn = document.getElementById('edit-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const themeBtn = document.getElementById('theme-btn');
+        const themeIconEl = document.getElementById('theme-icon');
+        const toggleArrowBtn = document.getElementById('toggle-arrow-btn'); 
+        const arrowIconSvg = document.getElementById('arrow-icon-svg');
+
+        // State Defaults
+        let count = 0;
+        let hasTapped = false;
+        let isDarkMode = true; // Default to dark mode
+
+        // Keys for localStorage
+        const STORAGE_KEY_COUNT = 'minimalCounterCount';
+        const STORAGE_KEY_THEME = 'minimalCounterTheme';
+
+        // --- ICON SVGs ---
+        const ICON_FULLSCREEN_ENTER = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>`;
+        const ICON_FULLSCREEN_EXIT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>`;
+        const ICON_ARROW_LEFT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>`;
+        const ICON_ARROW_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>`;
+        const ICON_SUN = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`;
+        const ICON_MOON = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`;
+        
+        // --- DYNAMIC FONT SIZING ---
+        function adjustFontSize(currentCount) {
+            const countStr = String(currentCount);
+            const length = countStr.length;
+            let newSize;
+
+            // Maximum size for 1 to 5 digits
+            if (length <= 5) {
+                newSize = '35vw';
+            } 
+            // 6 digits (100,000 to 999,999)
+            else if (length === 6) {
+                newSize = '28vw'; 
+            } 
+            // 7 digits (1,000,000 to 9,999,999)
+            else if (length === 7) {
+                newSize = '24vw'; 
+            } 
+            // 8 digits (10,000,000 to 99,999,999)
+            else if (length === 8) {
+                newSize = '20vw'; 
+            } 
+            // 9 digits (100,000,000 to 999,999,999)
+            else if (length === 9) {
+                newSize = '17vw'; 
+            } 
+            // 10 digits or more (Fallback)
+            else {
+                newSize = '15vw'; 
+            }
+
+            // Apply the font size directly to the element style for dynamic change
+            counterElement.style.fontSize = newSize;
+        }
+
+
+        // --- UI UPDATERS ---
+        function updateCounterDisplay() {
+            counterElement.textContent = count;
+            localStorage.setItem(STORAGE_KEY_COUNT, count);
+            // NEW: Adjust font size based on the number of digits
+            adjustFontSize(count);
+        }
+
+        function hideInstruction() {
+            if (!hasTapped) {
+                hasTapped = true;
+                instructionElement.style.opacity = '0';
+                setTimeout(() => { instructionElement.style.display = 'none'; }, 500);
+            }
+        }
+
+        // --- CORE COUNTER ACTIONS ---
+
+        function incrementCounter() {
+            hideInstruction();
+            count++;
+            updateCounterDisplay();
+            
+            counterElement.classList.add('pulse');
+            setTimeout(() => { counterElement.classList.remove('pulse'); }, 100);
+        }
+        
+        function resetCounter(e) {
+            if (e) e.stopPropagation();
+            
+            // INSTANT RESET (No prompt/confirmation)
+            count = 0;
+            updateCounterDisplay();
+            setControlVisibility('hide');
+        }
+        
+        function editNumber(e) {
+            if (e) e.stopPropagation();
+            setControlVisibility('hide'); 
+            setTimeout(() => {
+                // Use prompt as a non-blocking modal for input
+                const input = prompt("Set counter value (Enter a whole number):", count);
+                if (input !== null && input.trim() !== "" && !isNaN(input)) {
+                    const newCount = parseInt(input, 10);
+                    if (newCount >= 0) {
+                        count = newCount;
+                        updateCounterDisplay(); // This calls adjustFontSize
+                    }
+                }
+            }, 50);
+        }
+
+        // --- THEME LOGIC ---
+
+        function toggleTheme(e) {
+            if (e) e.stopPropagation();
+            isDarkMode = !isDarkMode;
+            
+            const newThemeColor = isDarkMode ? '#000000' : '#ffffff';
+
+            if (isDarkMode) {
+                document.body.classList.remove('light-mode');
+                themeIconEl.innerHTML = ICON_MOON;
+                localStorage.setItem(STORAGE_KEY_THEME, 'dark');
+            } else {
+                document.body.classList.add('light-mode');
+                themeIconEl.innerHTML = ICON_SUN;
+                localStorage.setItem(STORAGE_KEY_THEME, 'light');
+            }
+            
+            // Update the browser's theme-color meta tag
+            if (themeMeta) {
+                themeMeta.setAttribute('content', newThemeColor);
+            }
+        }
+        
+        // --- CONTROL STATE LOGIC ---
+
+        /**
+         * Sets the visibility of the secondary buttons (Theme, Reset, Edit, Fullscreen)
+         */
+        function setControlVisibility(visibility) {
+            // Note: The element order in the array matches the visual order in HTML: Theme, Reset, Edit, Fullscreen
+            const elements = [themeBtn, resetBtn, editBtn, fullscreenBtn];
+
+            if (visibility === 'show') {
+                elements.forEach(el => el.classList.remove('hidden-state'));
+                
+                toggleArrowBtn.title = "Hide Controls";
+                arrowIconSvg.innerHTML = ICON_ARROW_RIGHT; 
+            } else {
+                elements.forEach(el => el.classList.add('hidden-state'));
+
+                toggleArrowBtn.title = "Show Controls";
+                arrowIconSvg.innerHTML = ICON_ARROW_LEFT; 
+            }
+        }
+        
+        function toggleFullScreen(e) {
+            if (e) e.stopPropagation();
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                // Request fullscreen on the whole document
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error("Fullscreen API error:", err.message);
+                });
+            }
+        }
+
+        function handleFullscreenChange() {
+            if (document.fullscreenElement) {
+                fullscreenIconEl.innerHTML = ICON_FULLSCREEN_EXIT;
+            } else {
+                fullscreenIconEl.innerHTML = ICON_FULLSCREEN_ENTER;
+            }
+            // Always hide menu when FS state changes
+            setControlVisibility('hide');
+        }
+
+        // --- INITIALIZATION ---
+        function init() {
+            // 1. Load State from localStorage
+            const savedCount = localStorage.getItem(STORAGE_KEY_COUNT);
+            if (savedCount !== null) {
+                count = parseInt(savedCount, 10);
+            }
+            // updateCounterDisplay now correctly calls adjustFontSize on load
+            updateCounterDisplay();
+
+            const savedTheme = localStorage.getItem(STORAGE_KEY_THEME);
+            if (savedTheme === 'light') {
+                isDarkMode = false;
+                // Run toggleTheme logic once to set the class and theme-color
+                toggleTheme(null); 
+            } else {
+                 // Initialize dark mode theme color meta tag
+                 if (themeMeta) {
+                    themeMeta.setAttribute('content', '#000000');
+                 }
+                 themeIconEl.innerHTML = ICON_MOON;
+            }
+
+            // 2. Event Listeners
+            document.body.addEventListener('click', (e) => {
+                const isMenuVisible = !editBtn.classList.contains('hidden-state');
+                
+                // If a click happens on the body and the menu is visible, close it.
+                if (isMenuVisible) {
+                    setControlVisibility('hide');
+                    return;
+                }
+                
+                // Otherwise, increment the counter.
+                incrementCounter();
+            });
+            
+            // Ensure all control buttons stop propagation to prevent accidental counting/menu closing
+            toggleArrowBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isVisible = !editBtn.classList.contains('hidden-state');
+                setControlVisibility(isVisible ? 'hide' : 'show');
+            });
+            
+            fullscreenBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleFullScreen(e); });
+            editBtn.addEventListener('click', (e) => { e.stopPropagation(); editNumber(e); });
+            resetBtn.addEventListener('click', (e) => { e.stopPropagation(); resetCounter(e); });
+            themeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleTheme(e); });
+
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            document.addEventListener('dblclick', function(event) { event.preventDefault(); }, { passive: false });
+
+            // Keyboard support (Spacebar to count, R for Reset, E for Edit)
+            document.addEventListener('keydown', (e) => {
+                // Only allow keyboard shortcuts when the menu is hidden to prevent conflicts with prompts
+                if (editBtn.classList.contains('hidden-state')) {
+                    if (e.code === 'Space' || e.code === 'Enter') {
+                        incrementCounter();
+                        e.preventDefault();
+                    } else if (e.key === 'r' || e.key === 'R') {
+                         resetCounter();
+                    } else if (e.key === 'e' || e.key === 'E') {
+                         editNumber();
+                    }
+                }
+            });
+
+            // 3. Initial Display
+            handleFullscreenChange();
+        }
+        
+        init();
+    </script>
+</body>
+</html>
+
