@@ -232,7 +232,7 @@
   
   <div class="footer-status">
     <p>
-      Time: <span id="current-hms" class="highlight-number">--:--</span><span id="current-ampm" class="highlight-number">--</span> | <span id="time-left-seconds" class="highlight-number">--</span> minutes left today
+      <span id="current-hms" class="highlight-number">--:--</span><span id="current-ampm" class="highlight-number">--</span>
     </p>
   </div>
 
@@ -287,10 +287,9 @@
     const toggleArrowBtn = document.getElementById('toggle-arrow-btn'); 
     const arrowIconSvg = document.getElementById('arrow-icon-svg');
 
-    // Footer
+    // Footer elements (Note: Removed reference to 'time-left-seconds' as it's no longer displayed)
     const currentTimeHMS = document.getElementById("current-hms"); 
     const currentTimeAMPM = document.getElementById("current-ampm"); 
-    const timeLeftSecondsEl = document.getElementById("time-left-seconds"); // ID kept for simplicity, now holds minutes
 
     // --- STATE VARIABLES ---
     let currentQuoteIndex = -1;
@@ -564,21 +563,17 @@
       const now = new Date();
       const hours = now.getHours();
       const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
+      // Seconds are no longer needed for display or calculation
 
       const displayHours = hours % 12 || 12;
-      const hms = String(displayHours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0');
+      // Removed leading zero padding for hours (e.g., 9:05 instead of 09:05) 
+      // but kept padding for minutes (e.g., 9:05 instead of 9:5)
+      const hms = String(displayHours) + ':' + String(minutes).padStart(2, '0');
       
       currentTimeHMS.textContent = hms;
       currentTimeAMPM.textContent = hours >= 12 ? 'pm' : 'am';
       
-      const secondsPassed = hours * 3600 + minutes * 60 + seconds;
-      const secondsLeft = 86400 - secondsPassed;
-      
-      // Calculate total minutes left, rounded down (floor)
-      const minutesLeft = Math.floor(secondsLeft / 60); 
-      
-      timeLeftSecondsEl.textContent = minutesLeft.toLocaleString();
+      // Removed minutes left calculation
     }
     
     // --- INIT ---
