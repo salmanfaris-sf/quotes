@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Simple Tasbih Counter</title>
-    <!-- Dynamic theme-color for browser's address/status bar -->
     <meta name="theme-color" content="#000000"> 
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1K1TKBQFFK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-1K1TKBQFFK');
+    </script>
     <style>
         * {
             box-sizing: border-box;
@@ -153,14 +161,12 @@
     <div class="header-controls">
         <div id="control-group" class="control-group">
             
-            <!-- 1. Theme Toggle -->
             <button id="theme-btn" class="header-btn hidden-state" aria-label="Toggle Theme" title="Toggle Dark/Light Theme">
                 <div id="theme-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
                 </div>
             </button>
 
-            <!-- 2. Font Size Controls (New) -->
             <button id="font-dec-btn" class="header-btn hidden-state" aria-label="Decrease Font Size" title="Decrease Size">
                 A-
             </button>
@@ -168,24 +174,20 @@
                 A+
             </button>
 
-            <!-- 3. Reset Button (Text) -->
             <button id="reset-btn" class="header-btn hidden-state" aria-label="Reset Counter" title="Reset Counter">
                 RESET
             </button>
             
-            <!-- 4. Edit Number Button -->
             <button id="edit-btn" class="header-btn hidden-state" aria-label="Edit Number" title="Edit Number">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
             </button>
 
-            <!-- 5. Fullscreen/Exit Button -->
             <button id="fullscreen-btn" class="header-btn hidden-state" aria-label="Toggle Fullscreen" title="Fullscreen">
                 <div id="fullscreen-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
                 </div>
             </button>
             
-            <!-- 6. Arrow Button (ALWAYS VISIBLE - Toggles the menu) -->
             <button id="toggle-arrow-btn" class="header-btn" aria-label="Show Controls" title="Show Controls">
                  <div id="arrow-icon-svg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
@@ -472,4 +474,3 @@
     </script>
 </body>
 </html>
-
