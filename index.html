@@ -92,14 +92,11 @@
         }
 
         /* --- Special Effects Styling --- */
-        .special-green {
-            color: #4CAF50 !important; 
-            text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
-        }
-
+        
+        /* Intense glow and animation for 33, 66, and 99 */
         .ultimate-effect {
-            color: #00FF7F !important; 
-            text-shadow: 0 0 20px #00FF7F, 0 0 30px #00FF7F, 0 0 40px rgba(0, 255, 127, 0.7);
+            color: #00FF7F !important; /* Spring Green for ultimate effect */
+            text-shadow: 0 0 15px #00FF7F, 0 0 25px #00FF7F, 0 0 40px rgba(0, 255, 127, 0.8);
             animation: ultimateGlow 1.5s infinite alternate ease-in-out;
         }
 
@@ -643,25 +640,26 @@
                 transientEffectTimer = null;
             }
             
-            counterElement.classList.remove('special-green', 'ultimate-effect');
+            // We now only use 'ultimate-effect' for all glow numbers, so remove it first
+            counterElement.classList.remove('ultimate-effect');
             
             let effectClass = null;
 
-            if (currentCount === 33 || currentCount === 66) {
-                effectClass = 'special-green';
-            } else if (currentCount === 99) {
-                effectClass = 'ultimate-effect';
+            // Apply 'ultimate-effect' to 33, 66, and 99
+            if (currentCount === 33 || currentCount === 66 || currentCount === 99) {
+                effectClass = 'ultimate-effect'; 
             }
 
             if (effectClass) {
                 counterElement.classList.add(effectClass);
 
+                // Set a timeout to remove the transient effect
                 transientEffectTimer = setTimeout(() => {
                     if (parseInt(counterElement.textContent, 10) === currentCount) {
-                        counterElement.classList.remove('special-green', 'ultimate-effect');
+                        counterElement.classList.remove('ultimate-effect');
                     }
                     transientEffectTimer = null;
-                }, 500); 
+                }, 500); // Effect lasts for 0.5 seconds
             }
         }
 
@@ -689,7 +687,8 @@
             count = 0;
             
             if (transientEffectTimer) clearTimeout(transientEffectTimer);
-            counterElement.classList.remove('special-green', 'ultimate-effect'); 
+            // Ensure any active glow is removed on reset
+            counterElement.classList.remove('ultimate-effect'); 
             
             hasTapped = false;
             showInstruction();
@@ -799,6 +798,8 @@
             if (count > 0) {
                 hasTapped = true;
                 hideInstruction();
+                // Apply glow if the loaded count is 33, 66, or 99
+                checkAndApplyTransientEffect(count);
             } else {
                 hasTapped = false;
                 showInstruction();
