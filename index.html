@@ -97,7 +97,7 @@
         .ultimate-effect {
             color: #00FF7F !important; /* Spring Green for ultimate effect */
             text-shadow: 0 0 15px #00FF7F, 0 0 25px #00FF7F, 0 0 40px rgba(0, 255, 127, 0.8);
-            animation: ultimateGlow 1.5s infinite alternate ease-in-out;
+            animation: ultimateGlow 0.75s infinite alternate ease-in-out; /* Reduced from 1.5s for quicker pulse */
         }
 
         @keyframes ultimateGlow {
@@ -659,7 +659,7 @@
                         counterElement.classList.remove('ultimate-effect');
                     }
                     transientEffectTimer = null;
-                }, 500); // Effect lasts for 0.5 seconds
+                }, 400); // Reduced from 500ms for quicker removal
             }
         }
 
