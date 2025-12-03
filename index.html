@@ -501,7 +501,7 @@
                 <!-- Bottom Line / X arm 2 -->
                 <line id="line-bottom" class="menu-line" x1="4" y1="12" x2="20" y2="12"/>
             </svg>
-            <!-- Done Text - Used when editing or when changes are pending in sub-menus -->
+            <!-- Done Text - Used when editing or goal reached -->
             <span id="menu-done-text">Done</span>
         </button>
     </div>
@@ -774,8 +774,9 @@
             headerLeftControls.classList.add('hidden'); // Hide Left button
             headerRightControls.classList.remove('hidden'); // Show Right button (Default is Hamburger)
 
-            if (isEditMode || isGoalReached) {
-                // If in Edit Mode or Goal Reached, Right button shows 'Done' text
+            // MODIFICATION: Only show 'Done' when Goal is Reached. Do NOT show it for isEditMode.
+            if (isGoalReached) {
+                // If Goal Reached, Right button shows 'Done' text
                 openMenuBtn.classList.add('is-done-mode');
                 openMenuBtn.setAttribute('aria-label', 'Done');
                 openMenuBtn.setAttribute('title', 'Done');
@@ -844,7 +845,9 @@
                 
                 // If exiting from main edit mode, save and exit edit mode
                 if (isEditMode) {
-                    saveNewCount();
+                    // This scenario shouldn't happen if they are using the menu to save, 
+                    // but for safety, ensure edit mode is off if the menu is closed.
+                    setNumberEditModeState(false); 
                 }
             }
             // Update button state based on new menu visibility
@@ -1378,8 +1381,8 @@
                 const isSubMenuVisible = menuInnerContainer.classList.contains('show-size-controls') || 
                                          menuInnerContainer.classList.contains('show-weight-controls') ||
                                          menuInnerContainer.classList.contains('show-goal-controls');
-
-                // Case A: Sub-menu 'Done' button
+                
+                // Case A: Sub-menu 'Done' button (saves changes and closes the whole menu)
                 if (isSubMenuVisible && openMenuBtn.classList.contains('is-done-mode')) {
                     saveChangesAndGoBack(e);
                     // Crucially, after saving in a sub-menu, we must close the whole thing
@@ -1387,19 +1390,15 @@
                     return;
                 }
 
-                // Case B: Main Counter View 'Done' button (Edit Mode / Goal Reached)
-                if ((isGoalReached || isEditMode) && !isMenuOpen && !isSubMenuVisible) {
-                    if (isEditMode) {
-                        counterElement.blur(); // Triggers saveNewCount()
-                    } else if (isGoalReached) {
-                        exitGoalMode(); // Clears goal and resets counter
-                    }
+                // Case B: Main Counter View 'Done' button (ONLY when Goal Reached)
+                if (isGoalReached && !isMenuOpen && !isSubMenuVisible) {
+                    exitGoalMode(); // Clears goal and resets counter
                     return;
                 }
                 
-                // Case C: Menu Open/Close
+                // Case C: Menu Open/Close (or Edit Mode where the button is now the Hamburger)
                 if (!isMenuOpen) {
-                    // Menu is closed: Open main menu (Button shows Hamburger)
+                    // Menu is closed: Open main menu (Button shows Hamburger or Done for goal reached)
                     toggleMenu('show');
                 } else {
                     // Menu is open (main list): Close menu completely (Button shows 'X' styling)
