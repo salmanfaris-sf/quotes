@@ -177,18 +177,18 @@
   <div class="header-controls">
     <div id="control-group" class="control-group">
 
-      <!-- 3. Rotation Button (Conditionally visible, far left of group when visible) -->
+      <!-- 3. Rotation Button (New Far Left Visually) - HTML element 1 -->
       <button id="rotation-btn" class="header-btn hidden-state" aria-label="Lock Screen Orientation" title="Lock Screen Orientation">
         <div id="rotation-icon"></div>
       </button>
-
-      <!-- 4. Previous Quote Button (Left of Auto Play) -->
+      
+      <!-- 4. Previous Quote Button (Visually to the right of Rotation) - HTML element 2 -->
       <button id="prev-quote-btn" class="header-btn hidden-state" aria-label="Previous Quote" title="Previous Quote">
         <!-- Skip Back / Rewind Icon -->
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
       </button>
 
-      <!-- 2. Auto Mode Button (Left of Fullscreen) -->
+      <!-- 2. Auto Mode Button (Left of Fullscreen) - HTML element 3 -->
       <button id="auto-mode-btn" class="header-btn hidden-state" aria-label="Toggle Auto-Quote" title="Auto Play Quotes">
         <div class="progress-wrap">
           <svg id="progress-svg" viewBox="0 0 50 50">
@@ -203,7 +203,7 @@
         </div>
       </button>
       
-      <!-- 1. Fullscreen Button (Right next to Arrow) -->
+      <!-- 1. Fullscreen Button (Right next to Arrow) - HTML element 4 -->
       <button id="fullscreen-btn" class="header-btn hidden-state" aria-label="Toggle Fullscreen" title="Fullscreen">
         <div id="fullscreen-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
@@ -211,7 +211,7 @@
       </button>
 
 
-      <!-- 5. Toggle Arrow Button (Far right anchor) -->
+      <!-- 5. Toggle Arrow Button (Far right anchor) - HTML element 5 -->
       <button id="toggle-arrow-btn" class="header-btn" aria-label="Show Controls" title="Show Controls">
         <div id="arrow-icon-svg">
           <!-- Left Arrow Icon (Default) -->
@@ -342,12 +342,11 @@
 
         } else if (state === 'visible') {
             // STATE: All controls visible
-            // The order here reflects the order in the HTML, which is now:
-            // [Rotation] [Previous Quote] [Auto Mode] [Fullscreen] [Toggle Arrow] (R to L)
+            // Visual Order (R to L): [Toggle Arrow] [Fullscreen] [Auto Mode] [Previous Quote] [Rotation]
             fullscreenBtn.classList.remove('hidden-state');
             autoBtn.classList.remove('hidden-state');
             prevQuoteBtn.classList.remove('hidden-state');
-
+            
             // --- USER REQUEST: Show rotation only if supported AND in fullscreen ---
             if (rotationBtn.dataset.supported === 'true' && document.fullscreenElement) {
                 rotationBtn.classList.remove('hidden-state');
