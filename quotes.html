@@ -109,6 +109,12 @@
       transition: opacity 0.3s ease;
       white-space: pre-wrap;
     }
+    
+    /* The instruction prompt color (updated to subtle premium grey) */
+    #instruction-prompt {
+      color: #9ca3af;
+      transition: opacity 0.3s ease;
+    }
 
     /* Progress Ring for Auto Button */
     .progress-wrap {
@@ -147,8 +153,6 @@
         color: var(--dim-text);
         font-size: 0.85rem;
         font-weight: 300;
-        opacity: 0; /* Hidden by default */
-        transition: opacity 0.5s ease;
     }
     
     .highlight-number {
@@ -173,15 +177,13 @@
 
   <div class="header-controls">
     <div id="control-group" class="control-group">
-      <!-- Fullscreen button: ONLY button visible in the default mode -->
       <button id="fullscreen-btn" class="header-btn" aria-label="Toggle Fullscreen" title="Fullscreen">
         <div id="fullscreen-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
         </div>
       </button>
 
-      <!-- Auto Mode button is now hidden by default -->
-      <button id="auto-mode-btn" class="header-btn hidden-state" aria-label="Toggle Auto-Quote" title="Auto Play Quotes">
+      <button id="auto-mode-btn" class="header-btn" aria-label="Toggle Auto-Quote" title="Auto Play Quotes">
         <div class="progress-wrap">
           <svg id="progress-svg" viewBox="0 0 50 50">
             <circle cx="25" cy="25" r="22" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none" />
@@ -195,19 +197,16 @@
         </div>
       </button>
 
-      <!-- Rotation button is hidden by default -->
       <button id="rotation-btn" class="header-btn hidden-state" aria-label="Toggle Screen Orientation" title="Lock Screen Orientation">
         <div id="rotation-icon"></div>
       </button>
 
-      <!-- Previous Quote button is hidden by default -->
       <button id="prev-quote-btn" class="header-btn hidden-state" aria-label="Previous Quote" title="Previous Quote">
         <!-- UPDATED ICON: Skip Back / Rewind -->
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
       </button>
 
-      <!-- Toggle Arrow Button: Only visible in fullscreen mode (State 2 or 3) -->
-      <button id="toggle-arrow-btn" class="header-btn hidden-state" aria-label="Hide Controls" title="Show Controls">
+      <button id="toggle-arrow-btn" class="header-btn" aria-label="Hide Controls" title="Hide Controls">
         <div id="arrow-icon-svg">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </div>
@@ -220,19 +219,22 @@
       <div class="mb-8">
         <p id="quote-text" class="text-xl md:text-2xl lg:text-3xl font-light leading-relaxed"></p>
       </div>
+      <p id="instruction-prompt" class="text-xs md:text-sm font-light tracking-wide uppercase mb-4 opacity-70">
+        Tap to view the next quote
+      </p>
     </div>
   </div>
   
   <div class="footer-status">
     <p>
-      <span id="current-hms" class="highlight-number">--:--</span><span id="current-ampm" class="highlight-number">--</span>
+      Time: <span id="current-hms" class="highlight-number">--:--</span><span id="current-ampm" class="highlight-number">--</span> | <span id="time-left-seconds" class="highlight-number">--</span> seconds left today
     </p>
   </div>
 
   <script>
     // --- DATA & CONSTANTS ---
     const quotes = [
-      { text: "Fear Allah. Not people."},
+      { text: "You have 86,400 seconds each day — make sure not a single one goes to waste." },
       { text: "If you can study 12 hours a day with discipline and focus, understand this:You won’t just become successful — you will become unrecognisable." },
       { text: "Be better than you were yesterday." },
       { text: "فَاسْتَبِقُوا الْخَيْرَاتِ\n\"So race one another in good deeds.\"\n(Qur'an 2:148)"},
@@ -265,9 +267,10 @@
     // --- ELEMENTS ---
     const quoteContainer = document.getElementById('quote-container');
     const quoteTextEl = document.getElementById('quote-text');
-    const footerStatusEl = document.querySelector('.footer-status');
+    const instructionEl = document.getElementById('instruction-prompt');
     
     // Buttons
+    const controlGroup = document.getElementById('control-group');
     const autoBtn = document.getElementById('auto-mode-btn');
     const fullscreenBtn = document.getElementById('fullscreen-btn');
     const fullscreenIconEl = document.getElementById('fullscreen-icon');
@@ -279,12 +282,14 @@
     const toggleArrowBtn = document.getElementById('toggle-arrow-btn'); 
     const arrowIconSvg = document.getElementById('arrow-icon-svg');
 
-    // Footer elements (Note: Removed reference to 'time-left-seconds' as it's no longer displayed)
+    // Footer
     const currentTimeHMS = document.getElementById("current-hms"); 
     const currentTimeAMPM = document.getElementById("current-ampm"); 
+    const timeLeftSecondsEl = document.getElementById("time-left-seconds"); 
 
     // --- STATE VARIABLES ---
     let currentQuoteIndex = -1;
+    let instructionTapped = false;
     let currentOrientationLock = 'portrait-primary';
     
     // Auto Mode State
@@ -326,19 +331,21 @@
         hideAllControls();
 
         if (state === 'normal') {
-            // STATE 1: Default Mode - ONLY Fullscreen button is visible
+            // STATE 1: [Play] [Fullscreen (Enter)]
             fullscreenBtn.classList.remove('hidden-state');
+            autoBtn.classList.remove('hidden-state');
+
             fullscreenIconEl.innerHTML = ICON_FULLSCREEN_ENTER;
             fullscreenBtn.title = "Fullscreen";
             
         } else if (state === 'zen-mode') {
-            // STATE 2: Fullscreen Zen Mode - ONLY Arrow button (Show Controls) is visible
+            // STATE 2: [Arrow Left] (at the far right edge)
             toggleArrowBtn.classList.remove('hidden-state');
-            arrowIconSvg.innerHTML = ICON_ARROW_LEFT_SINGLE;
+            arrowIconSvg.innerHTML = ICON_ARROW_LEFT_SINGLE; // Use single left arrow for 'Show Controls'
             toggleArrowBtn.title = "Show Controls";
             
         } else if (state === 'full-controls') {
-            // STATE 3: Fullscreen Full Controls Mode - All buttons visible
+            // STATE 3: [Arrow Right] [Previous Quote] [Rotation] [Play] [Fullscreen (Exit)]
             fullscreenBtn.classList.remove('hidden-state'); // Fullscreen Exit
             autoBtn.classList.remove('hidden-state'); // Play
             
@@ -347,33 +354,29 @@
                 rotationBtn.classList.remove('hidden-state');
             }
             
-            prevQuoteBtn.classList.remove('hidden-state'); // Previous Quote
-            toggleArrowBtn.classList.remove('hidden-state'); // Hide Controls Arrow
+            prevQuoteBtn.classList.remove('hidden-state'); // SHOW NEW BUTTON
+            toggleArrowBtn.classList.remove('hidden-state'); // Right Arrow
             
             // Update icons
             fullscreenIconEl.innerHTML = ICON_FULLSCREEN_EXIT;
             fullscreenBtn.title = "Exit Fullscreen";
             
-            arrowIconSvg.innerHTML = ICON_ARROW_RIGHT_SINGLE;
+            arrowIconSvg.innerHTML = ICON_ARROW_RIGHT_SINGLE; // Use single right arrow for 'Hide Controls'
             toggleArrowBtn.title = "Hide Controls";
         }
     }
     
     /**
      * Handles the click on the arrow button, toggling between Zen Mode (State 2) and 
-     * Full Controls Mode (State 3). This is only relevant when in fullscreen.
+     * Full Controls Mode (State 3) when in fullscreen.
      */
     function toggleControlVisibility() {
-        if (!document.fullscreenElement) {
-            // Should not happen if transitions are correct, but as a guard:
-            setControlState('normal');
-            return;
-        }
-
-        if (toggleArrowBtn.title === "Show Controls") {
-            setControlState('full-controls');
-        } else {
-            setControlState('zen-mode');
+        if (document.fullscreenElement) {
+            if (toggleArrowBtn.title === "Show Controls") {
+                setControlState('full-controls');
+            } else {
+                setControlState('zen-mode');
+            }
         }
     }
 
@@ -381,15 +384,11 @@
     
     function handleFullscreenChange() {
         if (document.fullscreenElement) {
-            // ENTER FULLSCREEN: Immediately switch to Zen Mode (State 2: Only arrow is visible)
+            // ENTER FULLSCREEN: Move to Zen Mode (State 2: Left Arrow Only)
             setControlState('zen-mode');
-            // SHOW FOOTER TIME
-            footerStatusEl.style.opacity = '1';
         } else {
-            // EXIT FULLSCREEN: Return to Normal Mode (State 1: Only Fullscreen button is visible)
+            // EXIT FULLSCREEN: Return to Normal Mode (State 1: Play + Fullscreen Enter)
             setControlState('normal');
-            // HIDE FOOTER TIME
-            footerStatusEl.style.opacity = '0';
             
             // Attempt to unlock orientation
             if (screen.orientation && screen.orientation.unlock) {
@@ -539,7 +538,12 @@
     function handleQuoteClick() {
         showNextQuote();
         
-        // If in auto mode, tapping resets the timer for the next quote
+        if (!instructionTapped) {
+            instructionTapped = true;
+            instructionEl.style.opacity = "0";
+            setTimeout(() => instructionEl.style.display = 'none', 300);
+        }
+        
         if (autoMode) {
             clearInterval(autoTimer);
             autoTimer = setInterval(showNextQuote, AUTO_INTERVAL);
@@ -552,23 +556,24 @@
       const now = new Date();
       const hours = now.getHours();
       const minutes = now.getMinutes();
-      // Seconds are no longer needed for display or calculation
+      const seconds = now.getSeconds();
 
       const displayHours = hours % 12 || 12;
-      // Removed leading zero padding for hours (e.g., 9:05 instead of 09:05) 
-      // but kept padding for minutes (e.g., 9:05 instead of 9:5)
-      const hms = String(displayHours) + ':' + String(minutes).padStart(2, '0');
+      const hms = String(displayHours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0');
       
       currentTimeHMS.textContent = hms;
       currentTimeAMPM.textContent = hours >= 12 ? 'pm' : 'am';
+      
+      const secondsPassed = hours * 3600 + minutes * 60 + seconds;
+      const secondsLeft = 86400 - secondsPassed;
+      timeLeftSecondsEl.textContent = secondsLeft.toLocaleString();
     }
     
     // --- INIT ---
     function init() {
         showNextQuote();
         updateTimeDisplay();
-        // Update the clock every second
-        setInterval(updateTimeDisplay, 1000); 
+        setInterval(updateTimeDisplay, 1000);
         
         autoBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleAutoMode(); });
         fullscreenBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleFullScreen(); });
@@ -585,7 +590,6 @@
         
         document.addEventListener('fullscreenchange', handleFullscreenChange);
         
-        // Set the default state to 'normal' (ONLY Fullscreen button visible)
         setControlState('normal');
     }
     
@@ -593,4 +597,3 @@
   </script>
 </body>
 </html>
-
