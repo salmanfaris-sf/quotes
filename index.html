@@ -32,6 +32,8 @@
             --menu-hover: rgba(255, 255, 255, 0.1);
             --selected-bg-dark: #1C1C1C;
             --selected-text-dark: #FFFFFF;
+            /* Menu width for mobile/tablet */
+            --menu-width: 85vw; 
         }
 
         body.light-mode {
@@ -44,6 +46,12 @@
             --menu-hover: rgba(0, 0, 0, 0.05);
             --selected-bg-light: #000000;
             --selected-text-light: #FFFFFF;
+        }
+
+        @media (min-width: 768px) {
+            :root {
+                --menu-width: 400px; /* Wider menu on desktop */
+            }
         }
 
         body {
@@ -71,11 +79,9 @@
             transform: translateY(-5%);
             pointer-events: none;
             width: 100%;
-            /* ADDED: Smooth transition for the up/down shift */
             transition: transform 0.3s ease-out;
         }
 
-        /* NEW: Class to shift content up when the keyboard is likely open */
         body.keyboard-up #main-content-wrapper {
             transform: translateY(-25%); 
         }
@@ -111,12 +117,12 @@
         .header-controls {
             position: fixed;
             top: 0;
-            right: 0; /* Anchor to the far right edge */
-            z-index: 150;
+            right: 0; 
+            z-index: 250; /* Higher Z-index so button is always visible */
             display: flex;
-            flex-direction: column; /* Only Menu Button remains */
+            flex-direction: column;
             align-items: flex-end;
-            padding: 20px; /* Provides the spacing from the edge */
+            padding: 20px; 
             pointer-events: none;
         }
 
@@ -138,74 +144,73 @@
             font-size: 16px;
         }
         
-        /* Removed background/box to hide the highlight when the menu is open */
+        /* Set active color for the button when menu is open */
         #open-menu-btn.is-active {
             color: var(--menu-text); 
         }
 
-        /* Removed .hidden-state and #done-header-btn styles as the button is gone */
-
-        /* --- Hamburger Menu Icon Styling (Animated) --- */
-        #animated-menu-icon {
-            width: 24px;
-            height: 16px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        /* --- MENU ICON STYLING (Chevron Left <-> X Close) --- */
+        #menu-icon-svg {
+            width: 28px;
+            height: 28px;
+            /* CRITICAL CHANGE: Making the stroke very thinner by setting it to 1 */
+            stroke-width: 1; 
+            position: relative; 
         }
 
-        .line {
-            display: block;
-            height: 2px;
-            width: 100%;
-            background-color: currentColor;
-            border-radius: 1px;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0, 1), opacity 0.2s;
-            transform-origin: center;
+        #g-chevron, #g-x {
+            /* Enable smooth transition for opacity */
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Default State: Chevron Left visible, X hidden */
+        #g-chevron {
+            opacity: 1;
+        }
+        #g-x {
+            opacity: 0;
         }
 
-        #open-menu-btn.is-active .line-top {
-            transform: translateY(7px) rotate(45deg);
+        /* Active State: Chevron Left hidden, X visible */
+        #open-menu-btn.is-active #g-chevron {
+            opacity: 0;
+        }
+        #open-menu-btn.is-active #g-x {
+            opacity: 1;
         }
 
-        #open-menu-btn.is-active .line-bottom {
-            transform: translateY(-7px) rotate(-45deg);
-        }
 
-        /* --- FULL-SCREEN MENU STYLES (Slides from Top) --- */
+        /* --- FULL-SCREEN MENU STYLES (Slides from Right) --- */
         #full-screen-menu {
             position: fixed;
             top: 0;
-            left: 0;
-            width: 100vw;
+            right: 0; /* Anchor to the right side */
             height: 100vh;
+            width: var(--menu-width);
             background-color: var(--menu-bg);
             z-index: 100;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 20px 0 20px 0; /* Padding control for inner content */
             
-            /* Slide from Top */
-            transform: translateY(-100%); 
-            opacity: 0; 
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0, 1), opacity 0.2s ease-in;
+            /* Slide from Right: Closed state */
+            transform: translateX(100%); 
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0, 1);
             
             pointer-events: none;
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         #full-screen-menu.visible {
-            transform: translateY(0);
-            opacity: 1;
+            /* Open state */
+            transform: translateX(0);
             pointer-events: auto;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
         .menu-header {
-            display: flex;
-            justify-content: flex-end;
-            width: 100%;
-            height: 40px;
+            /* Adjust header to create space for the button which is outside the menu */
+            height: 40px; 
         }
 
         /* Inner container for horizontal slide (Size controls) */
@@ -229,7 +234,8 @@
             flex-direction: column;
             align-items: flex-start;
             padding-top: 20px;
-            padding-left: 20px;
+            padding-left: 30px; /* Added left padding for content spacing */
+            padding-right: 20px;
         }
 
         .menu-item-link {
@@ -310,20 +316,25 @@
 </head>
 <body>
     <div class="header-controls">
-        <!-- Menu Button with the animated hamburger icon -->
+        <!-- Menu Button with the animated Chevron Left <-> X Close icon -->
         <button id="open-menu-btn" class="header-btn" aria-label="Open Menu" title="Open Menu">
-            <div id="animated-menu-icon">
-                <span class="line line-top"></span>
-                <span class="line line-bottom"></span>
-            </div>
+            <svg id="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Chevron Left Group (< shape) -->
+                <g id="g-chevron">
+                    <path d="m15 18-6-6 6-6"/>
+                </g>
+                <!-- X Close Group -->
+                <g id="g-x">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </g>
+            </svg>
         </button>
-        
-        <!-- REMOVED: The DONE Button, relying on keyboard's native "Done" or "Enter" -->
     </div>
 
-    <!-- Full-Screen Menu Overlay -->
+    <!-- Full-Screen Menu Overlay (Slides from Right) -->
     <div id="full-screen-menu" class="hidden-menu">
-        <div class="menu-header"></div>
+        <!-- Header is just for spacing, allowing the button outside to align -->
+        <div class="menu-header"></div> 
         <div id="menu-inner-container">
             <!-- --- MAIN MENU LIST (Screen 1) --- -->
             <nav id="menu-nav-list">
@@ -376,7 +387,6 @@
         const sizeEntryBtn = document.getElementById('size-entry-btn');
 
         const openMenuBtn = document.getElementById('open-menu-btn');
-        // Removed: const doneHeaderBtn = document.getElementById('done-header-btn');
         const fullScreenMenu = document.getElementById('full-screen-menu');
         const menuInnerContainer = document.getElementById('menu-inner-container');
 
@@ -470,9 +480,6 @@
                 menuInnerContainer.classList.remove('show-size-controls');
                 isSizeEditing = false;
             }
-            
-            // NOTE: Header controls for DONE button are removed. 
-            // openMenuBtn visibility is now constant outside of the menu overlay.
         }
 
         function setNumberEditMode(isEditing) {
@@ -489,6 +496,7 @@
                 toggleMenu('closed'); // Close menu only
                 
                 try {
+                    // Select all text to make overwriting easier on mobile
                     document.execCommand('selectAll', false, null);
                 } catch (error) {
                     console.warn("Could not select all text automatically.");
@@ -674,7 +682,7 @@
                 }
                 
                 if (counterElement.contentEditable === 'true') {
-                    // Tapping outside the counter/keyboard should trigger blur and save (handled by blur listener)
+                    // Tapping outside the counter/keyboard triggers blur and save
                     counterElement.blur();
                     return;
                 }
@@ -696,8 +704,6 @@
                 const isVisible = fullScreenMenu.classList.contains('visible');
                 toggleMenu(isVisible ? 'hide' : 'show');
             });
-            
-            // REMOVED: doneHeaderBtn listener
 
             // Menu Item Listeners
             fullscreenBtn.addEventListener('click', (e) => {
