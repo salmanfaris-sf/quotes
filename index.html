@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#000000">
     <title>Minimal Counter</title>
+    <!-- Google tag (gtag.js) for analytics tracking -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1K1TKBQFFK"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -113,7 +114,7 @@
             right: 0; /* Anchor to the far right edge */
             z-index: 150;
             display: flex;
-            flex-direction: column; /* Stack buttons vertically (Menu / Done) */
+            flex-direction: column; /* Only Menu Button remains */
             align-items: flex-end;
             padding: 20px; /* Provides the spacing from the edge */
             pointer-events: none;
@@ -142,27 +143,7 @@
             color: var(--menu-text); 
         }
 
-        .hidden-state {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none !important;
-            width: 0;
-            padding: 0;
-            margin: 0;
-            overflow: hidden;
-            min-width: 0;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-        }
-
-        #done-header-btn {
-            /* Style for the DONE button when editing */
-            background-color: rgba(128, 128, 128, 0.2);
-            color: var(--control-color);
-            padding: 10px 16px;
-            font-size: 1.0rem;
-            transform: none !important;
-            border-radius: 8px;
-        }
+        /* Removed .hidden-state and #done-header-btn styles as the button is gone */
 
         /* --- Hamburger Menu Icon Styling (Animated) --- */
         #animated-menu-icon {
@@ -337,10 +318,7 @@
             </div>
         </button>
         
-        <!-- DONE Button (Hidden by default, shown when editing number) -->
-        <button id="done-header-btn" class="header-btn hidden-state" aria-label="Save" title="Save">
-            DONE
-        </button>
+        <!-- REMOVED: The DONE Button, relying on keyboard's native "Done" or "Enter" -->
     </div>
 
     <!-- Full-Screen Menu Overlay -->
@@ -398,7 +376,7 @@
         const sizeEntryBtn = document.getElementById('size-entry-btn');
 
         const openMenuBtn = document.getElementById('open-menu-btn');
-        const doneHeaderBtn = document.getElementById('done-header-btn');
+        // Removed: const doneHeaderBtn = document.getElementById('done-header-btn');
         const fullScreenMenu = document.getElementById('full-screen-menu');
         const menuInnerContainer = document.getElementById('menu-inner-container');
 
@@ -469,7 +447,7 @@
         }
 
         /**
-         * Toggles the visibility of the full-screen menu overlay and updates header controls.
+         * Toggles the visibility of the full-screen menu overlay.
          */
         function toggleMenu(visibility) {
             const isShowing = visibility === 'show';
@@ -492,21 +470,9 @@
                 menuInnerContainer.classList.remove('show-size-controls');
                 isSizeEditing = false;
             }
-
-            // --- HEADER CONTROL VISIBILITY LOGIC ---
-            // Note: counterElement.contentEditable might not be fully updated here if called right after setNumberEditMode(true)
-            // It's more reliable to check the state in setNumberEditMode
-            const isNumberEditing = counterElement.contentEditable === 'true';
-
-            if (isNumberEditing) {
-                // If editing is active, hide menu icon and show DONE button
-                openMenuBtn.classList.add('hidden-state');
-                doneHeaderBtn.classList.remove('hidden-state');
-            } else {
-                // Otherwise, show menu icon and hide DONE button
-                doneHeaderBtn.classList.add('hidden-state');
-                openMenuBtn.classList.remove('hidden-state');
-            }
+            
+            // NOTE: Header controls for DONE button are removed. 
+            // openMenuBtn visibility is now constant outside of the menu overlay.
         }
 
         function setNumberEditMode(isEditing) {
@@ -517,10 +483,10 @@
                 counterElement.focus();
                 instructionElement.style.display = 'none';
                 
-                // FIX 1: Shift content up when editing to avoid keyboard obstruction
+                // Shift content up when editing to avoid keyboard obstruction
                 document.body.classList.add('keyboard-up');
 
-                toggleMenu('closed'); // Close menu and update header controls
+                toggleMenu('closed'); // Close menu only
                 
                 try {
                     document.execCommand('selectAll', false, null);
@@ -532,7 +498,7 @@
                 counterElement.contentEditable = 'false';
                 counterElement.removeAttribute('inputmode');
                 
-                // FIX 1: Shift content down (back to center)
+                // Shift content down (back to center)
                 document.body.classList.remove('keyboard-up');
 
                 toggleMenu('closed');
@@ -595,8 +561,11 @@
 
         function saveNewCount() {
             let inputVal = counterElement.textContent.trim();
+            // Clean input: remove non-digit characters
             inputVal = inputVal.replace(/[^\d]/g, '');
             let newCount = parseInt(inputVal, 10);
+            
+            // If the input is invalid or less than zero, revert to the current count
             if (isNaN(newCount) || newCount < 0) {
                 newCount = count;
             }
@@ -693,6 +662,7 @@
 
             // Main Body/Counter Click Listener (for counting)
             document.body.addEventListener('click', (e) => {
+                // Prevent counting if clicking controls/menu
                 if (e.target.closest('.header-controls') || e.target.closest('#full-screen-menu')) {
                     return;
                 }
@@ -704,25 +674,19 @@
                 }
                 
                 if (counterElement.contentEditable === 'true') {
+                    // Tapping outside the counter/keyboard should trigger blur and save (handled by blur listener)
+                    counterElement.blur();
                     return;
                 }
                 incrementCounter();
             });
 
-            // Counter Element Listeners (Number Editing)
+            // Counter Element Listeners (Number Editing - handles save on blur/keyboard done)
             counterElement.addEventListener('blur', saveNewCount);
             counterElement.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    counterElement.blur();
-                }
-            });
-
-            // Single Header DONE Button Listener (Handles saving the edited number)
-            doneHeaderBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (counterElement.contentEditable === 'true') {
-                    counterElement.blur();
+                    counterElement.blur(); // Triggers saveNewCount on blur
                 }
             });
 
@@ -732,6 +696,8 @@
                 const isVisible = fullScreenMenu.classList.contains('visible');
                 toggleMenu(isVisible ? 'hide' : 'show');
             });
+            
+            // REMOVED: doneHeaderBtn listener
 
             // Menu Item Listeners
             fullscreenBtn.addEventListener('click', (e) => {
@@ -756,6 +722,7 @@
 
             document.addEventListener('fullscreenchange', handleFullscreenChange);
             
+            // Prevent default browser double-tap zoom
             document.addEventListener('dblclick', function(event) {
                 event.preventDefault();
             }, { passive: false });
