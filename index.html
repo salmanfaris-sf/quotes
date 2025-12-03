@@ -625,10 +625,12 @@
             
             if (isShowing) {
                 fullScreenMenu.classList.add('visible');
+                // FIX: Ensure 'X' is shown when menu opens
+                setMenuButtonMode('close'); 
             } else {
                 fullScreenMenu.classList.remove('visible');
                 // When closing entirely, button reverts to 'menu' (chevron)
-                setMenuButtonMode('menu'); 
+                setMenuButtonMode('menu');
                 
                 // Always return to the main menu screen and reset state when closing completely
                 menuInnerContainer.classList.remove('show-size-controls');
