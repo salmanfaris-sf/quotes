@@ -27,10 +27,10 @@
             --text-color: #ffffff;
             --control-color: #ffffff;
             --instruction-color: rgba(255, 255, 255, 0.5);
-            --menu-bg: #000000;
+            --menu-bg: #1C1C1C; /* Dark grey */
             --menu-text: #FFFFFF;
             --menu-hover: rgba(255, 255, 255, 0.1);
-            --selected-bg-dark: #1C1C1C;
+            --selected-bg-dark: #333333; /* Darker selection background */
             --selected-text-dark: #FFFFFF;
             --ios-blue: #007AFF; /* Standard iOS blue for action items */
         }
@@ -43,8 +43,8 @@
             --menu-bg: #ffffff;
             --menu-text: #000000;
             --menu-hover: rgba(0, 0, 0, 0.05);
-            --selected-bg-light: #000000;
-            --selected-text-light: #FFFFFF;
+            --selected-bg-light: #EEEEEE; /* Lighter selection background */
+            --selected-text-light: #000000;
         }
 
         body {
@@ -93,7 +93,7 @@
         
         /* --- Transient Effect (33, 66, 99) --- */
         .ultimate-effect {
-            color: #00FF7F !important; /* Spring Green for ultimate effect */
+            color: #00FF7F !important; 
             text-shadow: 0 0 15px #00FF7F, 0 0 25px #00FF7F, 0 0 40px rgba(0, 255, 127, 0.8);
             animation: ultimateGlow 0.75s infinite alternate ease-in-out; 
         }
@@ -111,13 +111,11 @@
         
         /* --- GOAL REACHED ANIMATION (Pulsing Effect) --- */
         .goal-reached-pulse {
-            /* Subtle white glow in dark mode */
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5); 
             animation: goalPulse 1.5s infinite ease-in-out;
         }
         
         body.light-mode .goal-reached-pulse {
-            /* Subtle black glow in light mode */
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.5); 
         }
 
@@ -126,7 +124,7 @@
                 transform: scale(1);
             }
             50% {
-                transform: scale(1.02); /* Slight scale */
+                transform: scale(1.02); 
             }
         }
 
@@ -194,6 +192,7 @@
             font-weight: 600;
             pointer-events: auto;
             font-size: 1.2rem;
+            position: relative; 
         }
         
         .header-btn:focus {
@@ -205,53 +204,96 @@
             color: var(--ios-blue); 
         }
 
-        /* --- DYNAMIC BUTTON CONTENT STYLING --- */
+        /* --- DYNAMIC BUTTON CONTENT STYLING (The Apple-Style Smooth Transition Part) --- */
+        
+        #menu-icon-svg {
+            width: 28px;
+            height: 28px;
+            /* REDUCED THICKNESS: Thinner stroke for Apple's aesthetic */
+            stroke-width: 1.5; 
+            stroke: var(--control-color);
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: stroke 0.3s ease;
+        }
+        
+        /* Individual line styling and transition */
+        .menu-line {
+            transform-origin: center;
+            /* Use a smooth transition timing function */
+            transition: transform 0.35s cubic-bezier(0.4, 0.085, 0.68, 0.53);
+        }
+        
+        /* Line 1 (Top) - TIGHTER SPACING (3px offset) */
+        #line-top {
+            transform: translateY(-3px); 
+        }
+        
+        /* Line 2 (Bottom) - TIGHTER SPACING (3px offset) */
+        #line-bottom {
+            transform: translateY(3px); 
+        }
+        
+        /* --- STATE TRANSITIONS (Menu Open / Close 'X' - Two-Line Version) --- */
+        
+        .is-close-mode #line-top {
+            /* Move to center (0), rotate 45 deg */
+            transform: translateY(0) rotate(45deg); 
+        }
+        
+        /* The middle line is now completely removed from the DOM */
+        
+        .is-close-mode #line-bottom {
+            /* Move to center (0), rotate -45 deg */
+            transform: translateY(0) rotate(-45deg);
+        }
+
+
+        /* 2. Done Text Styling (When editing or goal reached) */
         #menu-done-text {
             color: var(--ios-blue); 
-            display: none;
+            opacity: 0; /* Hide by default */
             font-size: 1.2rem;
             font-weight: 400;
             line-height: 1;
-            padding: 0;
-            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        /* 3. Done State */
+        .is-done-mode #menu-icon-svg {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
         }
         
         .is-done-mode #menu-done-text {
-            display: block;
-        }
-        
-        /* --- SVG ICON STYLING --- */
-        .menu-icon-svg {
-            width: 28px;
-            height: 28px;
-            stroke-width: 1.5; /* Slightly thicker for better visibility */
-            position: relative; 
-            display: block;
-            transition: opacity 0.3s ease;
-        }
-        
-        .is-done-mode .menu-icon-svg {
-            display: none;
-        }
-        
-        /* Icon Containers */
-        #g-chevron-left { opacity: 1; } /* Default for right button (Main Counter View) */
-        #g-x { opacity: 0; }
-        
-        /* When Main Menu is Open (on the right button) */
-        #open-menu-btn.is-close-mode #g-chevron-left { opacity: 0; }
-        #open-menu-btn.is-close-mode #g-x { opacity: 1; }
-        
-        /* Back Icon (Arrow Left) - Used by #back-btn in sub-menus */
-        #back-btn .menu-icon-svg {
-             stroke-width: 2; 
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
         }
 
+
+        /* --- BACK ICON STYLING (Used for Back Button) --- */
+        .back-icon-svg {
+            width: 28px;
+            height: 28px;
+            stroke-width: 2.5; 
+            position: relative; 
+            display: block;
+            margin-right: 5px; 
+            transform: translateX(-4px); 
+        }
 
         /* --- FULL-SCREEN MENU STYLES --- */
         #full-screen-menu {
             position: fixed;
-            top: 0;
+            top: 0; 
             right: 0; 
             height: 100vh;
             width: 100vw; 
@@ -261,7 +303,7 @@
             flex-direction: column;
             padding: 20px 0 20px 0;
             
-            transform: translateX(100%); 
+            transform: translateY(-100%); /* Slides from top */
             transition: transform 0.4s cubic-bezier(0.4, 0, 0, 1);
             
             pointer-events: none;
@@ -270,7 +312,7 @@
         }
 
         #full-screen-menu.visible {
-            transform: translateX(0);
+            transform: translateY(0); 
             pointer-events: auto;
         }
 
@@ -401,7 +443,7 @@
             margin-top: 50px;
         }
         #goal-input {
-            font-size: 15vw; /* Large but not overwhelming */
+            font-size: 15vw; 
             font-weight: 800;
             color: var(--text-color);
             border-bottom: 2px solid var(--control-color);
@@ -411,6 +453,9 @@
             outline: none;
             cursor: text;
             transition: color 0.3s;
+            background: none; 
+            border: none;
+            border-bottom: 2px solid var(--control-color);
         }
 
 
@@ -434,39 +479,34 @@
     
     <!-- --- LEFT CONTROLS (Only for Back Button in Sub-Menus) --- -->
     <div id="header-left-controls" class="header-controls hidden">
-        <!-- Back Button (<-) - Used only in sub-menus -->
+        <!-- Back Button (<) - Used only in sub-menus -->
         <button id="back-btn" class="header-btn" aria-label="Go Back" title="Go Back">
-            <svg class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                <!-- Arrow Left (<- shape) -->
-                <g id="g-arrow-left">
-                    <path d="m12 19-7-7 7-7"/>
-                    <path d="M19 12H5"/>
+            <svg class="back-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Chevron Left (< shape) -->
+                <g id="g-chevron-left">
+                    <path d="M15 18l-6-6 6-6"/>
                 </g>
             </svg>
         </button>
     </div>
 
-    <!-- --- RIGHT CONTROLS (Menu/Close/Done) --- -->
+    <!-- --- RIGHT CONTROLS (Hamburger/Close/Done) --- -->
     <div id="header-right-controls" class="header-controls">
-        <!-- Menu Button that dynamically shows Icon (< / X) or "Done" Text -->
+        <!-- Menu Button that dynamically shows Hamburger / Close (X) / "Done" Text -->
         <button id="open-menu-btn" class="header-btn" aria-label="Open Menu" title="Open Menu">
-            <!-- SVG Icon Group -->
-            <svg id="right-menu-icon-svg" class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                <!-- Chevron Left (<) - Default Icon for the main screen (user request) -->
-                <g id="g-chevron-left">
-                    <path d="m15 18-6-6 6-6"/>
-                </g>
-                <!-- X Close Icon (X) - Used when Menu is open -->
-                <g id="g-x">
-                    <path d="M18 6L6 18M6 6l12 12"/>
-                </g>
+            <!-- Apple-Style Transforming Hamburger/Close Icon (Now only 2 lines, tightly spaced) -->
+            <svg id="menu-icon-svg" viewBox="0 0 24 24" fill="none">
+                <!-- Top Line / X arm 1 -->
+                <line id="line-top" class="menu-line" x1="4" y1="12" x2="20" y2="12"/>
+                <!-- Bottom Line / X arm 2 -->
+                <line id="line-bottom" class="menu-line" x1="4" y1="12" x2="20" y2="12"/>
             </svg>
             <!-- Done Text - Used when editing or when changes are pending in sub-menus -->
-            <span id="menu-done-text" class="menu-control-text">Done</span>
+            <span id="menu-done-text">Done</span>
         </button>
     </div>
 
-    <!-- Full-Screen Menu Overlay (Slides from Right) -->
+    <!-- Full-Screen Menu Overlay (Slides from Top) -->
     <div id="full-screen-menu" class="hidden-menu">
         <div class="menu-header"></div> 
         <div id="menu-inner-container">
@@ -553,9 +593,11 @@
         const goalInput = document.getElementById('goal-input'); 
         
         // New Header Controls
-        const openMenuBtn = document.getElementById('open-menu-btn'); // Right Button
-        const backBtn = document.getElementById('back-btn'); // Left Button
-        const menuDoneText = document.getElementById('menu-done-text');
+        const openMenuBtn = document.getElementById('open-menu-btn'); 
+        const backBtn = document.getElementById('back-btn'); 
+        
+        // Updated element references:
+        const menuDoneText = document.getElementById('menu-done-text'); 
         
         const headerLeftControls = document.getElementById('header-left-controls');
         const headerRightControls = document.getElementById('header-right-controls');
@@ -580,7 +622,6 @@
         // State variables to track if a change was made in the sub-menu
         let sizeChanged = false;
         let weightChanged = false;
-        // The goalChanged flag is no longer used for header button state but maintained for consistency 
         let goalChanged = false; 
         
         const STORAGE_KEY_COUNT = 'minimalCounterCount';
@@ -700,7 +741,7 @@
 
             // --- Case 1: Sub-Menu is Visible (Size, Weight, Goal Screens) ---
             if (isSubMenuVisible) {
-                headerLeftControls.classList.remove('hidden'); // Show Back button (<-) on the left
+                headerLeftControls.classList.remove('hidden'); // Show Back button (<) on the left
 
                 // Check for pending changes
                 const hasPendingChanges = isGoalScreen ? checkGoalInputHasChanged() : (sizeChanged || weightChanged);
@@ -723,7 +764,7 @@
             if (isMenuOpen) {
                 headerLeftControls.classList.add('hidden'); // Hide Left button
                 headerRightControls.classList.remove('hidden'); // Show Right button
-                openMenuBtn.classList.add('is-close-mode'); // Right button shows 'X'
+                openMenuBtn.classList.add('is-close-mode'); // Right button shows 'X' styling
                 openMenuBtn.setAttribute('aria-label', 'Close Menu');
                 openMenuBtn.setAttribute('title', 'Close Menu');
                 return;
@@ -731,15 +772,15 @@
 
             // --- Case 3: Menu is Closed (Main Counter View) ---
             headerLeftControls.classList.add('hidden'); // Hide Left button
-            headerRightControls.classList.remove('hidden'); // Show Right button (Default is '<')
+            headerRightControls.classList.remove('hidden'); // Show Right button (Default is Hamburger)
 
             if (isEditMode || isGoalReached) {
-                // If in Edit Mode or Goal Reached, Right button shows 'Done'
+                // If in Edit Mode or Goal Reached, Right button shows 'Done' text
                 openMenuBtn.classList.add('is-done-mode');
                 openMenuBtn.setAttribute('aria-label', 'Done');
                 openMenuBtn.setAttribute('title', 'Done');
             } else {
-                // Default state: Right button shows Menu chevron (<)
+                // Default state: Right button shows Hamburger icon
                 openMenuBtn.setAttribute('aria-label', 'Open Menu');
                 openMenuBtn.setAttribute('title', 'Open Menu');
             }
@@ -811,7 +852,7 @@
         }
 
         /**
-         * Handler for the Left Back button (`<-`). Abandons changes and navigates back.
+         * Handler for the Left Back button (`<`). Abandons changes and navigates back.
          */
         function goBackFromSubMenu(e) {
             if (e) e.stopPropagation();
@@ -1119,7 +1160,7 @@
             
             if (transientEffectTimer) clearTimeout(transientEffectTimer);
             counterElement.classList.remove('ultimate-effect');
-            counterElement.classList.remove('goal-reached-pulse'); // Remove new animation class
+            counterElement.classList.remove('goal-reached-pulse'); 
             
             instructionElement.textContent = "Tap anywhere to count";
             
@@ -1309,7 +1350,7 @@
             // When goal input blurs (e.g., user taps outside the field), save the value but keep the menu open.
             goalInput.addEventListener('blur', () => saveTargetGoal(false)); 
             
-            // NEW: Handle 'Enter' key press (mobile keyboard 'Done') to save AND navigate back to the counter.
+            // Handle 'Enter' key press (mobile keyboard 'Done') to save AND navigate back to the counter.
             goalInput.addEventListener('keydown', (e) => {
                  if (e.key === 'Enter') {
                     e.preventDefault();
@@ -1358,10 +1399,10 @@
                 
                 // Case C: Menu Open/Close
                 if (!isMenuOpen) {
-                    // Menu is closed: Open main menu (Button shows '<')
+                    // Menu is closed: Open main menu (Button shows Hamburger)
                     toggleMenu('show');
                 } else {
-                    // Menu is open (main list): Close menu completely (Button shows 'X')
+                    // Menu is open (main list): Close menu completely (Button shows 'X' styling)
                     toggleMenu('hide');
                 }
             });
