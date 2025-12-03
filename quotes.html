@@ -49,20 +49,19 @@
     .header-controls {
       position: fixed;
       top: 20px; /* Spacing from the top edge */
-      right: 7px; /* Spacing from the right edge */
+      right: 20px; /* Spacing from the right edge - ADJUSTED */
       pointer-events: none;
       z-index: 50;
     }
 
-    /* Control Group: Uses row-reverse to arrange elements right-to-left (Arrow on far right) */
+    /* Control Group: ALIGNMENT ADJUSTED HERE */
     .control-group {
         pointer-events: auto;
         display: flex;
         align-items: center;
         gap: 10px; 
         transition: opacity 0.2s ease, transform 0.2s ease;
-        justify-content: flex-end; 
-        flex-direction: row-reverse; /* Ensures the toggle-arrow-btn is always on the far right */
+        justify-content: flex-end; /* Keeps the entire group anchored to the right */
     }
     
     .header-btn {
@@ -178,14 +177,18 @@
   <div class="header-controls">
     <div id="control-group" class="control-group">
 
-      <!-- 1. Fullscreen Button (Starts hidden) -->
-      <button id="fullscreen-btn" class="header-btn hidden-state" aria-label="Toggle Fullscreen" title="Fullscreen">
-        <div id="fullscreen-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
-        </div>
+      <!-- 3. Rotation Button (Conditionally visible, far left of group when visible) -->
+      <button id="rotation-btn" class="header-btn hidden-state" aria-label="Lock Screen Orientation" title="Lock Screen Orientation">
+        <div id="rotation-icon"></div>
       </button>
 
-      <!-- 2. Auto Mode Button (Starts hidden) -->
+      <!-- 4. Previous Quote Button (Left of Auto Play) -->
+      <button id="prev-quote-btn" class="header-btn hidden-state" aria-label="Previous Quote" title="Previous Quote">
+        <!-- Skip Back / Rewind Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
+      </button>
+
+      <!-- 2. Auto Mode Button (Left of Fullscreen) -->
       <button id="auto-mode-btn" class="header-btn hidden-state" aria-label="Toggle Auto-Quote" title="Auto Play Quotes">
         <div class="progress-wrap">
           <svg id="progress-svg" viewBox="0 0 50 50">
@@ -199,23 +202,20 @@
           </div>
         </div>
       </button>
-
-      <!-- 3. Rotation Button (Starts hidden, shown only if supported AND in fullscreen) -->
-      <button id="rotation-btn" class="header-btn hidden-state" aria-label="Lock Screen Orientation" title="Lock Screen Orientation">
-        <div id="rotation-icon"></div>
+      
+      <!-- 1. Fullscreen Button (Right next to Arrow) -->
+      <button id="fullscreen-btn" class="header-btn hidden-state" aria-label="Toggle Fullscreen" title="Fullscreen">
+        <div id="fullscreen-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+        </div>
       </button>
 
-      <!-- 4. Previous Quote Button (Starts hidden) -->
-      <button id="prev-quote-btn" class="header-btn hidden-state" aria-label="Previous Quote" title="Previous Quote">
-        <!-- Skip Back / Rewind Icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
-      </button>
 
-      <!-- 5. Toggle Arrow Button (The only button visible by default) -->
+      <!-- 5. Toggle Arrow Button (Far right anchor) -->
       <button id="toggle-arrow-btn" class="header-btn" aria-label="Show Controls" title="Show Controls">
         <div id="arrow-icon-svg">
-          <!-- Right Arrow Icon (Default) -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          <!-- Left Arrow Icon (Default) -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
         </div>
       </button>
     </div>
@@ -335,18 +335,20 @@
         if (state === 'hidden') {
             // STATE: Only Arrow Button visible (pointing left, to indicate 'Show Controls' on the left side)
             toggleArrowBtn.classList.remove('hidden-state');
-            // Using LEFT arrow icon (<) for the default/hidden state as requested
+            // Arrow points LEFT (<) to indicate "Show Controls" on the left
             arrowIconSvg.innerHTML = ICON_ARROW_LEFT_SINGLE;
             toggleArrowBtn.title = "Show Controls";
             toggleArrowBtn.setAttribute('aria-label', 'Show Controls');
 
         } else if (state === 'visible') {
             // STATE: All controls visible
+            // The order here reflects the order in the HTML, which is now:
+            // [Rotation] [Previous Quote] [Auto Mode] [Fullscreen] [Toggle Arrow] (R to L)
             fullscreenBtn.classList.remove('hidden-state');
             autoBtn.classList.remove('hidden-state');
             prevQuoteBtn.classList.remove('hidden-state');
 
-            // --- USER REQUEST: Show rotation only if API is supported AND in fullscreen ---
+            // --- USER REQUEST: Show rotation only if supported AND in fullscreen ---
             if (rotationBtn.dataset.supported === 'true' && document.fullscreenElement) {
                 rotationBtn.classList.remove('hidden-state');
             }
@@ -354,9 +356,8 @@
             // Set correct fullscreen icon based on current state
             updateFullscreenIcon();
 
-            // Arrow points right (>) to hide controls as requested
+            // Arrow points RIGHT (>) to indicate "Hide Controls" to the right
             toggleArrowBtn.classList.remove('hidden-state');
-            // Using RIGHT arrow icon (>) for the visible/open state as requested
             arrowIconSvg.innerHTML = ICON_ARROW_RIGHT_SINGLE;
             toggleArrowBtn.title = "Hide Controls";
             toggleArrowBtn.setAttribute('aria-label', 'Hide Controls');
