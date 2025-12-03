@@ -181,15 +181,17 @@
         
         /* State when button shows 'Done' text */
         #open-menu-btn.is-done-mode {
-            color: var(--ios-blue); 
+            /* This targets the container button when 'Done' text is visible */
+            color: var(--ios-blue); /* Explicitly set to requested blue */ 
         }
 
         /* --- DYNAMIC BUTTON CONTENT STYLING --- */
         #menu-done-text {
-            color: var(--ios-blue); 
+            /* This targets the text span inside the button */
+            color: var(--ios-blue); /* Explicitly set to requested blue */ 
             display: none;
             font-size: 1.2rem;
-            font-weight: 600;
+            font-weight: 400; /* Set to Regular/Thin as requested */
             line-height: 1;
             padding: 0;
             margin: 0;
@@ -414,8 +416,8 @@
                 <button id="reset-btn" class="menu-item-link" aria-label="Reset Counter" title="Reset Counter">
                     Reset
                 </button>
-                <button id="edit-btn" class="menu-item-link" aria-label="Edit Number" title="Edit Number">
-                    Edit Number
+                <button id="edit-btn" class="menu-item-link" aria-label="Edit Number" title="Edit">
+                    Edit
                 </button>
                 <button id="size-entry-btn" class="menu-item-link" aria-label="Adjust Font Size" title="Adjust Font Size">
                     Size
@@ -430,8 +432,9 @@
             
             <!-- --- SCREEN 2: SIZE CONTROL BUTTONS --- -->
             <div id="size-controls-container">
-                <h2 class="menu-sub-header">Choose Counter Size</h2>
-                <p class="info-text">Select a size below. The change is applied instantly.</p>
+                <!-- Updated Heading -->
+                <h2 class="menu-sub-header">Counter Size</h2>
+                <p class="info-text">Select a size below.</p>
                 <div id="size-options" class="control-options">
                     <button id="size-small-btn" class="menu-item-link" data-scale="0.3">Small</button>
                     <button id="size-normal-btn" class="menu-item-link" data-scale="0.6">Normal</button>
