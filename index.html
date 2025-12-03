@@ -32,8 +32,8 @@
             --menu-hover: rgba(255, 255, 255, 0.1);
             --selected-bg-dark: #1C1C1C;
             --selected-text-dark: #FFFFFF;
-            /* Menu width for mobile/tablet */
-            --menu-width: 85vw; 
+            /* Menu width for full screen coverage */
+            --menu-width: 100vw; 
         }
 
         body.light-mode {
@@ -46,12 +46,6 @@
             --menu-hover: rgba(0, 0, 0, 0.05);
             --selected-bg-light: #000000;
             --selected-text-light: #FFFFFF;
-        }
-
-        @media (min-width: 768px) {
-            :root {
-                --menu-width: 400px; /* Wider menu on desktop */
-            }
         }
 
         body {
@@ -88,7 +82,8 @@
 
         #counter {
             font-size: 35vw;
-            font-weight: 300;
+            /* CHANGED: Set font-weight to 200 for a very thin type */
+            font-weight: 200; 
             line-height: 1;
             text-align: center;
             padding: 0 10px;
@@ -124,6 +119,15 @@
             align-items: flex-end;
             padding: 20px; 
             pointer-events: none;
+            /* Transition for smooth hiding/showing */
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        /* NEW: Class to hide controls during number editing */
+        .header-controls.hidden-controls {
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
         }
 
         .header-btn {
@@ -147,19 +151,18 @@
         /* Set active color for the button when menu is open */
         #open-menu-btn.is-active {
             color: var(--menu-text); 
+            /* Since the menu is now full-screen, the button will be against the menu background, so we use menu-text */
         }
 
         /* --- MENU ICON STYLING (Chevron Left <-> X Close) --- */
         #menu-icon-svg {
             width: 28px;
             height: 28px;
-            /* CRITICAL CHANGE: Making the stroke very thinner by setting it to 1 */
             stroke-width: 1; 
             position: relative; 
         }
 
         #g-chevron, #g-x {
-            /* Enable smooth transition for opacity */
             transition: opacity 0.3s ease;
         }
         
@@ -184,14 +187,15 @@
         #full-screen-menu {
             position: fixed;
             top: 0;
-            right: 0; /* Anchor to the right side */
+            right: 0; 
             height: 100vh;
-            width: var(--menu-width);
+            /* CRITICAL CHANGE: Set width to 100vw for full coverage */
+            width: 100vw; 
             background-color: var(--menu-bg);
             z-index: 100;
             display: flex;
             flex-direction: column;
-            padding: 20px 0 20px 0; /* Padding control for inner content */
+            padding: 20px 0 20px 0;
             
             /* Slide from Right: Closed state */
             transform: translateX(100%); 
@@ -205,7 +209,7 @@
             /* Open state */
             transform: translateX(0);
             pointer-events: auto;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            /* Removed box-shadow as it's full screen */
         }
 
         .menu-header {
@@ -216,25 +220,28 @@
         /* Inner container for horizontal slide (Size controls) */
         #menu-inner-container {
             display: flex;
-            width: 200%;
+            /* Width must be 200vw for 2 full-screen panels to slide (100vw each) */
+            width: 200vw;
             height: 100%;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         #menu-inner-container.show-size-controls {
-            transform: translateX(-50%);
+            /* FIXED: Shift by 100vw to correctly show the second panel (Size Controls) */
+            transform: translateX(-100vw); 
         }
 
         #menu-nav-list,
         #size-controls-container {
-            width: 50%;
+            /* FIXED: Each container must be 100vw (the full screen width) */
+            width: 100vw;
             flex-shrink: 0;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             padding-top: 20px;
-            padding-left: 30px; /* Added left padding for content spacing */
+            padding-left: 30px; 
             padding-right: 20px;
         }
 
@@ -389,6 +396,7 @@
         const openMenuBtn = document.getElementById('open-menu-btn');
         const fullScreenMenu = document.getElementById('full-screen-menu');
         const menuInnerContainer = document.getElementById('menu-inner-container');
+        const headerControls = document.querySelector('.header-controls'); // Get the control wrapper
 
         const sizeSmallBtn = document.getElementById('size-small-btn');
         const sizeNormalBtn = document.getElementById('size-normal-btn');
@@ -485,6 +493,7 @@
         function setNumberEditMode(isEditing) {
             if (isEditing) {
                 // Enter Edit Mode
+                headerControls.classList.add('hidden-controls'); // HIDE CONTROLS
                 counterElement.contentEditable = 'true';
                 counterElement.setAttribute('inputmode', 'numeric');
                 counterElement.focus();
@@ -503,6 +512,7 @@
                 }
             } else {
                 // Exit Edit Mode
+                headerControls.classList.remove('hidden-controls'); // SHOW CONTROLS
                 counterElement.contentEditable = 'false';
                 counterElement.removeAttribute('inputmode');
                 
@@ -579,7 +589,7 @@
             }
             count = newCount;
             updateCounterDisplay();
-            setNumberEditMode(false);
+            setNumberEditMode(false); // This will now show the controls again
         }
 
         // --- THEME & FULLSCREEN LOGIC ---
