@@ -32,6 +32,7 @@
             --menu-hover: rgba(255, 255, 255, 0.1);
             --selected-bg-dark: #1C1C1C;
             --selected-text-dark: #FFFFFF;
+            --ios-blue: #007AFF; /* Standard iOS blue for action items */
         }
 
         body.light-mode {
@@ -97,7 +98,7 @@
         .ultimate-effect {
             color: #00FF7F !important; /* Spring Green for ultimate effect */
             text-shadow: 0 0 15px #00FF7F, 0 0 25px #00FF7F, 0 0 40px rgba(0, 255, 127, 0.8);
-            animation: ultimateGlow 0.75s infinite alternate ease-in-out; /* Reduced from 1.5s for quicker pulse */
+            animation: ultimateGlow 0.75s infinite alternate ease-in-out; 
         }
 
         @keyframes ultimateGlow {
@@ -166,23 +167,49 @@
             height: 44px;
             font-weight: 600;
             pointer-events: auto;
-            font-size: 16px;
+            font-size: 1.2rem; /* Adjusted for Done text */
         }
         
         .header-btn:focus {
             outline: none;
         }
         
+        /* State when menu is open and showing the Close 'X' icon */
         #open-menu-btn.is-active {
             color: var(--menu-text); 
         }
+        
+        /* State when button shows 'Done' text */
+        #open-menu-btn.is-done-mode {
+            color: var(--ios-blue); 
+        }
 
+        /* --- DYNAMIC BUTTON CONTENT STYLING --- */
+        #menu-done-text {
+            color: var(--ios-blue); 
+            display: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            line-height: 1;
+            padding: 0;
+            margin: 0;
+        }
+        
+        #open-menu-btn.is-done-mode #menu-done-text {
+            display: block;
+        }
+        
         /* --- MENU ICON STYLING --- */
         #menu-icon-svg {
             width: 28px;
             height: 28px;
             stroke-width: 1; 
             position: relative; 
+            display: block; /* Default visible state */
+        }
+        
+        #open-menu-btn.is-done-mode #menu-icon-svg {
+            display: none; /* Hide SVG when 'Done' is showing */
         }
 
         #g-chevron, #g-x {
@@ -357,8 +384,9 @@
 </head>
 <body>
     <div class="header-controls">
-        <!-- Menu Button with the animated Chevron Left <-> X Close icon -->
+        <!-- Menu Button that dynamically shows Icon or "Done" Text -->
         <button id="open-menu-btn" class="header-btn" aria-label="Open Menu" title="Open Menu">
+            <!-- SVG Icon Group (Chevron/X) -->
             <svg id="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                 <!-- Chevron Left Group (< shape) -->
                 <g id="g-chevron">
@@ -369,6 +397,8 @@
                     <path d="M18 6L6 18M6 6l12 12"/>
                 </g>
             </svg>
+            <!-- Done Text -->
+            <span id="menu-done-text" class="menu-control-text">Done</span>
         </button>
     </div>
 
@@ -409,7 +439,7 @@
                 </div>
             </div>
 
-            <!-- --- SCREEN 3: WEIGHT CONTROL BUTTONS (Updated to remove numbers) --- -->
+            <!-- --- SCREEN 3: WEIGHT CONTROL BUTTONS --- -->
             <div id="weight-controls-container">
                 <h2 class="menu-sub-header">Choose Font Weight</h2>
                 <p class="info-text">Affects how thin or thick the number appears.</p>
@@ -443,6 +473,7 @@
         const weightEntryBtn = document.getElementById('weight-entry-btn');
         
         const openMenuBtn = document.getElementById('open-menu-btn');
+        const menuDoneText = document.getElementById('menu-done-text');
         const fullScreenMenu = document.getElementById('full-screen-menu');
         const menuInnerContainer = document.getElementById('menu-inner-container');
         const headerControls = document.querySelector('.header-controls'); 
@@ -458,6 +489,10 @@
         let isEditMode = false;
         
         let transientEffectTimer = null; 
+        
+        // State variables to track if a change was made in the sub-menu
+        let sizeChanged = false;
+        let weightChanged = false;
 
         const STORAGE_KEY_COUNT = 'minimalCounterCount';
         const STORAGE_KEY_THEME = 'minimalCounterTheme';
@@ -532,6 +567,52 @@
         function showInstruction() {
             instructionElement.classList.remove('instruction-hidden');
         }
+        
+        /**
+         * Sets the appearance and ARIA attributes of the top-right menu button.
+         * @param {string} mode - 'menu' (chevron icon, menu closed), 'close' (X icon, main menu open), or 'done' (Done text, sub-menu open).
+         */
+        function setMenuButtonMode(mode) {
+            if (mode === 'done') {
+                openMenuBtn.classList.add('is-done-mode');
+                openMenuBtn.classList.remove('is-active');
+                openMenuBtn.setAttribute('aria-label', 'Done');
+                openMenuBtn.setAttribute('title', 'Done');
+            } else if (mode === 'close') {
+                openMenuBtn.classList.remove('is-done-mode');
+                openMenuBtn.classList.add('is-active');
+                openMenuBtn.setAttribute('aria-label', 'Close Menu');
+                openMenuBtn.setAttribute('title', 'Close Menu');
+            } else { // 'menu' mode 
+                openMenuBtn.classList.remove('is-done-mode');
+                openMenuBtn.classList.remove('is-active');
+                openMenuBtn.setAttribute('aria-label', 'Open Menu');
+                openMenuBtn.setAttribute('title', 'Open Menu');
+            }
+        }
+        
+        /**
+         * Updates the top-right button text based on whether a change was made in the current sub-menu.
+         */
+        function updateSubMenuButtonState() {
+            const isSizeControl = menuInnerContainer.classList.contains('show-size-controls');
+            const isWeightControl = menuInnerContainer.classList.contains('show-weight-controls');
+            
+            if (isSizeControl) {
+                // Done if size was changed, otherwise 'X' (which acts as back to main menu)
+                setMenuButtonMode(sizeChanged ? 'done' : 'close');
+            } else if (isWeightControl) {
+                // Done if weight was changed, otherwise 'X' (which acts as back to main menu)
+                setMenuButtonMode(weightChanged ? 'done' : 'close');
+            } else if (fullScreenMenu.classList.contains('visible')) {
+                // Main menu is visible
+                setMenuButtonMode('close');
+            } else {
+                // Menu is closed
+                setMenuButtonMode('menu');
+            }
+        }
+
 
         /**
          * Toggles the visibility of the full-screen menu overlay and controls internal screen slides.
@@ -541,19 +622,19 @@
             
             if (isShowing) {
                 fullScreenMenu.classList.add('visible');
-                openMenuBtn.classList.add('is-active');
-                openMenuBtn.setAttribute('aria-label', 'Close Menu');
-                openMenuBtn.setAttribute('title', 'Close Menu');
             } else {
                 fullScreenMenu.classList.remove('visible');
-                openMenuBtn.classList.remove('is-active');
-                openMenuBtn.setAttribute('aria-label', 'Open Menu');
-                openMenuBtn.setAttribute('title', 'Open Menu');
+                // When closing entirely, button reverts to 'menu' (chevron)
+                setMenuButtonMode('menu'); 
                 
-                // Always return to the main menu screen when closing
+                // Always return to the main menu screen and reset state when closing completely
                 menuInnerContainer.classList.remove('show-size-controls');
                 menuInnerContainer.classList.remove('show-weight-controls');
                 isEditMode = false;
+                
+                // Reset change flags when the menu is closed entirely
+                sizeChanged = false;
+                weightChanged = false;
             }
         }
 
@@ -599,19 +680,23 @@
         function enterSizeEditMode(e) {
             if (e) e.stopPropagation();
             isEditMode = true;
+            sizeChanged = false; // Reset flag on entry
             updateSelectedButton(sizeOptions, 'scale');
             toggleMenu('show');
             menuInnerContainer.classList.remove('show-weight-controls');
             menuInnerContainer.classList.add('show-size-controls');
+            updateSubMenuButtonState(); // Show 'X' initially
         }
         
         function enterWeightEditMode(e) {
             if (e) e.stopPropagation();
             isEditMode = true;
+            weightChanged = false; // Reset flag on entry
             updateSelectedButton(weightOptions, 'weight');
             toggleMenu('show');
             menuInnerContainer.classList.remove('show-size-controls');
             menuInnerContainer.classList.add('show-weight-controls');
+            updateSubMenuButtonState(); // Show 'X' initially
         }
 
         function setSize(e) {
@@ -619,10 +704,17 @@
             const btn = e.target.closest('.menu-item-link');
             if (!btn) return; // Add check for null target
             const selectedScale = parseFloat(btn.getAttribute('data-scale'));
+            
+            // Check if a change occurred
+            if (Math.abs(fontScale - selectedScale) > 0.001) {
+                sizeChanged = true; 
+            }
+            
             fontScale = selectedScale;
             localStorage.setItem(STORAGE_KEY_FONT_SCALE, fontScale);
             updateCounterDisplay();
             updateSelectedButton(sizeOptions, 'scale');
+            updateSubMenuButtonState(); // Update button to Done if changed
         }
         
         function setWeight(e) {
@@ -630,7 +722,14 @@
             const btn = e.target.closest('.menu-item-link');
             if (!btn) return; // Add check for null target
             const selectedWeight = parseInt(btn.getAttribute('data-weight'), 10);
+            
+            // Check if a change occurred
+            if (fontWeight !== selectedWeight) {
+                weightChanged = true;
+            }
+            
             setFontWeight(selectedWeight);
+            updateSubMenuButtonState(); // Update button to Done if changed
         }
 
         // --- Special Effects Logic Helper (Transient) ---
@@ -659,7 +758,7 @@
                         counterElement.classList.remove('ultimate-effect');
                     }
                     transientEffectTimer = null;
-                }, 400); // Reduced from 500ms for quicker removal
+                }, 400); // Effect duration
             }
         }
 
@@ -823,6 +922,9 @@
             updateThemeButtonText();
             handleFullscreenChange();
             
+            // Set initial button state (Menu icon)
+            setMenuButtonMode('menu');
+
             // 2. Event Listeners
 
             // Main Body/Counter Click Listener (for counting)
@@ -832,6 +934,7 @@
                 }
                 
                 if (fullScreenMenu.classList.contains('visible')) {
+                    // Clicking outside the menu closes it completely
                     toggleMenu('hide');
                     return;
                 }
@@ -852,9 +955,25 @@
                 }
             });
 
-            // Menu Open/Close Listener 
+            // Menu Open/Close/Done Listener 
             openMenuBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
+                
+                const isSubMenuVisible = menuInnerContainer.classList.contains('show-size-controls') || 
+                                         menuInnerContainer.classList.contains('show-weight-controls');
+
+                if (isSubMenuVisible) {
+                    // If we are in a sub-menu, tapping 'Done' or 'X' means returning to the main menu screen.
+                    menuInnerContainer.classList.remove('show-size-controls');
+                    menuInnerContainer.classList.remove('show-weight-controls');
+                    // Revert button appearance to Close (X) mode for the main menu list
+                    setMenuButtonMode('close');
+                    sizeChanged = false; // Reset flags after navigating back
+                    weightChanged = false; 
+                    return;
+                }
+                
+                // If not in a sub-menu (i.e., we are on the main menu screen)
                 const isVisible = fullScreenMenu.classList.contains('visible');
                 toggleMenu(isVisible ? 'hide' : 'show');
             });
@@ -914,7 +1033,21 @@
                     e.preventDefault();
                 } else if (e.key === 'Escape') {
                     if (fullScreenMenu.classList.contains('visible')) {
-                        toggleMenu('hide');
+                        // Check if in a sub-menu
+                        const isSubMenuVisible = menuInnerContainer.classList.contains('show-size-controls') || 
+                                                 menuInnerContainer.classList.contains('show-weight-controls');
+                                                 
+                        if (isSubMenuVisible) {
+                             // Escape returns from sub-menu to main menu
+                            menuInnerContainer.classList.remove('show-size-controls');
+                            menuInnerContainer.classList.remove('show-weight-controls');
+                            setMenuButtonMode('close');
+                            sizeChanged = false; // Reset flags
+                            weightChanged = false; 
+                        } else {
+                            // Escape closes the main menu
+                            toggleMenu('hide');
+                        }
                     }
                 }
             });
