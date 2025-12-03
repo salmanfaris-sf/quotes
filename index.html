@@ -90,10 +90,8 @@
             outline: none;
             margin-bottom: 5px;
         }
-
-        /* --- Special Effects Styling --- */
         
-        /* Intense glow and animation for 33, 66, and 99 */
+        /* --- Transient Effect (33, 66, 99) --- */
         .ultimate-effect {
             color: #00FF7F !important; /* Spring Green for ultimate effect */
             text-shadow: 0 0 15px #00FF7F, 0 0 25px #00FF7F, 0 0 40px rgba(0, 255, 127, 0.8);
@@ -111,16 +109,25 @@
             }
         }
         
-        /* Effect for when the Goal is reached */
-        .goal-reached-effect {
-            color: var(--ios-blue) !important; 
-            text-shadow: 0 0 10px rgba(0, 122, 255, 0.7), 0 0 20px rgba(0, 122, 255, 0.5);
+        /* --- GOAL REACHED ANIMATION (Pulsing Effect) --- */
+        .goal-reached-pulse {
+            /* Subtle white glow in dark mode */
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5); 
+            animation: goalPulse 1.5s infinite ease-in-out;
         }
         
-        /* If both goal and ultimate effects are active, prioritize ultimate visual style */
-        .goal-reached-effect.ultimate-effect {
-            color: #00FF7F !important; /* Spring Green for ultimate effect */
-            text-shadow: 0 0 15px #00FF7F, 0 0 25px #00FF7F, 0 0 40px rgba(0, 255, 127, 0.8);
+        body.light-mode .goal-reached-pulse {
+            /* Subtle black glow in light mode */
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.5); 
+        }
+
+        @keyframes goalPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02); /* Slight scale */
+            }
         }
 
 
@@ -134,41 +141,41 @@
             overflow: hidden;
             pointer-events: none;
             display: block;
-            transition: opacity 0.5s ease, margin-top 0.5s ease, height 0.5s ease;
-            white-space: nowrap; /* Prevent wrapping of the long instruction */
+            transition: opacity 0.5s ease, margin-top 0.5s ease, height 0.5s ease, color 0.3s ease;
+            white-space: nowrap; 
         }
         
         .instruction-hidden {
             opacity: 0 !important;
             height: 0 !important;
             margin-top: 0 !important;
-            visibility: hidden !important; /* Ensure it doesn't block taps */
+            visibility: hidden !important; 
         }
         
-        /* Ensure instruction is visible but pointer events are off */
-        #instruction[style*="visible"] {
-            pointer-events: none; 
-        }
-
-
-        /* --- HEADER CONTROLS --- */
+        /* --- HEADER CONTROLS (Two distinct zones) --- */
         .header-controls {
             position: fixed;
             top: 0;
-            right: 0; 
             z-index: 250; 
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
-            padding: 20px; 
-            pointer-events: none;
+            align-items: center; 
+            padding: 15px; 
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        .header-controls.hidden-controls {
+        #header-left-controls {
+            left: 0;
+        }
+        
+        #header-right-controls {
+            right: 0;
+        }
+        
+        .header-controls.hidden {
+            visibility: hidden;
             opacity: 0;
             pointer-events: none;
-            visibility: hidden;
         }
 
         .header-btn {
@@ -193,13 +200,8 @@
             outline: none;
         }
         
-        /* State when menu is open and showing the Close 'X' icon */
-        #open-menu-btn.is-active {
-            color: var(--menu-text); 
-        }
-        
-        /* State when button shows 'Done' text (either sub-menu or goal reached) */
-        #open-menu-btn.is-done-mode {
+        /* State when button shows 'Done' text */
+        .is-done-mode {
             color: var(--ios-blue); 
         }
 
@@ -214,39 +216,35 @@
             margin: 0;
         }
         
-        #open-menu-btn.is-done-mode #menu-done-text {
+        .is-done-mode #menu-done-text {
             display: block;
         }
         
-        /* --- MENU ICON STYLING --- */
-        #menu-icon-svg {
+        /* --- SVG ICON STYLING --- */
+        .menu-icon-svg {
             width: 28px;
             height: 28px;
-            stroke-width: 1; 
+            stroke-width: 1.5; /* Slightly thicker for better visibility */
             position: relative; 
             display: block;
-        }
-        
-        #open-menu-btn.is-done-mode #menu-icon-svg {
-            display: none;
-        }
-
-        #g-chevron, #g-x {
             transition: opacity 0.3s ease;
         }
         
-        #g-chevron {
-            opacity: 1;
+        .is-done-mode .menu-icon-svg {
+            display: none;
         }
-        #g-x {
-            opacity: 0;
-        }
-
-        #open-menu-btn.is-active #g-chevron {
-            opacity: 0;
-        }
-        #open-menu-btn.is-active #g-x {
-            opacity: 1;
+        
+        /* Icon Containers */
+        #g-chevron-left { opacity: 1; } /* Default for right button (Main Counter View) */
+        #g-x { opacity: 0; }
+        
+        /* When Main Menu is Open (on the right button) */
+        #open-menu-btn.is-close-mode #g-chevron-left { opacity: 0; }
+        #open-menu-btn.is-close-mode #g-x { opacity: 1; }
+        
+        /* Back Icon (Arrow Left) - Used by #back-btn in sub-menus */
+        #back-btn .menu-icon-svg {
+             stroke-width: 2; 
         }
 
 
@@ -433,21 +431,37 @@
     </style>
 </head>
 <body>
-    <div class="header-controls">
-        <!-- Menu Button that dynamically shows Icon or "Done" Text -->
+    
+    <!-- --- LEFT CONTROLS (Only for Back Button in Sub-Menus) --- -->
+    <div id="header-left-controls" class="header-controls hidden">
+        <!-- Back Button (<-) - Used only in sub-menus -->
+        <button id="back-btn" class="header-btn" aria-label="Go Back" title="Go Back">
+            <svg class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Arrow Left (<- shape) -->
+                <g id="g-arrow-left">
+                    <path d="m12 19-7-7 7-7"/>
+                    <path d="M19 12H5"/>
+                </g>
+            </svg>
+        </button>
+    </div>
+
+    <!-- --- RIGHT CONTROLS (Menu/Close/Done) --- -->
+    <div id="header-right-controls" class="header-controls">
+        <!-- Menu Button that dynamically shows Icon (< / X) or "Done" Text -->
         <button id="open-menu-btn" class="header-btn" aria-label="Open Menu" title="Open Menu">
-            <!-- SVG Icon Group (Chevron/X) -->
-            <svg id="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                <!-- Chevron Left Group (< shape) -->
-                <g id="g-chevron">
+            <!-- SVG Icon Group -->
+            <svg id="right-menu-icon-svg" class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Chevron Left (<) - Default Icon for the main screen (user request) -->
+                <g id="g-chevron-left">
                     <path d="m15 18-6-6 6-6"/>
                 </g>
-                <!-- X Close Group -->
+                <!-- X Close Icon (X) - Used when Menu is open -->
                 <g id="g-x">
                     <path d="M18 6L6 18M6 6l12 12"/>
                 </g>
             </svg>
-            <!-- Done Text -->
+            <!-- Done Text - Used when editing or when changes are pending in sub-menus -->
             <span id="menu-done-text" class="menu-control-text">Done</span>
         </button>
     </div>
@@ -538,11 +552,16 @@
         const goalEntryBtn = document.getElementById('goal-entry-btn'); 
         const goalInput = document.getElementById('goal-input'); 
         
-        const openMenuBtn = document.getElementById('open-menu-btn');
+        // New Header Controls
+        const openMenuBtn = document.getElementById('open-menu-btn'); // Right Button
+        const backBtn = document.getElementById('back-btn'); // Left Button
         const menuDoneText = document.getElementById('menu-done-text');
+        
+        const headerLeftControls = document.getElementById('header-left-controls');
+        const headerRightControls = document.getElementById('header-right-controls');
+        
         const fullScreenMenu = document.getElementById('full-screen-menu');
         const menuInnerContainer = document.getElementById('menu-inner-container');
-        const headerControls = document.querySelector('.header-controls'); 
 
         const sizeOptions = document.getElementById('size-options');
         const weightOptions = document.getElementById('weight-options');
@@ -561,13 +580,9 @@
         // State variables to track if a change was made in the sub-menu
         let sizeChanged = false;
         let weightChanged = false;
+        // The goalChanged flag is no longer used for header button state but maintained for consistency 
         let goalChanged = false; 
         
-        // Swipe tracking variables (no longer used, but kept for clarity on removal)
-        let startX = 0;
-        let startY = 0;
-        const SWIPE_THRESHOLD = 50; 
-
         const STORAGE_KEY_COUNT = 'minimalCounterCount';
         const STORAGE_KEY_THEME = 'minimalCounterTheme';
         const STORAGE_KEY_FONT_SCALE = 'minimalCounterFontScale';
@@ -613,10 +628,14 @@
             // 1. Update Goal Reached State
             if (targetGoal > 0 && count >= targetGoal) {
                 isGoalReached = true;
-                counterElement.classList.add('goal-reached-effect');
                 
-                // Show the instructional message, now ONLY referring to the 'Done' button
-                instructionElement.textContent = "Goal Reached! Tap 'Done' to exit goal mode.";
+                // Add the pulsing animation class
+                counterElement.classList.add('goal-reached-pulse'); 
+                
+                // Ensure no conflicting classes are present
+                counterElement.classList.remove('ultimate-effect'); 
+                
+                instructionElement.textContent = "Goal Reached!"; 
                 instructionElement.classList.remove('instruction-hidden');
                 instructionElement.style.opacity = '1';
                 instructionElement.style.visibility = 'visible'; 
@@ -630,9 +649,10 @@
             } else {
                 // Goal not reached or goal is 0
                 isGoalReached = false;
-                counterElement.classList.remove('goal-reached-effect');
                 
-                // Ensure the instruction returns to default text and visibility rules
+                // Remove goal classes
+                counterElement.classList.remove('goal-reached-pulse'); 
+                
                 instructionElement.textContent = "Tap anywhere to count";
                 if (hasTapped) {
                     hideInstruction();
@@ -648,36 +668,81 @@
         // --- UI UPDATERS ---
         
         /**
-         * Determines the correct state of the header button (Menu icon, Close icon, or Done text).
+         * Checks if the goal input content has changed relative to the saved targetGoal.
+         * If input is empty or invalid, it's treated as 0.
+         * @returns {boolean} True if the input content represents a goal different from the saved targetGoal.
+         */
+        function checkGoalInputHasChanged() {
+            let inputVal = goalInput.textContent.trim().replace(/[^\d]/g, '');
+            let newGoal = parseInt(inputVal, 10);
+            
+            // If input is non-numeric or empty string, treat it as 0
+            if (isNaN(newGoal) || newGoal < 0) {
+                 newGoal = 0; 
+            }
+            
+            // Compare the parsed input value with the saved targetGoal
+            return targetGoal !== newGoal;
+        }
+
+        /**
+         * Determines the correct state and visibility of the left and right header buttons.
          */
         function updateHeaderButtonState() {
-            const isSubMenuVisible = menuInnerContainer.classList.contains('show-size-controls') || 
-                                     menuInnerContainer.classList.contains('show-weight-controls') ||
-                                     menuInnerContainer.classList.contains('show-goal-controls');
-            
             const isMenuOpen = fullScreenMenu.classList.contains('visible');
+            const isGoalScreen = menuInnerContainer.classList.contains('show-goal-controls');
+            const isSizeWeightScreen = menuInnerContainer.classList.contains('show-size-controls') || 
+                                       menuInnerContainer.classList.contains('show-weight-controls');
+            const isSubMenuVisible = isGoalScreen || isSizeWeightScreen;
+            
+            // Reset both controls' appearance classes
+            openMenuBtn.classList.remove('is-done-mode', 'is-close-mode');
 
-            // Case 1: Goal Reached & Menu is Closed (User wants to dismiss the goal)
-            if (isGoalReached && !isMenuOpen) {
-                setMenuButtonMode('done'); // Button says "Done"
-                return;
-            }
-            
-            // Case 2: Menu is Open
-            if (isMenuOpen) {
-                if (isSubMenuVisible) {
-                    // In a Sub-Menu: Button shows "Done" if changes were made, or "Close" (back arrow) if no changes.
-                    const subMenuChanged = sizeChanged || weightChanged || goalChanged;
-                    setMenuButtonMode(subMenuChanged ? 'done' : 'close'); 
+            // --- Case 1: Sub-Menu is Visible (Size, Weight, Goal Screens) ---
+            if (isSubMenuVisible) {
+                headerLeftControls.classList.remove('hidden'); // Show Back button (<-) on the left
+
+                // Check for pending changes
+                const hasPendingChanges = isGoalScreen ? checkGoalInputHasChanged() : (sizeChanged || weightChanged);
+                
+                if (hasPendingChanges) {
+                    // Show Done button on the right
+                    headerRightControls.classList.remove('hidden');
+                    openMenuBtn.classList.add('is-done-mode');
+                    openMenuBtn.setAttribute('aria-label', 'Save and Go Back');
+                    openMenuBtn.setAttribute('title', 'Save and Go Back');
                 } else {
-                    // Main Menu Open: Button shows "Close" (X icon)
-                    setMenuButtonMode('close');
+                    // Hide Right button if no changes are pending
+                    headerRightControls.classList.add('hidden');
                 }
+                
+                return; 
+            }
+
+            // --- Case 2: Menu is Open (Main Menu List) ---
+            if (isMenuOpen) {
+                headerLeftControls.classList.add('hidden'); // Hide Left button
+                headerRightControls.classList.remove('hidden'); // Show Right button
+                openMenuBtn.classList.add('is-close-mode'); // Right button shows 'X'
+                openMenuBtn.setAttribute('aria-label', 'Close Menu');
+                openMenuBtn.setAttribute('title', 'Close Menu');
                 return;
             }
-            
-            // Case 3: Menu is Closed & Goal Not Reached (Default state)
-            setMenuButtonMode('menu');
+
+            // --- Case 3: Menu is Closed (Main Counter View) ---
+            headerLeftControls.classList.add('hidden'); // Hide Left button
+            headerRightControls.classList.remove('hidden'); // Show Right button (Default is '<')
+
+            if (isEditMode || isGoalReached) {
+                // If in Edit Mode or Goal Reached, Right button shows 'Done'
+                openMenuBtn.classList.add('is-done-mode');
+                openMenuBtn.setAttribute('aria-label', 'Done');
+                openMenuBtn.setAttribute('title', 'Done');
+            } else {
+                // Default state: Right button shows Menu chevron (<)
+                openMenuBtn.setAttribute('aria-label', 'Open Menu');
+                openMenuBtn.setAttribute('title', 'Open Menu');
+            }
         }
 
         function updateCounterDisplay() {
@@ -685,11 +750,11 @@
             adjustFontSize(count);
             updateSelectedButton(sizeOptions, 'scale');
             updateSelectedButton(weightOptions, 'weight');
-            checkGoalStatus(); // Check and apply goal effect on update (includes button update)
+            checkGoalStatus(); 
         }
 
         function updateSelectedButton(container, dataType) {
-            if (!container) return; // Guard for non-existent container
+            if (!container) return; 
             Array.from(container.children).forEach(btn => {
                 btn.classList.remove('selected');
                 const btnValue = parseFloat(btn.getAttribute(`data-${dataType}`));
@@ -701,9 +766,6 @@
             });
         }
 
-        /**
-         * Hides the instruction text by adding a class that smoothly collapses its height and margin.
-         */
         function hideInstruction() {
             if (!hasTapped && !isGoalReached) {
                 hasTapped = true;
@@ -711,9 +773,6 @@
             }
         }
         
-        /**
-         * Shows the default instruction text.
-         */
         function showInstruction() {
             instructionElement.textContent = "Tap anywhere to count";
             instructionElement.classList.remove('instruction-hidden');
@@ -721,29 +780,6 @@
             instructionElement.style.visibility = 'visible';
         }
         
-        /**
-         * Sets the appearance and ARIA attributes of the top-right menu button.
-         * @param {string} mode - 'menu' (chevron icon, menu closed), 'close' (X icon, main menu open), or 'done' (Done text, sub-menu/goal open).
-         */
-        function setMenuButtonMode(mode) {
-            if (mode === 'done') {
-                openMenuBtn.classList.add('is-done-mode');
-                openMenuBtn.classList.remove('is-active');
-                openMenuBtn.setAttribute('aria-label', 'Done');
-                openMenuBtn.setAttribute('title', 'Done');
-            } else if (mode === 'close') {
-                openMenuBtn.classList.remove('is-done-mode');
-                openMenuBtn.classList.add('is-active');
-                openMenuBtn.setAttribute('aria-label', 'Close Menu');
-                openMenuBtn.setAttribute('title', 'Close Menu');
-            } else { // 'menu' mode 
-                openMenuBtn.classList.remove('is-done-mode');
-                openMenuBtn.classList.remove('is-active');
-                openMenuBtn.setAttribute('aria-label', 'Open Menu');
-                openMenuBtn.setAttribute('title', 'Open Menu');
-            }
-        }
-
         /**
          * Toggles the visibility of the full-screen menu overlay and controls internal screen slides.
          */
@@ -774,21 +810,79 @@
             updateHeaderButtonState();
         }
 
+        /**
+         * Handler for the Left Back button (`<-`). Abandons changes and navigates back.
+         */
+        function goBackFromSubMenu(e) {
+            if (e) e.stopPropagation();
+
+            // 1. Navigation back to Main Menu List (abandoning unsaved changes)
+            menuInnerContainer.classList.remove('show-size-controls');
+            menuInnerContainer.classList.remove('show-weight-controls');
+            menuInnerContainer.classList.remove('show-goal-controls');
+
+            // 2. Reset flags when leaving a sub-menu
+            sizeChanged = false;
+            weightChanged = false;
+            goalChanged = false;
+            
+            // 3. Update Header Buttons 
+            updateHeaderButtonState();
+        }
+        
+        /**
+         * Handler for the Right Done button (in sub-menus). Saves and navigates back.
+         */
+        function saveChangesAndGoBack(e) {
+             if (e) e.stopPropagation();
+             
+             if (menuInnerContainer.classList.contains('show-goal-controls')) {
+                 saveTargetGoal(true); // Saves goal (and resets counter if goal changed)
+             } else if (menuInnerContainer.classList.contains('show-size-controls')) {
+                 // Size changes are saved in setSize, just reset flag
+                 sizeChanged = false;
+             } else if (menuInnerContainer.classList.contains('show-weight-controls')) {
+                 // Weight changes are saved in setWeight, just reset flag
+                 weightChanged = false;
+             }
+             
+             // Navigate back to Main Menu List
+             menuInnerContainer.classList.remove('show-size-controls');
+             menuInnerContainer.classList.remove('show-weight-controls');
+             menuInnerContainer.classList.remove('show-goal-controls');
+             
+             updateHeaderButtonState();
+             
+             // NOTE: The caller (e.g., openMenuBtn click handler) is responsible for the final toggleMenu('hide') if needed.
+        }
+
+
         function setNumberEditMode(isEditing) {
             isEditMode = isEditing;
             if (isEditing) {
+                setNumberEditModeState(true);
+            } else {
+                setNumberEditModeState(false);
+            }
+        }
+        
+        function setNumberEditModeState(isEditing) {
+            isEditMode = isEditing;
+            if (isEditing) {
                 // Enter Edit Mode for Main Counter
-                headerControls.classList.add('hidden-controls'); 
                 counterElement.contentEditable = 'true';
                 counterElement.setAttribute('inputmode', 'numeric');
+                
+                document.body.classList.add('keyboard-up');
+
+                if (fullScreenMenu.classList.contains('visible')) {
+                    fullScreenMenu.classList.remove('visible'); 
+                }
+
                 counterElement.focus();
                 
                 instructionElement.style.opacity = '0';
                 instructionElement.style.visibility = 'hidden'; 
-                
-                document.body.classList.add('keyboard-up');
-
-                toggleMenu('closed'); 
                 
                 try {
                     document.execCommand('selectAll', false, null);
@@ -797,7 +891,6 @@
                 }
             } else {
                 // Exit Edit Mode for Main Counter
-                headerControls.classList.remove('hidden-controls'); 
                 counterElement.contentEditable = 'false';
                 counterElement.removeAttribute('inputmode');
                 
@@ -805,47 +898,49 @@
                 
                 checkGoalStatus(); // Re-evaluate instruction visibility based on goal
             }
+            updateHeaderButtonState();
         }
 
         // --- MENU NAVIGATION ---
-        function enterSizeEditMode(e) {
+        function enterSubMenuMode(e, className) {
             if (e) e.stopPropagation();
             sizeChanged = false; 
-            updateSelectedButton(sizeOptions, 'scale');
+            weightChanged = false;
+            goalChanged = false; 
+            
+            if (className === 'show-size-controls') updateSelectedButton(sizeOptions, 'scale');
+            if (className === 'show-weight-controls') updateSelectedButton(weightOptions, 'weight');
+            
             toggleMenu('show');
-            menuInnerContainer.classList.remove('show-weight-controls');
-            menuInnerContainer.classList.remove('show-goal-controls'); 
-            menuInnerContainer.classList.add('show-size-controls');
+            menuInnerContainer.classList.remove('show-size-controls', 'show-weight-controls', 'show-goal-controls');
+            menuInnerContainer.classList.add(className);
             updateHeaderButtonState(); 
+        }
+
+        function enterSizeEditMode(e) {
+            enterSubMenuMode(e, 'show-size-controls');
         }
         
         function enterWeightEditMode(e) {
-            if (e) e.stopPropagation();
-            weightChanged = false; 
-            updateSelectedButton(weightOptions, 'weight');
-            toggleMenu('show');
-            menuInnerContainer.classList.remove('show-size-controls');
-            menuInnerContainer.classList.remove('show-goal-controls'); 
-            menuInnerContainer.classList.add('show-weight-controls');
-            updateHeaderButtonState(); 
+            enterSubMenuMode(e, 'show-weight-controls');
         }
         
         function enterGoalEditMode(e) { 
-            if (e) e.stopPropagation();
-            goalChanged = false; 
-            toggleMenu('show');
+            enterSubMenuMode(e, 'show-goal-controls');
             
-            goalInput.textContent = targetGoal;
-            
-            menuInnerContainer.classList.remove('show-size-controls');
-            menuInnerContainer.classList.remove('show-weight-controls');
-            menuInnerContainer.classList.add('show-goal-controls');
+            // Set input to empty string if goal is 0, otherwise show the goal
+            goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
             
             setTimeout(() => { 
                 goalInput.focus();
+                if (targetGoal !== 0) {
+                     try {
+                        document.execCommand('selectAll', false, null);
+                    } catch (error) {
+                        // Ignore
+                    }
+                }
             }, 450); 
-            
-            updateHeaderButtonState(); 
         }
         
         function setSize(e) {
@@ -856,13 +951,15 @@
             
             if (Math.abs(fontScale - selectedScale) > 0.001) {
                 sizeChanged = true; 
+            } else {
+                sizeChanged = false; // Toggling back to the original selection
             }
             
             fontScale = selectedScale;
             localStorage.setItem(STORAGE_KEY_FONT_SCALE, fontScale);
             updateCounterDisplay();
             updateSelectedButton(sizeOptions, 'scale');
-            updateHeaderButtonState(); 
+            updateHeaderButtonState();
         }
         
         function setWeight(e) {
@@ -873,73 +970,93 @@
             
             if (fontWeight !== selectedWeight) {
                 weightChanged = true;
+            } else {
+                weightChanged = false; // Toggling back to the original selection
             }
             
             setFontWeight(selectedWeight);
-            updateHeaderButtonState(); 
+            updateHeaderButtonState();
         }
 
-        function saveTargetGoal() { 
+        /**
+         * Saves the target goal.
+         * @param {boolean} forceSave - If true, treats the operation as triggered by 'Done'.
+         */
+        function saveTargetGoal(forceSave = false) { 
             let inputVal = goalInput.textContent.trim();
             inputVal = inputVal.replace(/[^\d]/g, '');
             let newGoal = parseInt(inputVal, 10);
             
             if (isNaN(newGoal) || newGoal < 0) {
-                newGoal = 0;
+                newGoal = 0; 
             }
 
-            if (targetGoal !== newGoal) {
-                goalChanged = true;
+            // Check for actual change
+            const reallyChanged = targetGoal !== newGoal;
+            
+            if (reallyChanged || forceSave) {
                 
-                // Reset counter to 0 when goal is set/changed
-                count = 0;
-                localStorage.setItem(STORAGE_KEY_COUNT, count);
-                counterElement.textContent = count;
-                hasTapped = false; // Show instruction again
-                showInstruction(); 
-            }
+                if (reallyChanged) {
+                    // Only reset counter if the goal value actually changed
+                    count = 0;
+                    localStorage.setItem(STORAGE_KEY_COUNT, count);
+                    counterElement.textContent = count;
+                    hasTapped = false; // Show instruction again
+                    showInstruction(); 
+                }
 
-            targetGoal = newGoal;
-            localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
-            goalInput.textContent = targetGoal; // Clean up display
+                targetGoal = newGoal;
+                localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
+                
+                // If goal is 0, ensure input text is empty for cleaner UI on re-entry
+                goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
+                
+                goalChanged = false; 
+            }
             
-            // Re-check count status, which will also update goal-reached status
             checkGoalStatus(); 
-            
             updateHeaderButtonState();
         }
         
+        // Listener to dynamically update header state while typing the goal
+        goalInput.addEventListener('input', () => {
+            // Simply update the header button state based on the current input vs saved goal
+            updateHeaderButtonState();
+        });
+
+
         /**
-         * Resets the goal to 0 and re-enables counting after a successful 'Done' click.
+         * Resets the goal to 0 and re-enables counting after a successful 'Done' click on the goal reached state.
          */
         function exitGoalMode() {
             if (!isGoalReached) return;
             
-            // Clear the goal
+            count = 0;
+            localStorage.setItem(STORAGE_KEY_COUNT, count);
+            counterElement.textContent = count;
+            
             targetGoal = 0;
             localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
-            goalInput.textContent = targetGoal;
             
-            // Reset goal status checks and visual effects
-            isGoalReached = false;
-            counterElement.classList.remove('goal-reached-effect');
+            isGoalReached = false; 
             
-            // Restore instructions/hide them based on current count
-            instructionElement.textContent = "Tap anywhere to count"; // Reset instruction text
-            if (count > 0) {
-                hideInstruction();
-            } else {
-                hasTapped = false;
-                showInstruction();
-            }
+            // Remove goal classes
+            counterElement.classList.remove('goal-reached-pulse');
             
-            // Update button state back to 'menu'
+            instructionElement.textContent = "Tap anywhere to count"; 
+            hasTapped = false;
+            showInstruction();
+            
             updateHeaderButtonState();
         }
 
 
         // --- Special Effects Logic Helper (Transient) ---
         function checkAndApplyTransientEffect(currentCount) {
+            if (isGoalReached) {
+                return;
+            }
+            
             if (transientEffectTimer) {
                 clearTimeout(transientEffectTimer);
                 transientEffectTimer = null;
@@ -949,7 +1066,6 @@
             
             let effectClass = null;
 
-            // Apply 'ultimate-effect' to 33, 66, and 99
             if (currentCount === 33 || currentCount === 66 || currentCount === 99) {
                 effectClass = 'ultimate-effect'; 
             }
@@ -965,7 +1081,7 @@
                 }, 400); 
             }
             
-            checkGoalStatus();
+            checkGoalStatus(); 
         }
 
 
@@ -975,9 +1091,7 @@
                 return;
             }
             
-            // Block counting if goal is reached
             if (isGoalReached) {
-                // Goal message is already shown by checkGoalStatus
                 return;
             }
 
@@ -994,13 +1108,10 @@
         function resetCounter(e) {
             if (e) e.stopPropagation();
             
-            if (menuInnerContainer.classList.contains('show-goal-controls')) {
-                saveTargetGoal(); 
-            }
-
             if (isEditMode) {
                 saveNewCount();
             }
+            
             count = 0;
             targetGoal = 0; 
             localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
@@ -1008,24 +1119,29 @@
             
             if (transientEffectTimer) clearTimeout(transientEffectTimer);
             counterElement.classList.remove('ultimate-effect');
-            counterElement.classList.remove('goal-reached-effect'); 
+            counterElement.classList.remove('goal-reached-pulse'); // Remove new animation class
+            
+            instructionElement.textContent = "Tap anywhere to count";
             
             hasTapped = false;
             showInstruction();
 
             counterElement.textContent = count;
-            goalInput.textContent = targetGoal; 
+            // Ensure goal input displays empty when goal is reset to 0
+            goalInput.textContent = ''; 
             updateCounterDisplay(); 
             toggleMenu('hide');
         }
 
         function editNumber(e) {
             if (e) e.stopPropagation();
-            toggleMenu('hide');
-            setNumberEditMode(true);
+            toggleMenu('hide'); 
+            setNumberEditMode(true); 
         }
 
         function saveNewCount() {
+            if (!isEditMode) return;
+            
             let inputVal = counterElement.textContent.trim();
             inputVal = inputVal.replace(/[^\d]/g, '');
             let newCount = parseInt(inputVal, 10);
@@ -1064,6 +1180,8 @@
             if (themeMeta) {
                 themeMeta.setAttribute('content', newThemeColor);
             }
+            
+            checkGoalStatus(); 
         }
 
         function toggleFullScreen(e) {
@@ -1108,32 +1226,19 @@
             if (savedFontWeight !== null) {
                 fontWeight = parseInt(savedFontWeight, 10);
             } else {
-                fontWeight = 100; // Default to thin
+                fontWeight = 100; 
             }
             
-            // Load Target Goal
             const savedGoal = localStorage.getItem(STORAGE_KEY_GOAL);
             if (savedGoal !== null) {
                 targetGoal = parseInt(savedGoal, 10);
             }
-            goalInput.textContent = targetGoal;
             
-            // Set initial styles
+            // Initialize goal input content correctly (empty string if 0)
+            goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
+            
             setFontWeight(fontWeight);
-            updateCounterDisplay(); // This now calls checkGoalStatus and sets isGoalReached
             
-            // Initialize instruction visibility
-            if (count > 0 && !isGoalReached) {
-                hasTapped = true;
-                hideInstruction();
-                checkAndApplyTransientEffect(count);
-            } else if (isGoalReached) {
-                // Instruction is already set by checkGoalStatus
-            } else {
-                hasTapped = false;
-                showInstruction();
-            }
-
             const savedTheme = localStorage.getItem(STORAGE_KEY_THEME);
             if (savedTheme === 'light') {
                 isDarkMode = false;
@@ -1148,37 +1253,50 @@
                     themeMeta.setAttribute('content', '#000000');
                 }
             }
-            
             updateThemeButtonText();
-            handleFullscreenChange();
+
+            updateCounterDisplay(); 
             
-            updateHeaderButtonState(); // Initial button state based on goal
+            if (count > 0 && !isGoalReached) {
+                hasTapped = true;
+                hideInstruction();
+                checkAndApplyTransientEffect(count);
+            } else if (isGoalReached) {
+                // Instruction is already set by checkGoalStatus
+            } else {
+                hasTapped = false;
+                showInstruction();
+            }
+
+            handleFullscreenChange();
+            updateHeaderButtonState(); 
 
             // 2. Event Listeners
 
             // Main Body/Counter Click Listener (for counting)
             document.body.addEventListener('click', (e) => {
-                // If the click is inside the menu or controls, ignore it on the body
                 if (e.target.closest('.header-controls') || e.target.closest('#full-screen-menu')) {
                     return;
                 }
                 
-                // If the click is outside the menu but the menu is visible, close it completely
                 if (fullScreenMenu.classList.contains('visible')) {
                     toggleMenu('hide');
                     return;
                 }
                 
                 if (isEditMode) {
-                    counterElement.blur(); // Triggers saveNewCount
+                    counterElement.blur(); 
                     return;
                 }
                 
-                // If goal is reached, incrementCounter handles returning early.
+                if (isGoalReached) {
+                    return;
+                }
+
                 incrementCounter();
             });
             
-            // Counter Element Listeners (Number Editing - handles save on blur/keyboard done)
+            // Counter Element Listeners 
             counterElement.addEventListener('blur', saveNewCount);
             counterElement.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
@@ -1187,51 +1305,70 @@
                 }
             });
             
-            // Goal Input Listeners (handles save on blur/keyboard done)
-            goalInput.addEventListener('blur', saveTargetGoal);
+            // Goal Input Listeners 
+            // When goal input blurs (e.g., user taps outside the field), save the value but keep the menu open.
+            goalInput.addEventListener('blur', () => saveTargetGoal(false)); 
+            
+            // NEW: Handle 'Enter' key press (mobile keyboard 'Done') to save AND navigate back to the counter.
             goalInput.addEventListener('keydown', (e) => {
                  if (e.key === 'Enter') {
                     e.preventDefault();
+                    
+                    // 1. Force the blur to dismiss the keyboard first, which also saves the goal via the blur listener
                     goalInput.blur(); 
+                    
+                    // 2. Then, execute the save and navigation back function (which returns to the main settings list)
+                    if (menuInnerContainer.classList.contains('show-goal-controls')) {
+                        saveChangesAndGoBack(e); 
+                        // 3. FIX: Close the entire menu after saving and navigating back to the main list.
+                        toggleMenu('hide'); 
+                    }
                 }
             });
 
-            // Menu Open/Close/Back Logic 
+
+            // --- HEADER BUTTON LOGIC ---
+            
+            // RIGHT BUTTON (Open Menu / Close Menu / Done)
             openMenuBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
 
-                // Handle 'Done' click when Goal is Reached (and menu is not visible)
-                if (isGoalReached && !fullScreenMenu.classList.contains('visible')) {
-                    exitGoalMode(); // Clears the goal and resets the button state
-                    return;
-                }
-
+                const isMenuOpen = fullScreenMenu.classList.contains('visible');
                 const isSubMenuVisible = menuInnerContainer.classList.contains('show-size-controls') || 
                                          menuInnerContainer.classList.contains('show-weight-controls') ||
                                          menuInnerContainer.classList.contains('show-goal-controls');
+
+                // Case A: Sub-menu 'Done' button
+                if (isSubMenuVisible && openMenuBtn.classList.contains('is-done-mode')) {
+                    saveChangesAndGoBack(e);
+                    // Crucially, after saving in a sub-menu, we must close the whole thing
+                    toggleMenu('hide'); 
+                    return;
+                }
+
+                // Case B: Main Counter View 'Done' button (Edit Mode / Goal Reached)
+                if ((isGoalReached || isEditMode) && !isMenuOpen && !isSubMenuVisible) {
+                    if (isEditMode) {
+                        counterElement.blur(); // Triggers saveNewCount()
+                    } else if (isGoalReached) {
+                        exitGoalMode(); // Clears goal and resets counter
+                    }
+                    return;
+                }
                 
-                const isMenuOpen = fullScreenMenu.classList.contains('visible');
-
+                // Case C: Menu Open/Close
                 if (!isMenuOpen) {
-                    // 1. Menu is closed: Open main menu
+                    // Menu is closed: Open main menu (Button shows '<')
                     toggleMenu('show');
-                } else if (isSubMenuVisible) {
-                    // 2. Sub-menu is open: Go back to main list 
-                    menuInnerContainer.classList.remove('show-size-controls');
-                    menuInnerContainer.classList.remove('show-weight-controls');
-                    menuInnerContainer.classList.remove('show-goal-controls');
-                    
-                    sizeChanged = false;
-                    weightChanged = false;
-                    goalChanged = false;
-
-                    updateHeaderButtonState();
-                    
-                } else { // Main list is visible
-                    // 3. Main list is open: Close menu completely
+                } else {
+                    // Menu is open (main list): Close menu completely (Button shows 'X')
                     toggleMenu('hide');
                 }
             });
+            
+            // LEFT BUTTON (Back in Sub-Menus)
+            backBtn.addEventListener('click', goBackFromSubMenu);
+
 
             // Menu Item Listeners
             fullscreenBtn.addEventListener('click', (e) => {
@@ -1261,7 +1398,6 @@
 
             document.addEventListener('fullscreenchange', handleFullscreenChange);
             
-            // Prevent default browser double-tap zoom
             document.addEventListener('dblclick', function(event) {
                 event.preventDefault();
             }, { passive: false });
@@ -1292,19 +1428,12 @@
                     e.preventDefault();
                 } else if (e.key === 'Escape') {
                     if (fullScreenMenu.classList.contains('visible')) {
-                        // Check if in a sub-menu
                         const isSubMenuVisible = menuInnerContainer.classList.contains('show-size-controls') || 
                                                  menuInnerContainer.classList.contains('show-weight-controls') ||
                                                  menuInnerContainer.classList.contains('show-goal-controls');
                                                  
                         if (isSubMenuVisible) {
-                            menuInnerContainer.classList.remove('show-size-controls');
-                            menuInnerContainer.classList.remove('show-weight-controls');
-                            menuInnerContainer.classList.remove('show-goal-controls'); 
-                            updateHeaderButtonState();
-                            sizeChanged = false; 
-                            weightChanged = false; 
-                            goalChanged = false;
+                            goBackFromSubMenu();
                         } else {
                             toggleMenu('hide');
                         }
