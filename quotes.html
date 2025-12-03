@@ -109,12 +109,6 @@
       transition: opacity 0.3s ease;
       white-space: pre-wrap;
     }
-    
-    /* The instruction prompt color (updated to subtle premium grey) */
-    #instruction-prompt {
-      color: #9ca3af;
-      transition: opacity 0.3s ease;
-    }
 
     /* Progress Ring for Auto Button */
     .progress-wrap {
@@ -153,6 +147,8 @@
         color: var(--dim-text);
         font-size: 0.85rem;
         font-weight: 300;
+        opacity: 0; /* Hidden by default */
+        transition: opacity 0.5s ease;
     }
     
     .highlight-number {
@@ -224,9 +220,6 @@
       <div class="mb-8">
         <p id="quote-text" class="text-xl md:text-2xl lg:text-3xl font-light leading-relaxed"></p>
       </div>
-      <p id="instruction-prompt" class="text-xs md:text-sm font-light tracking-wide uppercase mb-4 opacity-70">
-        Tap to view the next quote
-      </p>
     </div>
   </div>
   
@@ -272,7 +265,7 @@
     // --- ELEMENTS ---
     const quoteContainer = document.getElementById('quote-container');
     const quoteTextEl = document.getElementById('quote-text');
-    const instructionEl = document.getElementById('instruction-prompt');
+    const footerStatusEl = document.querySelector('.footer-status');
     
     // Buttons
     const autoBtn = document.getElementById('auto-mode-btn');
@@ -292,7 +285,6 @@
 
     // --- STATE VARIABLES ---
     let currentQuoteIndex = -1;
-    let instructionTapped = false;
     let currentOrientationLock = 'portrait-primary';
     
     // Auto Mode State
@@ -391,9 +383,13 @@
         if (document.fullscreenElement) {
             // ENTER FULLSCREEN: Immediately switch to Zen Mode (State 2: Only arrow is visible)
             setControlState('zen-mode');
+            // SHOW FOOTER TIME
+            footerStatusEl.style.opacity = '1';
         } else {
             // EXIT FULLSCREEN: Return to Normal Mode (State 1: Only Fullscreen button is visible)
             setControlState('normal');
+            // HIDE FOOTER TIME
+            footerStatusEl.style.opacity = '0';
             
             // Attempt to unlock orientation
             if (screen.orientation && screen.orientation.unlock) {
@@ -543,12 +539,6 @@
     function handleQuoteClick() {
         showNextQuote();
         
-        if (!instructionTapped) {
-            instructionTapped = true;
-            instructionEl.style.opacity = "0";
-            setTimeout(() => instructionEl.style.display = 'none', 300);
-        }
-        
         // If in auto mode, tapping resets the timer for the next quote
         if (autoMode) {
             clearInterval(autoTimer);
@@ -571,8 +561,6 @@
       
       currentTimeHMS.textContent = hms;
       currentTimeAMPM.textContent = hours >= 12 ? 'pm' : 'am';
-      
-      // Removed minutes left calculation
     }
     
     // --- INIT ---
