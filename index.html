@@ -32,8 +32,6 @@
             --menu-hover: rgba(255, 255, 255, 0.1);
             --selected-bg-dark: #1C1C1C;
             --selected-text-dark: #FFFFFF;
-            /* Menu width for full screen coverage */
-            --menu-width: 100vw; 
         }
 
         body.light-mode {
@@ -82,48 +80,74 @@
 
         #counter {
             font-size: 35vw;
-            /* CHANGED: Set font-weight to 200 for a very thin type */
-            font-weight: 200; 
+            /* Font weight is now set dynamically via JavaScript */
             line-height: 1;
             text-align: center;
             padding: 0 10px;
             cursor: pointer;
             pointer-events: auto;
-            transition: transform 0.1s ease-out, font-size 0.3s;
+            transition: font-size 0.3s ease-out, color 0.5s ease, text-shadow 0.5s ease, font-weight 0.3s ease; 
             outline: none;
             margin-bottom: 5px;
         }
 
-        .pulse {
-            transform: scale(0.95);
+        /* --- Special Effects Styling --- */
+        .special-green {
+            color: #4CAF50 !important; 
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
         }
+
+        .ultimate-effect {
+            color: #00FF7F !important; 
+            text-shadow: 0 0 20px #00FF7F, 0 0 30px #00FF7F, 0 0 40px rgba(0, 255, 127, 0.7);
+            animation: ultimateGlow 1.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes ultimateGlow {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0.95;
+                transform: scale(1.01);
+            }
+        }
+
 
         #instruction {
             font-size: 1.1rem;
             font-weight: 300;
             color: var(--instruction-color);
-            transition: opacity 0.5s ease;
             margin-top: 10px;
+            height: 1.1rem; 
+            line-height: 1.1rem;
+            overflow: hidden;
             pointer-events: none;
             display: block;
+            transition: opacity 0.5s ease, margin-top 0.5s ease, height 0.5s ease;
+        }
+        
+        .instruction-hidden {
+            opacity: 0 !important;
+            height: 0 !important;
+            margin-top: 0 !important;
         }
 
-        /* --- HEADER CONTROLS (Anchored to Far Right Edge) --- */
+        /* --- HEADER CONTROLS --- */
         .header-controls {
             position: fixed;
             top: 0;
             right: 0; 
-            z-index: 250; /* Higher Z-index so button is always visible */
+            z-index: 250; 
             display: flex;
             flex-direction: column;
             align-items: flex-end;
             padding: 20px; 
             pointer-events: none;
-            /* Transition for smooth hiding/showing */
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        /* NEW: Class to hide controls during number editing */
         .header-controls.hidden-controls {
             opacity: 0;
             pointer-events: none;
@@ -141,20 +165,22 @@
             align-items: center;
             justify-content: center;
             border-radius: 0;
-            min-width: 44px; /* Sufficient touch target size */
+            min-width: 44px; 
             height: 44px;
             font-weight: 600;
             pointer-events: auto;
             font-size: 16px;
         }
         
-        /* Set active color for the button when menu is open */
+        .header-btn:focus {
+            outline: none;
+        }
+        
         #open-menu-btn.is-active {
             color: var(--menu-text); 
-            /* Since the menu is now full-screen, the button will be against the menu background, so we use menu-text */
         }
 
-        /* --- MENU ICON STYLING (Chevron Left <-> X Close) --- */
+        /* --- MENU ICON STYLING --- */
         #menu-icon-svg {
             width: 28px;
             height: 28px;
@@ -166,7 +192,6 @@
             transition: opacity 0.3s ease;
         }
         
-        /* Default State: Chevron Left visible, X hidden */
         #g-chevron {
             opacity: 1;
         }
@@ -174,7 +199,6 @@
             opacity: 0;
         }
 
-        /* Active State: Chevron Left hidden, X visible */
         #open-menu-btn.is-active #g-chevron {
             opacity: 0;
         }
@@ -183,13 +207,12 @@
         }
 
 
-        /* --- FULL-SCREEN MENU STYLES (Slides from Right) --- */
+        /* --- FULL-SCREEN MENU STYLES --- */
         #full-screen-menu {
             position: fixed;
             top: 0;
             right: 0; 
             height: 100vh;
-            /* CRITICAL CHANGE: Set width to 100vw for full coverage */
             width: 100vw; 
             background-color: var(--menu-bg);
             z-index: 100;
@@ -197,43 +220,44 @@
             flex-direction: column;
             padding: 20px 0 20px 0;
             
-            /* Slide from Right: Closed state */
             transform: translateX(100%); 
             transition: transform 0.4s cubic-bezier(0.4, 0, 0, 1);
             
             pointer-events: none;
             overflow-y: auto;
+            overflow-x: hidden; 
         }
 
         #full-screen-menu.visible {
-            /* Open state */
             transform: translateX(0);
             pointer-events: auto;
-            /* Removed box-shadow as it's full screen */
         }
 
         .menu-header {
-            /* Adjust header to create space for the button which is outside the menu */
             height: 40px; 
         }
 
-        /* Inner container for horizontal slide (Size controls) */
+        /* Inner container for horizontal slide (3 Screens: Main, Size, Weight) */
         #menu-inner-container {
             display: flex;
-            /* Width must be 200vw for 2 full-screen panels to slide (100vw each) */
-            width: 200vw;
+            width: 300vw; /* Triple the width for 3 pages */
             height: 100%;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* Shift for Size Controls */
         #menu-inner-container.show-size-controls {
-            /* FIXED: Shift by 100vw to correctly show the second panel (Size Controls) */
             transform: translateX(-100vw); 
         }
 
+        /* Shift for Weight Controls */
+        #menu-inner-container.show-weight-controls {
+            transform: translateX(-200vw); 
+        }
+
         #menu-nav-list,
-        #size-controls-container {
-            /* FIXED: Each container must be 100vw (the full screen width) */
+        #size-controls-container,
+        #weight-controls-container {
             width: 100vw;
             flex-shrink: 0;
             flex-grow: 1;
@@ -258,14 +282,25 @@
             transition: background-color 0.2s, color 0.2s;
         }
 
-        .menu-item-link.selected-size {
+        .menu-sub-header {
+            font-size: 2.5rem;
+            font-weight: 600;
+            padding: 0; 
+            margin-bottom: 20px;
+        }
+        
+        .menu-item-link:focus {
+            outline: none;
+        }
+
+        .menu-item-link.selected {
             color: var(--selected-text-dark);
             background-color: var(--selected-bg-dark);
             border-radius: 8px;
             padding-left: 15px;
         }
 
-        body.light-mode .menu-item-link.selected-size {
+        body.light-mode .menu-item-link.selected {
             color: var(--selected-text-light);
             background-color: var(--selected-bg-light);
         }
@@ -277,28 +312,30 @@
             transform: translateX(5px);
         }
 
-        .menu-item-link.selected-size:hover {
+        .menu-item-link.selected:hover {
             background-color: var(--selected-bg-dark);
             transform: none;
         }
 
-        body.light-mode .menu-item-link.selected-size:hover {
+        body.light-mode .menu-item-link.selected:hover {
             background-color: var(--selected-bg-light);
             transform: none;
         }
 
-        /* --- SIZE CONTROLS STYLING --- */
-        #size-controls-container {
+        /* --- SUB-MENU SPECIFIC STYLING --- */
+        #size-controls-container, #weight-controls-container {
             padding-top: 40px;
         }
 
-        #size-options button {
+        .control-options button {
             font-size: 2rem;
             padding: 15px 10px;
             margin-bottom: 5px;
+            width: 90%;
+            text-align: left;
         }
 
-        .size-info {
+        .info-text {
             font-size: 1.2rem;
             color: var(--instruction-color);
             margin-bottom: 40px;
@@ -311,7 +348,7 @@
                 padding: 12px 0;
             }
 
-            #size-options button {
+            .control-options button {
                 font-size: 1.8rem;
             }
 
@@ -340,10 +377,9 @@
 
     <!-- Full-Screen Menu Overlay (Slides from Right) -->
     <div id="full-screen-menu" class="hidden-menu">
-        <!-- Header is just for spacing, allowing the button outside to align -->
         <div class="menu-header"></div> 
         <div id="menu-inner-container">
-            <!-- --- MAIN MENU LIST (Screen 1) --- -->
+            <!-- --- SCREEN 1: MAIN MENU LIST --- -->
             <nav id="menu-nav-list">
                 <button id="fullscreen-btn" class="menu-item-link" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
                     <span id="fullscreen-text">Fullscreen</span>
@@ -352,24 +388,38 @@
                     Reset
                 </button>
                 <button id="edit-btn" class="menu-item-link" aria-label="Edit Number" title="Edit Number">
-                    Edit
+                    Edit Number
                 </button>
                 <button id="size-entry-btn" class="menu-item-link" aria-label="Adjust Font Size" title="Adjust Font Size">
                     Size
+                </button>
+                <button id="weight-entry-btn" class="menu-item-link" aria-label="Adjust Font Weight" title="Adjust Font Weight">
+                    Weight
                 </button>
                 <button id="theme-btn" class="menu-item-link" aria-label="Toggle Theme" title="Toggle Theme">
                     <span id="theme-text">White Mode</span>
                 </button>
             </nav>
             
-            <!-- --- SIZE CONTROL BUTTONS (Screen 2) --- -->
+            <!-- --- SCREEN 2: SIZE CONTROL BUTTONS --- -->
             <div id="size-controls-container">
-                <h2 class="menu-item-link" style="padding: 0; margin-bottom: 20px;">Choose Counter Size</h2>
-                <p class="size-info">Select a size below. The change is applied instantly.</p>
-                <div id="size-options" style="display: flex; flex-direction: column; width: 90%;">
+                <h2 class="menu-sub-header">Choose Counter Size</h2>
+                <p class="info-text">Select a size below. The change is applied instantly.</p>
+                <div id="size-options" class="control-options">
                     <button id="size-small-btn" class="menu-item-link" data-scale="0.3">Small</button>
                     <button id="size-normal-btn" class="menu-item-link" data-scale="0.6">Normal</button>
                     <button id="size-large-btn" class="menu-item-link" data-scale="1.3">Large</button>
+                </div>
+            </div>
+
+            <!-- --- SCREEN 3: WEIGHT CONTROL BUTTONS (Updated to remove numbers) --- -->
+            <div id="weight-controls-container">
+                <h2 class="menu-sub-header">Choose Font Weight</h2>
+                <p class="info-text">Affects how thin or thick the number appears.</p>
+                <div id="weight-options" class="control-options">
+                    <button id="weight-thin-btn" class="menu-item-link" data-weight="100" style="font-weight: 100;">Thin</button>
+                    <button id="weight-regular-btn" class="menu-item-link" data-weight="400" style="font-weight: 400;">Regular</button>
+                    <button id="weight-bold-btn" class="menu-item-link" data-weight="800" style="font-weight: 800;">Bold</button>
                 </div>
             </div>
         </div>
@@ -391,33 +441,39 @@
         const resetBtn = document.getElementById('reset-btn');
         const themeBtn = document.getElementById('theme-btn');
         const themeTextEl = document.getElementById('theme-text');
+        
         const sizeEntryBtn = document.getElementById('size-entry-btn');
-
+        const weightEntryBtn = document.getElementById('weight-entry-btn');
+        
         const openMenuBtn = document.getElementById('open-menu-btn');
         const fullScreenMenu = document.getElementById('full-screen-menu');
         const menuInnerContainer = document.getElementById('menu-inner-container');
-        const headerControls = document.querySelector('.header-controls'); // Get the control wrapper
+        const headerControls = document.querySelector('.header-controls'); 
 
-        const sizeSmallBtn = document.getElementById('size-small-btn');
-        const sizeNormalBtn = document.getElementById('size-normal-btn');
-        const sizeLargeBtn = document.getElementById('size-large-btn');
-
+        const sizeOptions = document.getElementById('size-options');
+        const weightOptions = document.getElementById('weight-options');
+        
         let count = 0;
         let hasTapped = false;
         let isDarkMode = true;
         let fontScale = 0.6;
-        let isSizeEditing = false;
+        let fontWeight = 100; 
+        let isEditMode = false;
+        
+        let transientEffectTimer = null; 
 
         const STORAGE_KEY_COUNT = 'minimalCounterCount';
         const STORAGE_KEY_THEME = 'minimalCounterTheme';
         const STORAGE_KEY_FONT_SCALE = 'minimalCounterFontScale';
+        const STORAGE_KEY_FONT_WEIGHT = 'minimalCounterFontWeight';
 
-        // --- FONT SIZING LOGIC ---
+        // --- FONT SIZING & WEIGHT LOGIC ---
         function adjustFontSize(currentCount, scale = fontScale) {
             const countStr = String(currentCount);
             const length = countStr.length;
             let baseVw;
 
+            // Determines the base font size based on the number of digits to prevent overflow
             if (length <= 5) {
                 baseVw = 35;
             } else if (length === 6) {
@@ -435,37 +491,53 @@
             const finalVw = baseVw * scale;
             counterElement.style.fontSize = `${finalVw}vw`;
         }
+        
+        function setFontWeight(weight) {
+            fontWeight = weight;
+            counterElement.style.fontWeight = fontWeight;
+            localStorage.setItem(STORAGE_KEY_FONT_WEIGHT, fontWeight);
+            updateSelectedButton(weightOptions, 'weight');
+        }
 
         // --- UI UPDATERS ---
         function updateCounterDisplay() {
-            counterElement.textContent = count;
             localStorage.setItem(STORAGE_KEY_COUNT, count);
             adjustFontSize(count);
-            updateSelectedSizeButton();
+            updateSelectedButton(sizeOptions, 'scale');
+            updateSelectedButton(weightOptions, 'weight');
         }
 
-        function updateSelectedSizeButton() {
-            [sizeSmallBtn, sizeNormalBtn, sizeLargeBtn].forEach(btn => {
-                btn.classList.remove('selected-size');
-                const btnScale = parseFloat(btn.getAttribute('data-scale'));
-                if (Math.abs(fontScale - btnScale) < 0.001) {
-                    btn.classList.add('selected-size');
+        function updateSelectedButton(container, dataType) {
+            Array.from(container.children).forEach(btn => {
+                btn.classList.remove('selected');
+                const btnValue = parseFloat(btn.getAttribute(`data-${dataType}`));
+                let currentValue = (dataType === 'scale') ? fontScale : fontWeight;
+                
+                if (Math.abs(currentValue - btnValue) < 0.001) {
+                    btn.classList.add('selected');
                 }
             });
         }
 
+        /**
+         * Hides the instruction text by adding a class that smoothly collapses its height and margin.
+         */
         function hideInstruction() {
             if (!hasTapped) {
                 hasTapped = true;
-                instructionElement.style.opacity = '0';
-                setTimeout(() => {
-                    instructionElement.style.display = 'none';
-                }, 500);
+                instructionElement.classList.add('instruction-hidden');
             }
+        }
+        
+        /**
+         * Shows the instruction text by removing the collapse class.
+         */
+        function showInstruction() {
+            instructionElement.classList.remove('instruction-hidden');
         }
 
         /**
-         * Toggles the visibility of the full-screen menu overlay.
+         * Toggles the visibility of the full-screen menu overlay and controls internal screen slides.
          */
         function toggleMenu(visibility) {
             const isShowing = visibility === 'show';
@@ -475,99 +547,155 @@
                 openMenuBtn.classList.add('is-active');
                 openMenuBtn.setAttribute('aria-label', 'Close Menu');
                 openMenuBtn.setAttribute('title', 'Close Menu');
-                
-                // If not navigating to size controls, ensure we are back on the main menu view
-                if (!isSizeEditing) {
-                    menuInnerContainer.classList.remove('show-size-controls');
-                }
             } else {
                 fullScreenMenu.classList.remove('visible');
                 openMenuBtn.classList.remove('is-active');
                 openMenuBtn.setAttribute('aria-label', 'Open Menu');
                 openMenuBtn.setAttribute('title', 'Open Menu');
+                
+                // Always return to the main menu screen when closing
                 menuInnerContainer.classList.remove('show-size-controls');
-                isSizeEditing = false;
+                menuInnerContainer.classList.remove('show-weight-controls');
+                isEditMode = false;
             }
         }
 
         function setNumberEditMode(isEditing) {
+            isEditMode = isEditing;
             if (isEditing) {
                 // Enter Edit Mode
-                headerControls.classList.add('hidden-controls'); // HIDE CONTROLS
+                headerControls.classList.add('hidden-controls'); 
                 counterElement.contentEditable = 'true';
                 counterElement.setAttribute('inputmode', 'numeric');
                 counterElement.focus();
-                instructionElement.style.display = 'none';
                 
-                // Shift content up when editing to avoid keyboard obstruction
+                instructionElement.style.opacity = '0';
+                instructionElement.style.visibility = 'hidden'; 
+                
                 document.body.classList.add('keyboard-up');
 
-                toggleMenu('closed'); // Close menu only
+                toggleMenu('closed'); 
                 
                 try {
-                    // Select all text to make overwriting easier on mobile
                     document.execCommand('selectAll', false, null);
                 } catch (error) {
                     console.warn("Could not select all text automatically.");
                 }
             } else {
                 // Exit Edit Mode
-                headerControls.classList.remove('hidden-controls'); // SHOW CONTROLS
+                headerControls.classList.remove('hidden-controls'); 
                 counterElement.contentEditable = 'false';
                 counterElement.removeAttribute('inputmode');
                 
-                // Shift content down (back to center)
                 document.body.classList.remove('keyboard-up');
 
                 toggleMenu('closed');
+                
                 if (!hasTapped) {
-                    instructionElement.style.display = 'block';
+                    instructionElement.style.opacity = '1';
+                    instructionElement.style.visibility = 'visible'; 
                 }
             }
         }
 
+        // --- MENU NAVIGATION ---
         function enterSizeEditMode(e) {
             if (e) e.stopPropagation();
-            isSizeEditing = true;
-            updateSelectedSizeButton();
+            isEditMode = true;
+            updateSelectedButton(sizeOptions, 'scale');
             toggleMenu('show');
-            // Trigger the horizontal slide to the size controls screen
+            menuInnerContainer.classList.remove('show-weight-controls');
             menuInnerContainer.classList.add('show-size-controls');
         }
+        
+        function enterWeightEditMode(e) {
+            if (e) e.stopPropagation();
+            isEditMode = true;
+            updateSelectedButton(weightOptions, 'weight');
+            toggleMenu('show');
+            menuInnerContainer.classList.remove('show-size-controls');
+            menuInnerContainer.classList.add('show-weight-controls');
+        }
 
-        function setSizeAndClose(e) {
+        function setSize(e) {
             e.stopPropagation();
-            const selectedScale = parseFloat(e.target.getAttribute('data-scale'));
+            const btn = e.target.closest('.menu-item-link');
+            if (!btn) return; // Add check for null target
+            const selectedScale = parseFloat(btn.getAttribute('data-scale'));
             fontScale = selectedScale;
             localStorage.setItem(STORAGE_KEY_FONT_SCALE, fontScale);
             updateCounterDisplay();
-            toggleMenu('hide');
+            updateSelectedButton(sizeOptions, 'scale');
         }
+        
+        function setWeight(e) {
+            e.stopPropagation();
+            const btn = e.target.closest('.menu-item-link');
+            if (!btn) return; // Add check for null target
+            const selectedWeight = parseInt(btn.getAttribute('data-weight'), 10);
+            setFontWeight(selectedWeight);
+        }
+
+        // --- Special Effects Logic Helper (Transient) ---
+        function checkAndApplyTransientEffect(currentCount) {
+            if (transientEffectTimer) {
+                clearTimeout(transientEffectTimer);
+                transientEffectTimer = null;
+            }
+            
+            counterElement.classList.remove('special-green', 'ultimate-effect');
+            
+            let effectClass = null;
+
+            if (currentCount === 33 || currentCount === 66) {
+                effectClass = 'special-green';
+            } else if (currentCount === 99) {
+                effectClass = 'ultimate-effect';
+            }
+
+            if (effectClass) {
+                counterElement.classList.add(effectClass);
+
+                transientEffectTimer = setTimeout(() => {
+                    if (parseInt(counterElement.textContent, 10) === currentCount) {
+                        counterElement.classList.remove('special-green', 'ultimate-effect');
+                    }
+                    transientEffectTimer = null;
+                }, 500); 
+            }
+        }
+
 
         // --- CORE COUNTER ACTIONS ---
         function incrementCounter() {
-            if (counterElement.contentEditable === 'true' || isSizeEditing) {
+            if (isEditMode || fullScreenMenu.classList.contains('visible')) {
                 return;
             }
             hideInstruction();
-            count++;
-            updateCounterDisplay();
             
-            counterElement.classList.add('pulse');
-            setTimeout(() => {
-                counterElement.classList.remove('pulse');
-            }, 100);
+            count++;
+            counterElement.textContent = count;
+            localStorage.setItem(STORAGE_KEY_COUNT, count);
+            adjustFontSize(count);
+
+            checkAndApplyTransientEffect(count);
         }
 
         function resetCounter(e) {
             if (e) e.stopPropagation();
-            if (counterElement.contentEditable === 'true') {
+            if (isEditMode) {
                 saveNewCount();
             }
             count = 0;
-            fontScale = 0.6;
-            localStorage.setItem(STORAGE_KEY_FONT_SCALE, fontScale);
-            updateCounterDisplay();
+            
+            if (transientEffectTimer) clearTimeout(transientEffectTimer);
+            counterElement.classList.remove('special-green', 'ultimate-effect'); 
+            
+            hasTapped = false;
+            showInstruction();
+
+            counterElement.textContent = count;
+            updateCounterDisplay(); 
             toggleMenu('hide');
         }
 
@@ -579,17 +707,18 @@
 
         function saveNewCount() {
             let inputVal = counterElement.textContent.trim();
-            // Clean input: remove non-digit characters
             inputVal = inputVal.replace(/[^\d]/g, '');
             let newCount = parseInt(inputVal, 10);
             
-            // If the input is invalid or less than zero, revert to the current count
             if (isNaN(newCount) || newCount < 0) {
                 newCount = count;
             }
+            
+            checkAndApplyTransientEffect(newCount); 
+
             count = newCount;
             updateCounterDisplay();
-            setNumberEditMode(false); // This will now show the controls again
+            setNumberEditMode(false); 
         }
 
         // --- THEME & FULLSCREEN LOGIC ---
@@ -635,7 +764,6 @@
                 fullscreenTextEl.textContent = "Fullscreen";
             }
             
-            // If the menu is open, close it on fullscreen change
             if (fullScreenMenu.classList.contains('visible')) {
                 toggleMenu('hide');
             }
@@ -656,8 +784,26 @@
                 fontScale = 0.6;
             }
             
+            const savedFontWeight = localStorage.getItem(STORAGE_KEY_FONT_WEIGHT);
+            if (savedFontWeight !== null) {
+                fontWeight = parseInt(savedFontWeight, 10);
+            } else {
+                fontWeight = 100; // Default to thin
+            }
+            
+            // Set initial styles
+            setFontWeight(fontWeight);
             updateCounterDisplay();
             
+            // Initialize instruction visibility
+            if (count > 0) {
+                hasTapped = true;
+                hideInstruction();
+            } else {
+                hasTapped = false;
+                showInstruction();
+            }
+
             const savedTheme = localStorage.getItem(STORAGE_KEY_THEME);
             if (savedTheme === 'light') {
                 isDarkMode = false;
@@ -675,25 +821,22 @@
             
             updateThemeButtonText();
             handleFullscreenChange();
-
+            
             // 2. Event Listeners
 
             // Main Body/Counter Click Listener (for counting)
             document.body.addEventListener('click', (e) => {
-                // Prevent counting if clicking controls/menu
                 if (e.target.closest('.header-controls') || e.target.closest('#full-screen-menu')) {
                     return;
                 }
                 
-                // If menu is open, a tap outside closes it
                 if (fullScreenMenu.classList.contains('visible')) {
                     toggleMenu('hide');
                     return;
                 }
                 
-                if (counterElement.contentEditable === 'true') {
-                    // Tapping outside the counter/keyboard triggers blur and save
-                    counterElement.blur();
+                if (isEditMode) {
+                    counterElement.blur(); // Triggers saveNewCount
                     return;
                 }
                 incrementCounter();
@@ -704,11 +847,11 @@
             counterElement.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    counterElement.blur(); // Triggers saveNewCount on blur
+                    counterElement.blur(); 
                 }
             });
 
-            // Menu Open/Close Listener (Single button handles both)
+            // Menu Open/Close Listener 
             openMenuBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const isVisible = fullScreenMenu.classList.contains('visible');
@@ -730,11 +873,15 @@
                 toggleTheme(e);
             });
 
-            // Size Controls Listeners
+            // Sub-Menu Entry/Navigation Listeners
             sizeEntryBtn.addEventListener('click', enterSizeEditMode);
-            sizeSmallBtn.addEventListener('click', setSizeAndClose);
-            sizeNormalBtn.addEventListener('click', setSizeAndClose);
-            sizeLargeBtn.addEventListener('click', setSizeAndClose);
+            weightEntryBtn.addEventListener('click', enterWeightEditMode);
+
+            // Size Options Listeners (delegated for simplicity)
+            sizeOptions.addEventListener('click', setSize);
+            
+            // Weight Options Listeners (delegated for simplicity)
+            weightOptions.addEventListener('click', setWeight);
 
             document.addEventListener('fullscreenchange', handleFullscreenChange);
             
@@ -745,7 +892,7 @@
 
             // Keyboard support
             document.addEventListener('keydown', (e) => {
-                if (counterElement.contentEditable === 'true') {
+                if (isEditMode) {
                     return;
                 }
                 
@@ -759,10 +906,10 @@
                 } else if (e.key === 'e' || e.key === 'E') {
                     editNumber();
                 } else if (e.key === 's' || e.key === 'S') {
-                    if (!fullScreenMenu.classList.contains('visible')) {
-                        toggleMenu('show');
-                    }
                     enterSizeEditMode();
+                    e.preventDefault();
+                } else if (e.key === 'w' || e.key === 'W') {
+                    enterWeightEditMode();
                     e.preventDefault();
                 } else if (e.key === 'Escape') {
                     if (fullScreenMenu.classList.contains('visible')) {
