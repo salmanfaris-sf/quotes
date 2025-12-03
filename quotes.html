@@ -49,20 +49,20 @@
     .header-controls {
       position: fixed;
       top: 20px; /* Spacing from the top edge */
-      right: 20px; /* Spacing from the right edge */
+      right: 7px; /* Spacing from the right edge */
       pointer-events: none;
       z-index: 50;
     }
 
-    /* Control Group: Uses row-reverse to arrange elements right-to-left (Fullscreen on far right) */
+    /* Control Group: Uses row-reverse to arrange elements right-to-left (Arrow on far right) */
     .control-group {
         pointer-events: auto;
         display: flex;
         align-items: center;
         gap: 10px; 
-        transition: opacity 0.2s ease, transform 0.2s ease; /* Faster transition */
+        transition: opacity 0.2s ease, transform 0.2s ease;
         justify-content: flex-end; 
-        flex-direction: row-reverse; /* This makes the last element in HTML appear on the right */
+        flex-direction: row-reverse; /* Ensures the toggle-arrow-btn is always on the far right */
     }
     
     .header-btn {
@@ -82,7 +82,7 @@
       transform: scale(1.05);
     }
     
-    /* Utility class to visually hide elements, crucial for the 3 states */
+    /* Utility class to visually hide elements */
     .hidden-state {
         opacity: 0;
         visibility: hidden;
@@ -91,7 +91,7 @@
         padding: 0;
         margin: 0;
         /* Ensure transitions don't break the layout when hiding */
-        transition: opacity 0.2s ease, visibility 0.2s ease, width 0.2s ease, padding 0.2s ease, margin 0.2s ease; /* Faster transition */
+        transition: opacity 0.2s ease, visibility 0.2s ease, width 0.2s ease, padding 0.2s ease, margin 0.2s ease;
     }
 
     /* --- QUOTE MODE --- */
@@ -110,7 +110,7 @@
       white-space: pre-wrap;
     }
     
-    /* The instruction prompt color (updated to subtle premium grey) */
+    /* The instruction prompt color */
     #instruction-prompt {
       color: #9ca3af;
       transition: opacity 0.3s ease;
@@ -177,13 +177,16 @@
 
   <div class="header-controls">
     <div id="control-group" class="control-group">
-      <button id="fullscreen-btn" class="header-btn" aria-label="Toggle Fullscreen" title="Fullscreen">
+
+      <!-- 1. Fullscreen Button (Starts hidden) -->
+      <button id="fullscreen-btn" class="header-btn hidden-state" aria-label="Toggle Fullscreen" title="Fullscreen">
         <div id="fullscreen-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
         </div>
       </button>
 
-      <button id="auto-mode-btn" class="header-btn" aria-label="Toggle Auto-Quote" title="Auto Play Quotes">
+      <!-- 2. Auto Mode Button (Starts hidden) -->
+      <button id="auto-mode-btn" class="header-btn hidden-state" aria-label="Toggle Auto-Quote" title="Auto Play Quotes">
         <div class="progress-wrap">
           <svg id="progress-svg" viewBox="0 0 50 50">
             <circle cx="25" cy="25" r="22" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none" />
@@ -197,17 +200,21 @@
         </div>
       </button>
 
-      <button id="rotation-btn" class="header-btn hidden-state" aria-label="Toggle Screen Orientation" title="Lock Screen Orientation">
+      <!-- 3. Rotation Button (Starts hidden, shown only if supported AND in fullscreen) -->
+      <button id="rotation-btn" class="header-btn hidden-state" aria-label="Lock Screen Orientation" title="Lock Screen Orientation">
         <div id="rotation-icon"></div>
       </button>
 
+      <!-- 4. Previous Quote Button (Starts hidden) -->
       <button id="prev-quote-btn" class="header-btn hidden-state" aria-label="Previous Quote" title="Previous Quote">
-        <!-- UPDATED ICON: Skip Back / Rewind -->
+        <!-- Skip Back / Rewind Icon -->
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
       </button>
 
-      <button id="toggle-arrow-btn" class="header-btn" aria-label="Hide Controls" title="Hide Controls">
+      <!-- 5. Toggle Arrow Button (The only button visible by default) -->
+      <button id="toggle-arrow-btn" class="header-btn" aria-label="Show Controls" title="Show Controls">
         <div id="arrow-icon-svg">
+          <!-- Right Arrow Icon (Default) -->
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </div>
       </button>
@@ -270,7 +277,6 @@
     const instructionEl = document.getElementById('instruction-prompt');
     
     // Buttons
-    const controlGroup = document.getElementById('control-group');
     const autoBtn = document.getElementById('auto-mode-btn');
     const fullscreenBtn = document.getElementById('fullscreen-btn');
     const fullscreenIconEl = document.getElementById('fullscreen-icon');
@@ -291,6 +297,7 @@
     let currentQuoteIndex = -1;
     let instructionTapped = false;
     let currentOrientationLock = 'portrait-primary';
+    let controlsVisible = false; // New state variable
     
     // Auto Mode State
     let autoMode = false;
@@ -309,92 +316,97 @@
     const ICON_PORTRAIT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="5" y="3" width="14" height="18" rx="2" ry="2"></rect>
                             </svg>`;
-    const ICON_ARROW_LEFT_SINGLE = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>`;
-    const ICON_ARROW_RIGHT_SINGLE = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>`;
+    const ICON_ARROW_LEFT_SINGLE = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>`; // <
+    const ICON_ARROW_RIGHT_SINGLE = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>`; // >
 
     /**
-     * Hides all control buttons. Used as a cleanup step before setting a new state.
+     * Sets the visibility and icon state for the controls.
+     * @param {('hidden'|'visible')} state - The target control state.
      */
-    function hideAllControls() {
+    function setControlState(state) {
+        controlsVisible = (state === 'visible');
+
+        // First, hide all secondary controls
         fullscreenBtn.classList.add('hidden-state');
         autoBtn.classList.add('hidden-state');
         rotationBtn.classList.add('hidden-state');
-        prevQuoteBtn.classList.add('hidden-state'); 
-        toggleArrowBtn.classList.add('hidden-state');
-    }
+        prevQuoteBtn.classList.add('hidden-state');
 
-    /**
-     * Sets the visibility and icon state for the three defined control modes.
-     * @param {('normal'|'zen-mode'|'full-controls')} state - The target control state.
-     */
-    function setControlState(state) {
-        hideAllControls();
+        if (state === 'hidden') {
+            // STATE: Only Arrow Button visible (pointing left, to indicate 'Show Controls' on the left side)
+            toggleArrowBtn.classList.remove('hidden-state');
+            // Using LEFT arrow icon (<) for the default/hidden state as requested
+            arrowIconSvg.innerHTML = ICON_ARROW_LEFT_SINGLE;
+            toggleArrowBtn.title = "Show Controls";
+            toggleArrowBtn.setAttribute('aria-label', 'Show Controls');
 
-        if (state === 'normal') {
-            // STATE 1: [Play] [Fullscreen (Enter)]
+        } else if (state === 'visible') {
+            // STATE: All controls visible
             fullscreenBtn.classList.remove('hidden-state');
             autoBtn.classList.remove('hidden-state');
+            prevQuoteBtn.classList.remove('hidden-state');
 
-            fullscreenIconEl.innerHTML = ICON_FULLSCREEN_ENTER;
-            fullscreenBtn.title = "Fullscreen";
-            
-        } else if (state === 'zen-mode') {
-            // STATE 2: [Arrow Left] (at the far right edge)
-            toggleArrowBtn.classList.remove('hidden-state');
-            arrowIconSvg.innerHTML = ICON_ARROW_LEFT_SINGLE; // Use single left arrow for 'Show Controls'
-            toggleArrowBtn.title = "Show Controls";
-            
-        } else if (state === 'full-controls') {
-            // STATE 3: [Arrow Right] [Previous Quote] [Rotation] [Play] [Fullscreen (Exit)]
-            fullscreenBtn.classList.remove('hidden-state'); // Fullscreen Exit
-            autoBtn.classList.remove('hidden-state'); // Play
-            
-            // Show rotation only if API is supported
-            if (rotationBtn.dataset.supported === 'true') {
+            // --- USER REQUEST: Show rotation only if API is supported AND in fullscreen ---
+            if (rotationBtn.dataset.supported === 'true' && document.fullscreenElement) {
                 rotationBtn.classList.remove('hidden-state');
             }
             
-            prevQuoteBtn.classList.remove('hidden-state'); // SHOW NEW BUTTON
-            toggleArrowBtn.classList.remove('hidden-state'); // Right Arrow
-            
-            // Update icons
-            fullscreenIconEl.innerHTML = ICON_FULLSCREEN_EXIT;
-            fullscreenBtn.title = "Exit Fullscreen";
-            
-            arrowIconSvg.innerHTML = ICON_ARROW_RIGHT_SINGLE; // Use single right arrow for 'Hide Controls'
+            // Set correct fullscreen icon based on current state
+            updateFullscreenIcon();
+
+            // Arrow points right (>) to hide controls as requested
+            toggleArrowBtn.classList.remove('hidden-state');
+            // Using RIGHT arrow icon (>) for the visible/open state as requested
+            arrowIconSvg.innerHTML = ICON_ARROW_RIGHT_SINGLE;
             toggleArrowBtn.title = "Hide Controls";
+            toggleArrowBtn.setAttribute('aria-label', 'Hide Controls');
         }
     }
-    
+
     /**
-     * Handles the click on the arrow button, toggling between Zen Mode (State 2) and 
-     * Full Controls Mode (State 3) when in fullscreen.
+     * Toggles between Hidden Controls and Visible Controls.
      */
     function toggleControlVisibility() {
-        if (document.fullscreenElement) {
-            if (toggleArrowBtn.title === "Show Controls") {
-                setControlState('full-controls');
-            } else {
-                setControlState('zen-mode');
-            }
+        if (controlsVisible) {
+            setControlState('hidden');
+        } else {
+            setControlState('visible');
         }
     }
 
     // --- FULLSCREEN & ROTATION LOGIC ---
+
+    function updateFullscreenIcon() {
+        if (document.fullscreenElement) {
+            fullscreenIconEl.innerHTML = ICON_FULLSCREEN_EXIT;
+            fullscreenBtn.title = "Exit Fullscreen";
+        } else {
+            fullscreenIconEl.innerHTML = ICON_FULLSCREEN_ENTER;
+            fullscreenBtn.title = "Fullscreen";
+        }
+    }
     
     function handleFullscreenChange() {
-        if (document.fullscreenElement) {
-            // ENTER FULLSCREEN: Move to Zen Mode (State 2: Left Arrow Only)
-            setControlState('zen-mode');
-        } else {
-            // EXIT FULLSCREEN: Return to Normal Mode (State 1: Play + Fullscreen Enter)
-            setControlState('normal');
+        updateFullscreenIcon();
+        
+        // If the controls were set to be visible, re-run the visibility logic 
+        // to correctly show/hide the rotation button based on the new fullscreen state.
+        if (controlsVisible) {
+             setControlState('visible');
+        }
+        
+        // Logic for when exiting fullscreen via Esc key or button
+        if (!document.fullscreenElement) {
+            // Reset the rotation lock state visually and try to unlock the screen
+            currentOrientationLock = 'portrait-primary';
+            updateRotationIcon();
             
-            // Attempt to unlock orientation
-            if (screen.orientation && screen.orientation.unlock) {
-                screen.orientation.unlock();
-                currentOrientationLock = 'portrait-primary'; // Reset state
-                updateRotationIcon();
+            try {
+                if (screen.orientation && screen.orientation.unlock) {
+                    screen.orientation.unlock();
+                }
+            } catch (e) {
+                console.error("Failed to unlock screen orientation:", e);
             }
         }
     }
@@ -424,8 +436,12 @@
     }
 
     function toggleScreenOrientation() {
-        if (!document.fullscreenElement) return;
-
+        // Orientation locking generally only works in fullscreen mode on most browsers
+        if (!document.fullscreenElement) {
+            console.warn("Orientation lock requires fullscreen mode.");
+            return;
+        }
+        
         const nextLock = (currentOrientationLock === 'portrait-primary') ? 'landscape-primary' : 'portrait-primary';
 
         try {
@@ -511,10 +527,10 @@
     }
     
     function showPreviousQuote() {
+        // If in auto mode, tapping Prev Quote resets the timer
         if (autoMode) {
             clearInterval(autoTimer);
             autoTimer = setInterval(showNextQuote, AUTO_INTERVAL);
-            startTime = Date.now();
         }
         
         currentQuoteIndex = (currentQuoteIndex - 1 + quotes.length) % quotes.length;
@@ -544,6 +560,7 @@
             setTimeout(() => instructionEl.style.display = 'none', 300);
         }
         
+        // If in auto mode, tapping advances quote and resets the timer
         if (autoMode) {
             clearInterval(autoTimer);
             autoTimer = setInterval(showNextQuote, AUTO_INTERVAL);
@@ -571,29 +588,37 @@
     
     // --- INIT ---
     function init() {
+        // Set initial quotes and time
         showNextQuote();
         updateTimeDisplay();
         setInterval(updateTimeDisplay, 1000);
         
-        autoBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleAutoMode(); });
+        // Add event listeners
         fullscreenBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleFullScreen(); });
+        autoBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleAutoMode(); });
         toggleArrowBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleControlVisibility(); });
         prevQuoteBtn.addEventListener('click', (e) => { e.stopPropagation(); showPreviousQuote(); }); 
 
+        // Check for rotation API support
         if (window.screen.orientation && window.screen.orientation.lock) {
             rotationBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleScreenOrientation(); }); 
             updateRotationIcon();
-            rotationBtn.dataset.supported = 'true';
+            // Flag that the API is supported
+            rotationBtn.dataset.supported = 'true'; 
         } else {
+            // Flag that the API is not supported
             rotationBtn.dataset.supported = 'false';
         }
         
+        // Listen for fullscreen state changes to update button visibility
         document.addEventListener('fullscreenchange', handleFullscreenChange);
         
-        setControlState('normal');
+        // Set the initial state to hidden controls
+        setControlState('hidden');
     }
     
     init();
   </script>
 </body>
 </html>
+
