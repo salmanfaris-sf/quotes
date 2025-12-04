@@ -27,7 +27,8 @@
             --text-color: #ffffff;
             --control-color: #ffffff;
             --instruction-color: rgba(255, 255, 255, 0.5);
-            --menu-bg: #1C1C1C; /* Dark grey */
+            /* UPDATED: Darker, slightly blue-gray color matching the image */
+            --menu-bg: #1B1B1D; 
             --menu-text: #FFFFFF;
             --menu-hover: rgba(255, 255, 255, 0.1);
             --selected-bg-dark: #333333; /* Darker selection background */
@@ -91,9 +92,9 @@
             margin-bottom: 5px;
         }
         
-        /* --- Transient Effect (33, 66, 99) --- */
+        /* --- Transient Effect (33, 66, 99 and Goal Reached Glow) --- */
         .ultimate-effect {
-            color: #00FF7F !important; 
+            color: #00FF7F !important; /* Bright Green */
             text-shadow: 0 0 15px #00FF7F, 0 0 25px #00FF7F, 0 0 40px rgba(0, 255, 127, 0.8);
             animation: ultimateGlow 0.75s infinite alternate ease-in-out; 
         }
@@ -109,7 +110,7 @@
             }
         }
         
-        /* --- GOAL REACHED ANIMATION (Pulsing Effect) --- */
+        /* --- GOAL REACHED ANIMATION (Pulsing Effect - Kept, but not used for transient glow) --- */
         .goal-reached-pulse {
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5); 
             animation: goalPulse 1.5s infinite ease-in-out;
@@ -283,7 +284,8 @@
         .back-icon-svg {
             width: 28px;
             height: 28px;
-            stroke-width: 2.5; 
+            /* FIXED: Set stroke-width to match the menu/close icon (1.5) */
+            stroke-width: 1.5; 
             position: relative; 
             display: block;
             margin-right: 5px; 
@@ -359,6 +361,20 @@
             padding-right: 20px;
         }
 
+        /* --- STAGGERED MENU ITEM ANIMATION --- */
+        
+        @keyframes menuFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Base link style for all menu buttons (Size/Weight buttons use this too) */
         .menu-item-link {
             background: none;
             border: none;
@@ -371,6 +387,28 @@
             cursor: pointer;
             transition: background-color 0.2s, color 0.2s;
         }
+        
+        /* Apply initial hidden state and animation ONLY to the main navigation list items */
+        #menu-nav-list .menu-item-link {
+            /* Initial state for animation */
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        /* Apply animation only when the full menu is visible */
+        #full-screen-menu.visible #menu-nav-list .menu-item-link {
+            animation: menuFadeIn 0.3s ease-out forwards;
+        }
+
+        /* Staggered Delay using nth-child */
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(1) { animation-delay: 0.1s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(2) { animation-delay: 0.15s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(3) { animation-delay: 0.2s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(4) { animation-delay: 0.25s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(5) { animation-delay: 0.3s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(6) { animation-delay: 0.35s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(7) { animation-delay: 0.4s; }
+
 
         .menu-sub-header {
             font-size: 2.5rem;
@@ -399,7 +437,9 @@
         .menu-item-link:hover {
             background-color: var(--menu-hover);
             border-radius: 8px;
-            transform: translateX(5px);
+            /* Remove transform on hover to keep animation clean */
+            transform: none !important;
+            opacity: 1 !important;
         }
 
         .menu-item-link.selected:hover {
@@ -560,7 +600,7 @@
             <!-- --- SCREEN 4: GOAL INPUT CONTROL --- -->
             <div id="goal-controls-container">
                 <h2 class="menu-sub-header">Set Target Goal</h2>
-                <p class="info-text">Enter the number you want to reach. The counter will highlight and vibrate when reached. Setting a new goal will reset the counter to zero.</p>
+                <p class="info-text">Enter the number you want to reach. The counter will briefly glow and vibrate when reached. Setting a new goal will reset the counter to zero.</p>
                 <div id="goal-input-wrapper">
                     <!-- The goal input field, styled large for mobile editing -->
                     <div id="goal-input" contenteditable="true" inputmode="numeric">0</div> 
@@ -618,6 +658,7 @@
         let isEditMode = false; 
         
         let transientEffectTimer = null; 
+        let goalGlowTimer = null; // Timer for the short goal-reached glow
         
         // State variables to track if a change was made in the sub-menu
         let sizeChanged = false;
@@ -662,6 +703,36 @@
             updateSelectedButton(weightOptions, 'weight');
         }
         
+        // --- GLOW EFFECT LOGIC ---
+        
+        /**
+         * Triggers the brief green glow effect when the goal is first reached.
+         */
+        function triggerGoalReachedGlow() {
+            // Clear any existing glow timers (including the 33/66/99 one for safety)
+            if (transientEffectTimer) {
+                clearTimeout(transientEffectTimer);
+                transientEffectTimer = null;
+            }
+            if (goalGlowTimer) {
+                clearTimeout(goalGlowTimer);
+                goalGlowTimer = null;
+            }
+            
+            // 1. Apply the green glow effect (ultimate-effect CSS class)
+            counterElement.classList.add('ultimate-effect');
+            
+            // 2. Remove the glow effect after a short time (e.g., 750ms)
+            // This is how it 'suddenly goes to normal' after the short glow.
+            goalGlowTimer = setTimeout(() => {
+                counterElement.classList.remove('ultimate-effect');
+                goalGlowTimer = null;
+                // If the count is *still* at a transient checkpoint (33, 66, 99) 
+                // after the goal glow finishes, re-apply the transient glow.
+                checkAndApplyTransientEffect(count, true); 
+            }, 750); 
+        }
+
         // --- GOAL STATUS & HAPTIC FEEDBACK LOGIC ---
         function checkGoalStatus() {
             const wasGoalReachedBefore = isGoalReached;
@@ -670,23 +741,25 @@
             if (targetGoal > 0 && count >= targetGoal) {
                 isGoalReached = true;
                 
-                // Add the pulsing animation class
-                counterElement.classList.add('goal-reached-pulse'); 
+                // **NEW LOGIC: Trigger transient green glow ONLY if goal was just met**
+                if (!wasGoalReachedBefore) {
+                    triggerGoalReachedGlow(); 
+                    
+                    // 2. Trigger Vibration ONLY if the goal was just met
+                    if (navigator.vibrate) {
+                        navigator.vibrate([200, 100, 200]); // Vibrate pattern
+                    }
+                }
                 
-                // Ensure no conflicting classes are present
-                counterElement.classList.remove('ultimate-effect'); 
+                // The number should no longer pulse persistently, just glow briefly.
+                counterElement.classList.remove('goal-reached-pulse'); 
                 
+                // FIX: Changed text content to only "Goal Reached!" as requested by user.
                 instructionElement.textContent = "Goal Reached!"; 
                 instructionElement.classList.remove('instruction-hidden');
                 instructionElement.style.opacity = '1';
                 instructionElement.style.visibility = 'visible'; 
 
-                // 2. Trigger Vibration ONLY if the goal was just met (transition from false to true)
-                if (!wasGoalReachedBefore) {
-                    if (navigator.vibrate) {
-                        navigator.vibrate([200, 100, 200]); // Vibrate pattern
-                    }
-                }
             } else {
                 // Goal not reached or goal is 0
                 isGoalReached = false;
@@ -1084,8 +1157,11 @@
             
             isGoalReached = false; 
             
-            // Remove goal classes
-            counterElement.classList.remove('goal-reached-pulse');
+            // Remove lingering classes
+            if (transientEffectTimer) clearTimeout(transientEffectTimer);
+            if (goalGlowTimer) clearTimeout(goalGlowTimer);
+            counterElement.classList.remove('ultimate-effect');
+            counterElement.classList.remove('goal-reached-pulse'); 
             
             instructionElement.textContent = "Tap anywhere to count"; 
             hasTapped = false;
@@ -1096,8 +1172,9 @@
 
 
         // --- Special Effects Logic Helper (Transient) ---
-        function checkAndApplyTransientEffect(currentCount) {
-            if (isGoalReached) {
+        function checkAndApplyTransientEffect(currentCount, force = false) {
+            // Prevent 33/66/99 glow from interfering with goal glow
+            if (isGoalReached && !force) {
                 return;
             }
             
@@ -1118,6 +1195,7 @@
                 counterElement.classList.add(effectClass);
 
                 transientEffectTimer = setTimeout(() => {
+                    // Check if the count is still the same before removing the effect
                     if (parseInt(counterElement.textContent, 10) === currentCount) {
                         counterElement.classList.remove('ultimate-effect');
                     }
@@ -1162,6 +1240,7 @@
             isGoalReached = false; 
             
             if (transientEffectTimer) clearTimeout(transientEffectTimer);
+            if (goalGlowTimer) clearTimeout(goalGlowTimer);
             counterElement.classList.remove('ultimate-effect');
             counterElement.classList.remove('goal-reached-pulse'); 
             
@@ -1306,7 +1385,7 @@
                 hideInstruction();
                 checkAndApplyTransientEffect(count);
             } else if (isGoalReached) {
-                // Instruction is already set by checkGoalStatus
+                // Goal is already reached from a previous session, just show instruction
             } else {
                 hasTapped = false;
                 showInstruction();
