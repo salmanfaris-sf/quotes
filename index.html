@@ -309,6 +309,7 @@
         #size-controls-container,
         #weight-controls-container,
         #goal-controls-container,
+        #step-controls-container, /* NEW */
         #theme-controls-container {
             position: fixed; 
             top: 0; 
@@ -375,6 +376,7 @@
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(5) { animation-delay: 0.3s; }
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(6) { animation-delay: 0.35s; }
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(7) { animation-delay: 0.4s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(8) { animation-delay: 0.45s; } /* New Item */
 
 
         .menu-sub-header {
@@ -423,14 +425,17 @@
             font-weight: 300;
         }
         
-        #goal-input-wrapper {
+        #goal-input-wrapper,
+        #step-input-wrapper { /* Added step-input-wrapper */
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-top: 50px;
         }
-        #goal-input {
+        
+        #goal-input,
+        #step-input { /* Added step-input */
             font-size: 15vw; 
             font-weight: 800;
             color: var(--text-color);
@@ -444,7 +449,6 @@
             border: none;
             border-bottom: 2px solid var(--control-color);
         }
-
 
         @media (max-width: 400px) {
             .menu-item-link {
@@ -500,11 +504,14 @@
                 <button id="size-entry-btn" class="menu-item-link" aria-label="Adjust Font Size" title="Adjust Font Size">
                     Size
                 </button>
-                <button id="weight-entry-btn" class="menu-item-link" aria-label="Adjust Font Weight" title="Adjust Font Weight">
-                    Weight
+                <button id="weight-entry-btn" class="menu-item-link" aria-label="Adjust Font Thickness" title="Adjust Font Thickness">
+                    Thickness <!-- CHANGED from Weight -->
                 </button>
                 <button id="goal-entry-btn" class="menu-item-link" aria-label="Set Target Goal" title="Set Target Goal">
-                    Set Goal
+                    Goal
+                </button>
+                <button id="step-entry-btn" class="menu-item-link" aria-label="Adjust Increment Step" title="Adjust Increment Step">
+                    Step Value
                 </button>
                 <button id="theme-entry-btn" class="menu-item-link" aria-label="Adjust Theme" title="Adjust Theme">
                     Theme
@@ -524,8 +531,8 @@
     </div>
 
     <div id="weight-controls-container">
-        <h2 class="menu-sub-header">Choose Font Weight</h2>
-        <p class="info-text">Affects how thin or thick the number appears.</p>
+        <h2 class="menu-sub-header">Choose Font Thickness</h2> <!-- CHANGED from Weight -->
+        <p class="info-text">Affects how thin or thick the number appears on screen.</p> <!-- CHANGED -->
         <div id="weight-options" class="control-options">
             <button id="weight-thin-btn" class="menu-item-link" data-weight="100" style="font-weight: 100;">Thin</button>
             <button id="weight-regular-btn" class="menu-item-link" data-weight="400" style="font-weight: 400;">Regular</button>
@@ -538,6 +545,15 @@
         <p class="info-text">Enter the number you want to reach. The counter will briefly glow and vibrate when reached. Setting a new goal will reset the counter to zero.</p>
         <div id="goal-input-wrapper">
             <div id="goal-input" contenteditable="true" inputmode="numeric">0</div> 
+        </div>
+    </div>
+    
+    <!-- NEW STEP VALUE CONTROL CONTAINER -->
+    <div id="step-controls-container">
+        <h2 class="menu-sub-header">Step Value</h2>
+        <p class="info-text">Enter the amount the counter should increment by on each tap. To return to default, set to 1</p>
+        <div id="step-input-wrapper">
+            <div id="step-input" contenteditable="true" inputmode="numeric">1</div> 
         </div>
     </div>
     
@@ -567,6 +583,7 @@
     </div>
 
     <script>
+        // DOM Elements
         const counterElement = document.getElementById('counter');
         const instructionElement = document.getElementById('instruction');
         const themeMeta = document.querySelector('meta[name="theme-color"]');
@@ -577,10 +594,13 @@
         const editBtn = document.getElementById('edit-btn');
         
         const sizeEntryBtn = document.getElementById('size-entry-btn');
-        const weightEntryBtn = document.getElementById('weight-entry-btn');
+        const weightEntryBtn = document.getElementById('weight-entry-btn'); // Renamed to thickness in UI
         const goalEntryBtn = document.getElementById('goal-entry-btn'); 
+        const stepEntryBtn = document.getElementById('step-entry-btn'); 
         const themeEntryBtn = document.getElementById('theme-entry-btn');
+        
         const goalInput = document.getElementById('goal-input'); 
+        const stepInput = document.getElementById('step-input'); 
         
         const openMenuBtn = document.getElementById('open-menu-btn'); 
         const backBtn = document.getElementById('back-btn'); 
@@ -600,31 +620,41 @@
         const sizeControlsContainer = document.getElementById('size-controls-container');
         const weightControlsContainer = document.getElementById('weight-controls-container');
         const goalControlsContainer = document.getElementById('goal-controls-container');
+        const stepControlsContainer = document.getElementById('step-controls-container'); 
         const themeControlsContainer = document.getElementById('theme-controls-container');
         
+        // State Variables
         let count = 0;
         let targetGoal = 0; 
+        let stepValue = 1; 
         let isGoalReached = false; 
         let hasTapped = false;
         let currentTheme = 'dark';
         let fontScale = 0.6;
-        let fontWeight = 100; 
+        let fontWeight = 100; // Represents thickness
         let isEditMode = false; 
         
         let transientEffectTimer = null; 
         let goalGlowTimer = null; 
         
+        // Tracking Changes for 'Done' Button
         let sizeChanged = false;
-        let weightChanged = false;
+        let weightChanged = false; // Tracks thickness change
         let goalChanged = false; 
+        let stepChanged = false; 
         let themeChanged = false;
 
+        // Local Storage Keys
         const STORAGE_KEY_COUNT = 'minimalCounterCount';
         const STORAGE_KEY_THEME = 'minimalCounterTheme';
         const STORAGE_KEY_FONT_SCALE = 'minimalCounterFontScale';
         const STORAGE_KEY_FONT_WEIGHT = 'minimalCounterFontWeight';
         const STORAGE_KEY_GOAL = 'minimalCounterTargetGoal'; 
+        const STORAGE_KEY_STEP = 'minimalCounterStepValue'; 
 
+        /**
+         * Adjusts the font size based on the number of digits and the selected scale.
+         */
         function adjustFontSize(currentCount, scale = fontScale) {
             const countStr = String(currentCount);
             const length = countStr.length;
@@ -648,6 +678,9 @@
             counterElement.style.fontSize = `${finalVw}vw`;
         }
         
+        /**
+         * Sets the font weight/thickness and updates local storage.
+         */
         function setFontWeight(weight) {
             fontWeight = weight;
             counterElement.style.fontWeight = fontWeight;
@@ -655,6 +688,9 @@
             updateSelectedButton(weightOptions, 'weight');
         }
         
+        /**
+         * Triggers a visual glow effect when the goal is reached.
+         */
         function triggerGoalReachedGlow() {
             if (transientEffectTimer) {
                 clearTimeout(transientEffectTimer);
@@ -674,6 +710,9 @@
             }, 750); 
         }
 
+        /**
+         * Checks if the goal is met and updates UI/vibration.
+         */
         function checkGoalStatus() {
             const wasGoalReachedBefore = isGoalReached;
             
@@ -711,6 +750,9 @@
             updateHeaderButtonState();
         }
 
+        /**
+         * Checks if the goal input value has changed from the saved state.
+         */
         function checkGoalInputHasChanged() {
             let inputVal = goalInput.textContent.trim().replace(/[^\d]/g, '');
             let newGoal = parseInt(inputVal, 10);
@@ -721,17 +763,37 @@
             
             return targetGoal !== newGoal;
         }
+        
+        /**
+         * Checks if the step input value has changed from the saved state.
+         */
+        function checkStepInputHasChanged() {
+            let inputVal = stepInput.textContent.trim().replace(/[^\d]/g, '');
+            let newStep = parseInt(inputVal, 10);
 
+            if (isNaN(newStep) || newStep < 1) {
+                 newStep = 1;
+            }
+            
+            return stepValue !== newStep;
+        }
+
+        /**
+         * Returns the currently active sub-menu container element.
+         */
         function getActiveSubMenu() {
             return document.querySelector('.sub-menu-active');
         }
 
+        /**
+         * Updates the state and visibility of the header controls (Menu/Done/Back).
+         */
         function updateHeaderButtonState() {
             const isMenuOpen = fullScreenMenu.classList.contains('visible');
             const activeSubMenu = getActiveSubMenu();
             const isSubMenuVisible = !!activeSubMenu;
             const isGoalScreen = activeSubMenu && activeSubMenu.id === 'goal-controls-container';
-            const isThemeScreen = activeSubMenu && activeSubMenu.id === 'theme-controls-container';
+            const isStepScreen = activeSubMenu && activeSubMenu.id === 'step-controls-container'; 
             
             openMenuBtn.classList.remove('is-done-mode', 'is-close-mode');
 
@@ -739,8 +801,11 @@
                 headerLeftControls.classList.remove('hidden');
 
                 let hasPendingChanges = sizeChanged || weightChanged || themeChanged;
+                
                 if (isGoalScreen) {
                     hasPendingChanges = checkGoalInputHasChanged();
+                } else if (isStepScreen) { 
+                    hasPendingChanges = checkStepInputHasChanged();
                 }
                 
                 if (hasPendingChanges) {
@@ -777,6 +842,9 @@
             }
         }
 
+        /**
+         * Updates counter display, font size, button selections, and goal status.
+         */
         function updateCounterDisplay() {
             localStorage.setItem(STORAGE_KEY_COUNT, count);
             counterElement.textContent = count; 
@@ -787,6 +855,9 @@
             checkGoalStatus(); 
         }
 
+        /**
+         * Adds 'selected' class to the button matching the current state value.
+         */
         function updateSelectedButton(container, dataType) {
             if (!container) return; 
             Array.from(container.children).forEach(btn => {
@@ -813,6 +884,9 @@
             });
         }
 
+        /**
+         * Hides the initial instruction text.
+         */
         function hideInstruction() {
             if (!hasTapped && !isGoalReached) {
                 hasTapped = true;
@@ -820,6 +894,9 @@
             }
         }
         
+        /**
+         * Shows the initial instruction text.
+         */
         function showInstruction() {
             instructionElement.textContent = "Tap anywhere to count";
             instructionElement.classList.remove('instruction-hidden');
@@ -827,6 +904,9 @@
             instructionElement.style.visibility = 'visible';
         }
         
+        /**
+         * Shows or hides the full-screen menu.
+         */
         function toggleMenu(visibility) {
             const isShowing = visibility === 'show';
             
@@ -838,8 +918,9 @@
                 document.querySelectorAll('.sub-menu-active').forEach(el => el.classList.remove('sub-menu-active'));
                 
                 sizeChanged = false;
-                weightChanged = false;
+                weightChanged = false; // Tracks thickness change
                 goalChanged = false; 
+                stepChanged = false; 
                 themeChanged = false;
                 
                 if (isEditMode) {
@@ -849,6 +930,9 @@
             updateHeaderButtonState();
         }
 
+        /**
+         * Navigates back from a sub-menu to the main menu.
+         */
         function goBackFromSubMenu(e) {
             if (e) e.stopPropagation();
 
@@ -858,13 +942,17 @@
             }
             
             sizeChanged = false;
-            weightChanged = false;
+            weightChanged = false; // Tracks thickness change
             goalChanged = false;
+            stepChanged = false; 
             themeChanged = false;
             
             updateHeaderButtonState();
         }
         
+        /**
+         * Saves changes for the current sub-menu and navigates back.
+         */
         function saveChangesAndGoBack(e) {
              if (e) e.stopPropagation();
              
@@ -874,10 +962,13 @@
              if (activeSubMenu.id === 'goal-controls-container') {
                  saveTargetGoal(true); 
                  goalChanged = false;
+             } else if (activeSubMenu.id === 'step-controls-container') { 
+                 saveStepValue(true);
+                 stepChanged = false;
              } else if (activeSubMenu.id === 'size-controls-container') {
                  sizeChanged = false;
              } else if (activeSubMenu.id === 'weight-controls-container') {
-                 weightChanged = false;
+                 weightChanged = false; // Tracks thickness change
              } else if (activeSubMenu.id === 'theme-controls-container') {
                  themeChanged = false;
              }
@@ -887,11 +978,17 @@
         }
 
 
+        /**
+         * Sets the main counter to be contentEditable for manual editing.
+         */
         function setNumberEditMode(isEditing) {
             isEditMode = isEditing;
             setNumberEditModeState(isEditing);
         }
         
+        /**
+         * Helper function to manage UI state for number editing.
+         */
         function setNumberEditModeState(isEditing) {
             isEditMode = isEditing;
             if (isEditing) {
@@ -925,6 +1022,9 @@
             updateHeaderButtonState();
         }
 
+        /**
+         * Enters a specific sub-menu mode.
+         */
         function enterSubMenuMode(e, containerElement) {
             if (e) e.stopPropagation();
             
@@ -967,10 +1067,28 @@
             }, 450); 
         }
         
+        // Enters the Step Value edit screen
+        function enterStepEditMode(e) {
+            enterSubMenuMode(e, stepControlsContainer);
+            
+            stepInput.textContent = stepValue;
+            
+            setTimeout(() => { 
+                stepInput.focus();
+                try {
+                    document.execCommand('selectAll', false, null);
+                } catch (error) {
+                }
+            }, 450);
+        }
+        
         function enterThemeEditMode(e) {
             enterSubMenuMode(e, themeControlsContainer);
         }
         
+        /**
+         * Sets the counter font size scale.
+         */
         function setSize(e) {
             e.stopPropagation();
             const btn = e.target.closest('.menu-item-link');
@@ -990,6 +1108,9 @@
             updateHeaderButtonState();
         }
         
+        /**
+         * Sets the counter font weight/thickness.
+         */
         function setWeight(e) {
             e.stopPropagation();
             const btn = e.target.closest('.menu-item-link');
@@ -997,7 +1118,7 @@
             const selectedWeight = parseInt(btn.getAttribute('data-weight'), 10);
             
             if (fontWeight !== selectedWeight) {
-                weightChanged = true;
+                weightChanged = true; // Tracks thickness change
             } else {
                 weightChanged = false; 
             }
@@ -1006,6 +1127,9 @@
             updateHeaderButtonState();
         }
 
+        /**
+         * Saves the target goal value. Resets counter if goal changes.
+         */
         function saveTargetGoal(forceSave = false) { 
             let inputVal = goalInput.textContent.trim();
             inputVal = inputVal.replace(/[^\d]/g, '');
@@ -1033,12 +1157,43 @@
                 goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
                 
                 goalChanged = false; 
+            } else {
+                 goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
             }
             
             checkGoalStatus(); 
             updateHeaderButtonState();
         }
+        
+        /**
+         * Saves the step value.
+         */
+        function saveStepValue(forceSave = false) { 
+            let inputVal = stepInput.textContent.trim();
+            inputVal = inputVal.replace(/[^\d]/g, '');
+            let newStep = parseInt(inputVal, 10);
 
+            if (isNaN(newStep) || newStep < 1) {
+                newStep = 1;
+            }
+
+            const reallyChanged = stepValue !== newStep;
+
+            if (reallyChanged || forceSave) {
+                stepValue = newStep;
+                localStorage.setItem(STORAGE_KEY_STEP, stepValue);
+                stepInput.textContent = stepValue;
+                stepChanged = false;
+            } else {
+                 stepInput.textContent = stepValue;
+            }
+
+            updateHeaderButtonState();
+        }
+
+        /**
+         * Sets the application theme.
+         */
         function setTheme(e) {
             e.stopPropagation();
             const btn = e.target.closest('.menu-item-link');
@@ -1075,6 +1230,9 @@
             updateHeaderButtonState();
         }
         
+        /**
+         * Exits the Goal Reached mode (resets counter/goal to 0).
+         */
         function exitGoalMode() {
             if (!isGoalReached) return;
             
@@ -1099,6 +1257,9 @@
             updateHeaderButtonState();
         }
 
+        /**
+         * Applies a temporary visual effect for certain counts (e.g., 33, 66, 99).
+         */
         function checkAndApplyTransientEffect(currentCount, force = false) {
             if (targetGoal > 0 && !force) {
                 counterElement.classList.remove('ultimate-effect'); 
@@ -1133,6 +1294,9 @@
             checkGoalStatus(); 
         }
 
+        /**
+         * Increments the counter by the current step value.
+         */
         function incrementCounter() {
             if (isEditMode || getActiveSubMenu()) {
                 return;
@@ -1149,7 +1313,7 @@
 
             hideInstruction();
             
-            count++;
+            count += stepValue; 
             counterElement.textContent = count;
             localStorage.setItem(STORAGE_KEY_COUNT, count);
             adjustFontSize(count);
@@ -1157,6 +1321,9 @@
             checkAndApplyTransientEffect(count);
         }
 
+        /**
+         * Resets the counter, goal, and step value to defaults.
+         */
         function resetCounter(e) {
             if (e) e.stopPropagation();
             
@@ -1166,7 +1333,11 @@
             
             count = 0;
             targetGoal = 0; 
+            stepValue = 1; 
+            
             localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
+            localStorage.setItem(STORAGE_KEY_STEP, stepValue); 
+            
             isGoalReached = false; 
             
             if (transientEffectTimer) clearTimeout(transientEffectTimer);
@@ -1181,6 +1352,7 @@
 
             counterElement.textContent = count;
             goalInput.textContent = ''; 
+            stepInput.textContent = stepValue; 
             updateCounterDisplay(); 
             toggleMenu('hide');
         }
@@ -1240,8 +1412,13 @@
             });
         }
         
+        /**
+         * Initializes the application state, loads local storage, and sets up listeners.
+         */
         function init() {
-            const subMenuContainers = [sizeControlsContainer, weightControlsContainer, goalControlsContainer, themeControlsContainer];
+            // Include new step container in the list
+            const subMenuContainers = [sizeControlsContainer, weightControlsContainer, goalControlsContainer, stepControlsContainer, themeControlsContainer];
+            
             subMenuContainers.forEach(container => {
                 container.style.visibility = 'hidden';
                 addSubMenuTransitionEndListeners(container);
@@ -1268,6 +1445,14 @@
                 targetGoal = parseInt(savedGoal, 10);
             }
             
+            // Load Step Value
+            const savedStep = localStorage.getItem(STORAGE_KEY_STEP);
+            if (savedStep !== null) {
+                stepValue = parseInt(savedStep, 10);
+            } else {
+                stepValue = 1;
+            }
+            
             const savedTheme = localStorage.getItem(STORAGE_KEY_THEME);
             if (savedTheme) {
                 currentTheme = savedTheme;
@@ -1275,9 +1460,11 @@
                 currentTheme = 'dark';
             }
             
+            // Set initial values
             setTheme({ target: { closest: () => ({ getAttribute: () => currentTheme, dataset: { theme: currentTheme } }) }, stopPropagation: () => {} });
             
             goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
+            stepInput.textContent = stepValue; 
             setFontWeight(fontWeight);
             updateCounterDisplay(); 
             
@@ -1293,6 +1480,9 @@
             handleFullscreenChange();
             updateHeaderButtonState(); 
 
+            // --- Event Listeners ---
+            
+            // Main counter tap/click
             document.body.addEventListener('click', (e) => {
                 if (e.target.closest('.header-controls') || getActiveSubMenu()) {
                     return;
@@ -1310,6 +1500,7 @@
                 incrementCounter();
             });
             
+            // Counter Edit Mode Handlers
             counterElement.addEventListener('blur', saveNewCount);
             counterElement.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
@@ -1318,8 +1509,8 @@
                 }
             });
             
+            // Goal Input Handlers
             goalInput.addEventListener('blur', () => saveTargetGoal(false)); 
-            
             goalInput.addEventListener('keydown', (e) => {
                  if (e.key === 'Enter') {
                     e.preventDefault();
@@ -1330,8 +1521,22 @@
                 }
             });
             goalInput.addEventListener('input', updateHeaderButtonState);
+            
+            // Step Input Handlers
+            stepInput.addEventListener('blur', () => saveStepValue(false)); 
+            stepInput.addEventListener('keydown', (e) => {
+                 if (e.key === 'Enter') {
+                    e.preventDefault();
+                    stepInput.blur(); 
+                    if (getActiveSubMenu() && getActiveSubMenu().id === 'step-controls-container') {
+                        saveChangesAndGoBack(e); 
+                    }
+                }
+            });
+            stepInput.addEventListener('input', updateHeaderButtonState);
 
 
+            // Header Button Handlers
             openMenuBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
 
@@ -1358,6 +1563,7 @@
             backBtn.addEventListener('click', goBackFromSubMenu);
 
 
+            // Main Menu Item Handlers
             fullscreenBtn.addEventListener('click', (e) => {
                 toggleFullScreen(e);
                 toggleMenu('hide');
@@ -1365,21 +1571,26 @@
             resetBtn.addEventListener('click', resetCounter);
             editBtn.addEventListener('click', editNumber);
             
+            // Sub-Menu Entry Handlers
             sizeEntryBtn.addEventListener('click', enterSizeEditMode);
             weightEntryBtn.addEventListener('click', enterWeightEditMode);
             goalEntryBtn.addEventListener('click', enterGoalEditMode); 
+            stepEntryBtn.addEventListener('click', enterStepEditMode); 
             themeEntryBtn.addEventListener('click', enterThemeEditMode);
 
+            // Control Option Handlers
             sizeOptions.addEventListener('click', setSize);
             weightOptions.addEventListener('click', setWeight);
             themeOptions.addEventListener('click', setTheme);
 
             document.addEventListener('fullscreenchange', handleFullscreenChange);
             
+            // Prevent double-tap zooming on mobile
             document.addEventListener('dblclick', function(event) {
                 event.preventDefault();
             }, { passive: false });
 
+            // Keyboard Shortcuts
             document.addEventListener('keydown', (e) => {
                 if (isEditMode) {
                     if (e.key === 'Enter') return; 
@@ -1398,11 +1609,14 @@
                 } else if (e.key === 's' || e.key === 'S') {
                     enterSizeEditMode();
                     e.preventDefault();
-                } else if (e.key === 'w' || e.key === 'W') {
+                } else if (e.key === 'w' || e.key === 'W') { // W for Weight/Thickness
                     enterWeightEditMode();
                     e.preventDefault();
                 } else if (e.key === 'g' || e.key === 'G') { 
                     enterGoalEditMode();
+                    e.preventDefault();
+                } else if (e.key === 'i' || e.key === 'I') { 
+                    enterStepEditMode();
                     e.preventDefault();
                 } else if (e.key === 't' || e.key === 'T') {
                     enterThemeEditMode();
