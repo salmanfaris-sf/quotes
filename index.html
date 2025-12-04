@@ -22,32 +22,44 @@
         }
 
         :root {
-            --bg-color: #000000;
+            --counter-bg-color: #000000;
             --text-color: #ffffff;
             --control-color: #ffffff;
             --instruction-color: rgba(255, 255, 255, 0.5);
-            --menu-bg: #1B1B1D; 
+            --menu-bg: #1B1B1D;
             --menu-text: #FFFFFF;
             --menu-hover: rgba(255, 255, 255, 0.1);
-            --selected-bg-dark: #333333; 
-            --selected-text-dark: #FFFFFF;
-            --ios-blue: #007AFF; 
+            --selected-bg: #333333;
+            --selected-text: #FFFFFF;
+            --ios-blue: #007AFF;
         }
-
-        .B_d_y_K.l_M_d {
-            --bg-color: #ffffff;
+        
+        body.theme-white {
+            --counter-bg-color: #ffffff;
             --text-color: #000000;
             --control-color: #000000;
             --instruction-color: rgba(0, 0, 0, 0.5);
             --menu-bg: #ffffff;
             --menu-text: #000000;
             --menu-hover: rgba(0, 0, 0, 0.05);
-            --selected-bg-light: #EEEEEE; 
-            --selected-text-light: #000000;
+            --selected-bg: #EEEEEE;
+            --selected-text: #000000;
         }
 
-        .B_d_y_K {
-            background-color: var(--bg-color);
+        body.theme-black {
+            --counter-bg-color: #000000;
+            --text-color: #ffffff;
+            --control-color: #ffffff;
+            --instruction-color: rgba(255, 255, 255, 0.5);
+            --menu-bg: #000000;
+            --menu-text: #FFFFFF;
+            --menu-hover: rgba(255, 255, 255, 0.15); 
+            --selected-bg: #222222;
+            --selected-text: #FFFFFF;
+        }
+
+        body {
+            background-color: var(--counter-bg-color); 
             color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             height: 100vh;
@@ -63,7 +75,7 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        #m_C_w {
+        #main-content-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -74,11 +86,11 @@
             transition: transform 0.3s ease-out;
         }
 
-        .B_d_y_K.k_B_u_P #m_C_w {
+        body.keyboard-up #main-content-wrapper {
             transform: translateY(-25%); 
         }
 
-        #z_D1_P_l_y {
+        #counter {
             font-size: 35vw;
             line-height: 1;
             text-align: center;
@@ -90,8 +102,8 @@
             margin-bottom: 5px;
         }
         
-        .u_l_t_E_F {
-            color: #00FF7F !important; 
+        .ultimate-effect {
+            color: #00FF7F !important;
             text-shadow: 0 0 15px #00FF7F, 0 0 25px #00FF7F, 0 0 40px rgba(0, 255, 127, 0.8);
             animation: ultimateGlow 0.75s infinite alternate ease-in-out; 
         }
@@ -107,26 +119,7 @@
             }
         }
         
-        .g_R_p_L {
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5); 
-            animation: goalPulse 1.5s infinite ease-in-out;
-        }
-        
-        .B_d_y_K.l_M_d .g_R_p_L {
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.5); 
-        }
-
-        @keyframes goalPulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.02); 
-            }
-        }
-
-
-        #i_n_s_t_r_x {
+        #instruction {
             font-size: 1.1rem;
             font-weight: 300;
             color: var(--instruction-color);
@@ -140,14 +133,14 @@
             white-space: nowrap; 
         }
         
-        .i_H_d {
+        .instruction-hidden {
             opacity: 0 !important;
             height: 0 !important;
             margin-top: 0 !important;
             visibility: hidden !important; 
         }
         
-        .h_C_r {
+        .header-controls {
             position: fixed;
             top: 0;
             z-index: 250; 
@@ -158,21 +151,21 @@
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        #h_L_c {
+        #header-left-controls {
             left: 0;
         }
         
-        #h_R_c {
+        #header-right-controls {
             right: 0;
         }
         
-        .h_C_r.h_D_n {
+        .header-controls.hidden {
             visibility: hidden;
             opacity: 0;
             pointer-events: none;
         }
 
-        .h_B_t {
+        .header-btn {
             background: none;
             border: none;
             color: var(--control-color);
@@ -191,15 +184,15 @@
             position: relative; 
         }
         
-        .h_B_t:focus {
+        .header-btn:focus {
             outline: none;
         }
         
-        .d_N_m_D {
+        .is-done-mode {
             color: var(--ios-blue); 
         }
 
-        #m_I_g {
+        #menu-icon-svg {
             width: 28px;
             height: 28px;
             stroke-width: 1.5; 
@@ -213,31 +206,30 @@
             transition: stroke 0.3s ease;
         }
         
-        .m_L_n {
+        .menu-line {
             transform-origin: center;
             transition: transform 0.35s cubic-bezier(0.4, 0.085, 0.68, 0.53);
         }
         
-        #l_t_p {
+        #line-top {
             transform: translateY(-3px); 
         }
         
-        #l_b_t {
+        #line-bottom {
             transform: translateY(3px); 
         }
         
-        .c_L_m_D #l_t_p {
+        .is-close-mode #line-top {
             transform: translateY(0) rotate(45deg); 
         }
         
-        .c_L_m_D #l_b_t {
+        .is-close-mode #line-bottom {
             transform: translateY(0) rotate(-45deg);
         }
 
-
-        #m_D_t {
+        #menu-done-text {
             color: var(--ios-blue); 
-            opacity: 0; 
+            opacity: 0;
             font-size: 1.2rem;
             font-weight: 400;
             line-height: 1;
@@ -248,18 +240,17 @@
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
         
-        .d_N_m_D #m_I_g {
+        .is-done-mode #menu-icon-svg {
             opacity: 0;
             transform: translate(-50%, -50%) scale(0.5);
         }
         
-        .d_N_m_D #m_D_t {
+        .is-done-mode #menu-done-text {
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
         }
 
-
-        .b_I_S {
+        .back-icon-svg {
             width: 28px;
             height: 28px;
             stroke-width: 1.5; 
@@ -269,18 +260,18 @@
             transform: translateX(-4px); 
         }
 
-        #f_S_m {
+        #full-screen-menu {
             position: fixed;
             top: 0; 
             right: 0; 
             height: 100vh;
             width: 100vw; 
-            background-color: var(--menu-bg);
+            background-color: var(--menu-bg); 
             z-index: 100;
             display: flex;
             flex-direction: column;
             
-            transform: translateY(-100%); 
+            transform: translateY(-100%);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0, 1);
             
             pointer-events: none;
@@ -288,7 +279,7 @@
             overflow-x: hidden; 
         }
 
-        #f_S_m.visible {
+        #full-screen-menu.visible {
             transform: translateY(0); 
             pointer-events: auto;
         }
@@ -297,14 +288,7 @@
             height: 44px; 
         }
 
-        #m_I_c {
-            display: block;
-            width: 100vw; 
-            height: auto; 
-            transition: none;
-        }
-
-        #m_N_l {
+        #menu-inner-container {
             width: 100vw;
             flex-shrink: 0;
             flex-grow: 1;
@@ -317,10 +301,15 @@
             overflow-y: auto;
             max-height: calc(100vh - 44px); 
         }
+
+        #menu-nav-list {
+            width: 100%; 
+        }
         
-        #s_C_c,
-        #w_C_c,
-        #g_C_c {
+        #size-controls-container,
+        #weight-controls-container,
+        #goal-controls-container,
+        #theme-controls-container {
             position: fixed; 
             top: 0; 
             left: 0;
@@ -342,7 +331,7 @@
             align-items: flex-start;
         }
 
-        .s_M_a {
+        .sub-menu-active {
             transform: translateY(0) !important;
         }
 
@@ -357,7 +346,7 @@
             }
         }
         
-        .m_I_L {
+        .menu-item-link {
             background: none;
             border: none;
             color: var(--menu-text);
@@ -370,66 +359,56 @@
             transition: background-color 0.2s, color 0.2s;
         }
         
-        #m_N_l .m_I_L {
+        #menu-nav-list .menu-item-link {
             opacity: 0;
             transform: translateY(10px);
         }
 
-        #f_S_m.visible #m_N_l .m_I_L {
+        #full-screen-menu.visible #menu-nav-list .menu-item-link {
             animation: menuFadeIn 0.3s ease-out forwards;
         }
 
-        #f_S_m.visible #m_N_l .m_I_L:nth-child(1) { animation-delay: 0.1s; }
-        #f_S_m.visible #m_N_l .m_I_L:nth-child(2) { animation-delay: 0.15s; }
-        #f_S_m.visible #m_N_l .m_I_L:nth-child(3) { animation-delay: 0.2s; }
-        #f_S_m.visible #m_N_l .m_I_L:nth-child(4) { animation-delay: 0.25s; }
-        #f_S_m.visible #m_N_l .m_I_L:nth-child(5) { animation-delay: 0.3s; }
-        #f_S_m.visible #m_N_l .m_I_L:nth-child(6) { animation-delay: 0.35s; }
-        #f_S_m.visible #m_N_l .m_I_L:nth-child(7) { animation-delay: 0.4s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(1) { animation-delay: 0.1s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(2) { animation-delay: 0.15s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(3) { animation-delay: 0.2s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(4) { animation-delay: 0.25s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(5) { animation-delay: 0.3s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(6) { animation-delay: 0.35s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(7) { animation-delay: 0.4s; }
 
 
-        .m_S_h {
+        .menu-sub-header {
             font-size: 2.5rem;
             font-weight: 600;
             padding: 0; 
             margin-bottom: 20px;
         }
         
-        .m_I_L:focus {
+        .menu-item-link:focus {
             outline: none;
         }
 
-        .m_I_L.s_E_l {
-            color: var(--selected-text-dark);
-            background-color: var(--selected-bg-dark);
+        .menu-item-link.selected {
+            color: var(--selected-text);
+            background-color: var(--selected-bg);
             border-radius: 8px;
             padding-left: 15px;
         }
 
-        .B_d_y_K.l_M_d .m_I_L.s_E_l {
-            color: var(--selected-text-light);
-            background-color: var(--selected-bg-light);
-        }
-
-        .m_I_L:active,
-        .m_I_L:hover {
+        .menu-item-link:active,
+        .menu-item-link:hover {
             background-color: var(--menu-hover);
             border-radius: 8px;
             transform: none !important;
             opacity: 1 !important;
         }
 
-        .m_I_L.s_E_l:hover {
-            background-color: var(--selected-bg-dark);
+        .menu-item-link.selected:hover {
+            background-color: var(--selected-bg);
             transform: none;
         }
 
-        .B_d_y_K.l_M_d .m_I_L.s_E_l:hover {
-            background-color: var(--selected-bg-light);
-            transform: none;
-        }
-
-        .c_O_p button {
+        .control-options button {
             font-size: 2rem;
             padding: 15px 10px;
             margin-bottom: 5px;
@@ -437,21 +416,21 @@
             text-align: left;
         }
 
-        .i_T_x {
+        .info-text {
             font-size: 1.2rem;
             color: var(--instruction-color);
             margin-bottom: 40px;
             font-weight: 300;
         }
         
-        #g_I_w {
+        #goal-input-wrapper {
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-top: 50px;
         }
-        #g_I_p {
+        #goal-input {
             font-size: 15vw; 
             font-weight: 800;
             color: var(--text-color);
@@ -468,944 +447,978 @@
 
 
         @media (max-width: 400px) {
-            .m_I_L {
+            .menu-item-link {
                 font-size: 2rem;
                 padding: 12px 0;
             }
 
-            .c_O_p button {
+            .control-options button {
                 font-size: 1.8rem;
             }
 
-            .h_C_r {
+            .header-controls {
                 padding: 15px;
             }
         }
     </style>
 </head>
-<body class="B_d_y_K">
+<body>
     
-    <div id="h_L_c" class="h_C_r h_D_n">
-        <button id="b_A_k" class="h_B_t" aria-label="Go Back" title="Go Back">
-            <svg class="b_I_S" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                <g id="c_h_v_n">
+    <div id="header-left-controls" class="header-controls hidden">
+        <button id="back-btn" class="header-btn" aria-label="Go Back" title="Go Back">
+            <svg class="back-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <g id="g-chevron-left">
                     <path d="M15 18l-6-6 6-6"/>
                 </g>
             </svg>
         </button>
     </div>
 
-    <div id="h_R_c" class="h_C_r">
-        <button id="o_M_b" class="h_B_t" aria-label="Open Menu" title="Open Menu">
-            <svg id="m_I_g" viewBox="0 0 24 24" fill="none">
-                <line id="l_t_p" class="m_L_n" x1="4" y1="12" x2="20" y2="12"/>
-                <line id="l_b_t" class="m_L_n" x1="4" y1="12" x2="20" y2="12"/>
+    <div id="header-right-controls" class="header-controls">
+        <button id="open-menu-btn" class="header-btn" aria-label="Open Menu" title="Open Menu">
+            <svg id="menu-icon-svg" viewBox="0 0 24 24" fill="none">
+                <line id="line-top" class="menu-line" x1="4" y1="12" x2="20" y2="12"/>
+                <line id="line-bottom" class="menu-line" x1="4" y1="12" x2="20" y2="12"/>
             </svg>
-            <span id="m_D_t">Done</span>
+            <span id="menu-done-text">Done</span>
         </button>
     </div>
 
-    <div id="f_S_m" class="hidden-menu">
+    <div id="full-screen-menu" class="hidden-menu">
         <div class="menu-header"></div> 
-        <div id="m_I_c">
-            <nav id="m_N_l">
-                <button id="f_S_b" class="m_I_L" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
-                    <span id="f_S_t">Fullscreen</span>
+        <div id="menu-inner-container">
+            <nav id="menu-nav-list">
+                <button id="fullscreen-btn" class="menu-item-link" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
+                    <span id="fullscreen-text">Fullscreen</span>
                 </button>
-                <button id="r_S_b" class="m_I_L" aria-label="Reset Counter" title="Reset Counter">
+                <button id="reset-btn" class="menu-item-link" aria-label="Reset Counter" title="Reset Counter">
                     Reset
                 </button>
-                <button id="e_D_b" class="m_I_L" aria-label="Edit Number" title="Edit">
+                <button id="edit-btn" class="menu-item-link" aria-label="Edit Number" title="Edit">
                     Edit
                 </button>
-                <button id="s_E_b" class="m_I_L" aria-label="Adjust Font Size" title="Adjust Font Size">
+                <button id="size-entry-btn" class="menu-item-link" aria-label="Adjust Font Size" title="Adjust Font Size">
                     Size
                 </button>
-                <button id="w_E_b" class="m_I_L" aria-label="Adjust Font Weight" title="Adjust Font Weight">
+                <button id="weight-entry-btn" class="menu-item-link" aria-label="Adjust Font Weight" title="Adjust Font Weight">
                     Weight
                 </button>
-                <button id="g_E_b" class="m_I_L" aria-label="Set Target Goal" title="Set Target Goal">
+                <button id="goal-entry-btn" class="menu-item-link" aria-label="Set Target Goal" title="Set Target Goal">
                     Set Goal
                 </button>
-                <button id="t_H_b" class="m_I_L" aria-label="Toggle Theme" title="Toggle Theme">
-                    <span id="t_H_t">White Mode</span>
+                <button id="theme-entry-btn" class="menu-item-link" aria-label="Adjust Theme" title="Adjust Theme">
+                    Theme
                 </button>
             </nav>
         </div>
     </div>
     
-    <div id="s_C_c">
-        <h2 class="m_S_h">Counter Size</h2>
-        <p class="i_T_x">Select a size below.</p>
-        <div id="s_O_p" class="c_O_p">
-            <button id="s_S_b" class="m_I_L" data-scale="0.3">Small</button>
-            <button id="s_N_b" class="m_I_L" data-scale="0.6">Normal</button>
-            <button id="s_L_b" class="m_I_L" data-scale="1.3">Large</button>
+    <div id="size-controls-container">
+        <h2 class="menu-sub-header">Counter Size</h2>
+        <p class="info-text">Select a size below.</p>
+        <div id="size-options" class="control-options">
+            <button id="size-small-btn" class="menu-item-link" data-scale="0.3">Small</button>
+            <button id="size-normal-btn" class="menu-item-link" data-scale="0.6">Normal</button>
+            <button id="size-large-btn" class="menu-item-link" data-scale="1.3">Large</button>
         </div>
     </div>
 
-    <div id="w_C_c">
-        <h2 class="m_S_h">Choose Font Weight</h2>
-        <p class="i_T_x">Affects how thin or thick the number appears.</p>
-        <div id="w_O_p" class="c_O_p">
-            <button id="w_T_b" class="m_I_L" data-weight="100" style="font-weight: 100;">Thin</button>
-            <button id="w_R_b" class="m_I_L" data-weight="400" style="font-weight: 400;">Regular</button>
-            <button id="w_B_b" class="m_I_L" data-weight="800" style="font-weight: 800;">Bold</button>
+    <div id="weight-controls-container">
+        <h2 class="menu-sub-header">Choose Font Weight</h2>
+        <p class="info-text">Affects how thin or thick the number appears.</p>
+        <div id="weight-options" class="control-options">
+            <button id="weight-thin-btn" class="menu-item-link" data-weight="100" style="font-weight: 100;">Thin</button>
+            <button id="weight-regular-btn" class="menu-item-link" data-weight="400" style="font-weight: 400;">Regular</button>
+            <button id="weight-bold-btn" class="menu-item-link" data-weight="800" style="font-weight: 800;">Bold</button>
         </div>
     </div>
     
-    <div id="g_C_c">
-        <h2 class="m_S_h">Set Target Goal</h2>
-        <p class="i_T_x">Enter the number you want to reach. The counter will briefly glow and vibrate when reached. Setting a new goal will reset the counter to zero.</p>
-        <div id="g_I_w">
-            <div id="g_I_p" contenteditable="true" inputmode="numeric">0</div> 
+    <div id="goal-controls-container">
+        <h2 class="menu-sub-header">Set Target Goal</h2>
+        <p class="info-text">Enter the number you want to reach. The counter will briefly glow and vibrate when reached. Setting a new goal will reset the counter to zero.</p>
+        <div id="goal-input-wrapper">
+            <div id="goal-input" contenteditable="true" inputmode="numeric">0</div> 
+        </div>
+    </div>
+    
+    <div id="theme-controls-container">
+        <h2 class="menu-sub-header">Choose Theme</h2>
+        <p class="info-text">Select a color scheme for the counter and menu.</p>
+        <div id="theme-options" class="control-options">
+            <button id="theme-dark-btn" class="menu-item-link" data-theme="dark">
+                Dark Mode
+                <span style="font-weight: 300; font-size: 1.8rem; display: block; margin-top: 3px; color: var(--instruction-color);">Menu Dark Gray, Counter Black.</span>
+            </button>
+            <button id="theme-white-btn" class="menu-item-link" data-theme="white">
+                White Mode
+                <span style="font-weight: 300; font-size: 1.8rem; display: block; margin-top: 3px; color: var(--instruction-color);">Full white.</span>
+            </button>
+            <button id="theme-black-btn" class="menu-item-link" data-theme="black">
+                Black Mode
+                <span style="font-weight: 300; font-size: 1.8rem; display: block; margin-top: 3px; color: var(--instruction-color);">Full black.</span>
+            </button>
         </div>
     </div>
 
 
-    <div id="m_C_w">
-        <div id="z_D1_P_l_y" contenteditable="false">0</div>
-        <div id="i_n_s_t_r_x">Tap anywhere to count</div>
+    <div id="main-content-wrapper">
+        <div id="counter" contenteditable="false">0</div>
+        <div id="instruction">Tap anywhere to count</div>
     </div>
 
     <script>
-        const c_L_E = document.getElementById('z_D1_P_l_y');
-        const i_N_E = document.getElementById('i_n_s_t_r_x');
-        const t_M_T = document.querySelector('meta[name="theme-color"]');
+        const counterElement = document.getElementById('counter');
+        const instructionElement = document.getElementById('instruction');
+        const themeMeta = document.querySelector('meta[name="theme-color"]');
 
-        const f_B_n = document.getElementById('f_S_b');
-        const f_T_E = document.getElementById('f_S_t');
-        const e_B_n = document.getElementById('e_D_b');
-        const r_B_n = document.getElementById('r_S_b');
-        const t_B_n = document.getElementById('t_H_b');
-        const t_T_E = document.getElementById('t_H_t');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const fullscreenTextEl = document.getElementById('fullscreen-text');
+        const resetBtn = document.getElementById('reset-btn');
+        const editBtn = document.getElementById('edit-btn');
         
-        const s_E_B = document.getElementById('s_E_b');
-        const w_E_B = document.getElementById('w_E_b');
-        const g_E_B = document.getElementById('g_E_b'); 
-        const g_I_P = document.getElementById('g_I_p'); 
+        const sizeEntryBtn = document.getElementById('size-entry-btn');
+        const weightEntryBtn = document.getElementById('weight-entry-btn');
+        const goalEntryBtn = document.getElementById('goal-entry-btn'); 
+        const themeEntryBtn = document.getElementById('theme-entry-btn');
+        const goalInput = document.getElementById('goal-input'); 
         
-        const o_M_B = document.getElementById('o_M_b'); 
-        const b_K_B = document.getElementById('b_A_k'); 
+        const openMenuBtn = document.getElementById('open-menu-btn'); 
+        const backBtn = document.getElementById('back-btn'); 
         
-        const m_D_T = document.getElementById('m_D_t'); 
+        const menuDoneText = document.getElementById('menu-done-text'); 
         
-        const h_L_C = document.getElementById('h_L_c');
-        const h_R_C = document.getElementById('h_R_c');
+        const headerLeftControls = document.getElementById('header-left-controls');
+        const headerRightControls = document.getElementById('header-right-controls');
         
-        const f_S_M = document.getElementById('f_S_m');
-        const m_I_C = document.getElementById('m_I_c');
+        const fullScreenMenu = document.getElementById('full-screen-menu');
+        const menuInnerContainer = document.getElementById('menu-inner-container');
 
-        const s_O_P = document.getElementById('s_O_p');
-        const w_O_P = document.getElementById('w_O_p');
+        const sizeOptions = document.getElementById('size-options');
+        const weightOptions = document.getElementById('weight-options');
+        const themeOptions = document.getElementById('theme-options');
         
-        const s_C_C = document.getElementById('s_C_c');
-        const w_C_C = document.getElementById('w_C_c');
-        const g_C_C = document.getElementById('g_C_c');
+        const sizeControlsContainer = document.getElementById('size-controls-container');
+        const weightControlsContainer = document.getElementById('weight-controls-container');
+        const goalControlsContainer = document.getElementById('goal-controls-container');
+        const themeControlsContainer = document.getElementById('theme-controls-container');
         
-        let c_N_T = 0;
-        let t_G_L = 0; 
-        let i_G_R = false; 
-        let h_T_P = false;
-        let i_D_M = true;
-        let f_S_L = 0.6;
-        let f_W_T = 100; 
-        let i_E_M = false; 
+        let count = 0;
+        let targetGoal = 0; 
+        let isGoalReached = false; 
+        let hasTapped = false;
+        let currentTheme = 'dark';
+        let fontScale = 0.6;
+        let fontWeight = 100; 
+        let isEditMode = false; 
         
-        let t_E_T = null; 
-        let g_G_T = null; 
+        let transientEffectTimer = null; 
+        let goalGlowTimer = null; 
         
-        let s_C_D = false;
-        let w_C_D = false;
-        let g_C_D = false; 
-        
-        const S_K_C = 'minimalCounterCount';
-        const S_K_T = 'minimalCounterTheme';
-        const S_K_S = 'minimalCounterFontScale';
-        const S_K_W = 'minimalCounterFontWeight';
-        const S_K_G = 'minimalCounterTargetGoal'; 
+        let sizeChanged = false;
+        let weightChanged = false;
+        let goalChanged = false; 
+        let themeChanged = false;
 
-        function a_F_Z(C_C, S = f_S_L) {
-            const C_S = String(C_C);
-            const L = C_S.length;
-            let B_V;
+        const STORAGE_KEY_COUNT = 'minimalCounterCount';
+        const STORAGE_KEY_THEME = 'minimalCounterTheme';
+        const STORAGE_KEY_FONT_SCALE = 'minimalCounterFontScale';
+        const STORAGE_KEY_FONT_WEIGHT = 'minimalCounterFontWeight';
+        const STORAGE_KEY_GOAL = 'minimalCounterTargetGoal'; 
 
-            if (L <= 5) {
-                B_V = 35;
-            } else if (L === 6) {
-                B_V = 28;
-            } else if (L === 7) {
-                B_V = 24;
-            } else if (L === 8) {
-                B_V = 20;
-            } else if (L === 9) {
-                B_V = 17;
+        function adjustFontSize(currentCount, scale = fontScale) {
+            const countStr = String(currentCount);
+            const length = countStr.length;
+            let baseVw;
+
+            if (length <= 5) {
+                baseVw = 35;
+            } else if (length === 6) {
+                baseVw = 28;
+            } else if (length === 7) {
+                baseVw = 24;
+            } else if (length === 8) {
+                baseVw = 20;
+            } else if (length === 9) {
+                baseVw = 17;
             } else {
-                B_V = 15;
+                baseVw = 15;
             }
 
-            const F_V = B_V * S;
-            c_L_E.style.fontSize = `${F_V}vw`;
+            const finalVw = baseVw * scale;
+            counterElement.style.fontSize = `${finalVw}vw`;
         }
         
-        function s_F_W(W) {
-            f_W_T = W;
-            c_L_E.style.fontWeight = f_W_T;
-            localStorage.setItem(S_K_W, f_W_T);
-            u_S_B(w_O_P, 'weight');
+        function setFontWeight(weight) {
+            fontWeight = weight;
+            counterElement.style.fontWeight = fontWeight;
+            localStorage.setItem(STORAGE_KEY_FONT_WEIGHT, fontWeight);
+            updateSelectedButton(weightOptions, 'weight');
         }
         
-        function t_G_R_G() {
-            if (t_E_T) {
-                clearTimeout(t_E_T);
-                t_E_T = null;
+        function triggerGoalReachedGlow() {
+            if (transientEffectTimer) {
+                clearTimeout(transientEffectTimer);
+                transientEffectTimer = null;
             }
-            if (g_G_T) {
-                clearTimeout(g_G_T);
-                g_G_T = null;
+            if (goalGlowTimer) {
+                clearTimeout(goalGlowTimer);
+                goalGlowTimer = null;
             }
             
-            c_L_E.classList.add('u_l_t_E_F');
+            counterElement.classList.add('ultimate-effect');
             
-            g_G_T = setTimeout(() => {
-                c_L_E.classList.remove('u_l_t_E_F');
-                g_G_T = null;
-                c_A_T_E(c_N_T, true); 
+            goalGlowTimer = setTimeout(() => {
+                counterElement.classList.remove('ultimate-effect');
+                goalGlowTimer = null;
+                checkAndApplyTransientEffect(count, true); 
             }, 750); 
         }
 
-        function c_G_S() {
-            const W_G_R_B = i_G_R;
+        function checkGoalStatus() {
+            const wasGoalReachedBefore = isGoalReached;
             
-            if (t_G_L > 0 && c_N_T >= t_G_L) {
-                i_G_R = true;
+            if (targetGoal > 0 && count >= targetGoal) {
+                isGoalReached = true;
                 
-                if (!W_G_R_B) {
-                    t_G_R_G(); 
+                if (!wasGoalReachedBefore) {
+                    triggerGoalReachedGlow(); 
                     
                     if (navigator.vibrate) {
-                        navigator.vibrate([200, 100, 200]); 
+                        navigator.vibrate([200, 100, 200]);
                     }
                 }
                 
-                c_L_E.classList.remove('g_R_p_L'); 
+                counterElement.classList.remove('goal-reached-pulse'); 
                 
-                i_N_E.textContent = "Goal Reached!"; 
-                i_N_E.classList.remove('i_H_d');
-                i_N_E.style.opacity = '1';
-                i_N_E.style.visibility = 'visible'; 
+                instructionElement.textContent = "Goal Reached!"; 
+                instructionElement.classList.remove('instruction-hidden');
+                instructionElement.style.opacity = '1';
+                instructionElement.style.visibility = 'visible'; 
 
             } else {
-                i_G_R = false;
+                isGoalReached = false;
                 
-                c_L_E.classList.remove('g_R_p_L'); 
+                counterElement.classList.remove('goal-reached-pulse'); 
                 
-                i_N_E.textContent = "Tap anywhere to count";
-                if (h_T_P) {
-                    h_I_N_S();
+                instructionElement.textContent = "Tap anywhere to count";
+                if (hasTapped) {
+                    hideInstruction();
                 } else {
-                    s_I_N_S();
+                    showInstruction();
                 }
             }
             
-            u_H_B_S();
+            updateHeaderButtonState();
         }
 
-        function c_G_I_H_C() {
-            let I_V = g_I_P.textContent.trim().replace(/[^\d]/g, '');
-            let N_G = parseInt(I_V, 10);
+        function checkGoalInputHasChanged() {
+            let inputVal = goalInput.textContent.trim().replace(/[^\d]/g, '');
+            let newGoal = parseInt(inputVal, 10);
             
-            if (isNaN(N_G) || N_G < 0) {
-                 N_G = 0; 
+            if (isNaN(newGoal) || newGoal < 0) {
+                 newGoal = 0; 
             }
             
-            return t_G_L !== N_G;
+            return targetGoal !== newGoal;
         }
 
-        function g_A_S_M() {
-            return document.querySelector('.s_M_a');
+        function getActiveSubMenu() {
+            return document.querySelector('.sub-menu-active');
         }
 
-        function u_H_B_S() {
-            const I_M_O = f_S_M.classList.contains('visible');
-            const A_S_M = g_A_S_M();
-            const I_S_V = !!A_S_M;
-            const I_G_S = A_S_M && A_S_M.id === 'g_C_c';
+        function updateHeaderButtonState() {
+            const isMenuOpen = fullScreenMenu.classList.contains('visible');
+            const activeSubMenu = getActiveSubMenu();
+            const isSubMenuVisible = !!activeSubMenu;
+            const isGoalScreen = activeSubMenu && activeSubMenu.id === 'goal-controls-container';
+            const isThemeScreen = activeSubMenu && activeSubMenu.id === 'theme-controls-container';
             
-            o_M_B.classList.remove('d_N_m_D', 'c_L_m_D');
+            openMenuBtn.classList.remove('is-done-mode', 'is-close-mode');
 
-            if (I_S_V) {
-                h_L_C.classList.remove('h_D_n'); 
+            if (isSubMenuVisible) {
+                headerLeftControls.classList.remove('hidden');
 
-                const H_P_C = I_G_S ? c_G_I_H_C() : (s_C_D || w_C_D);
+                let hasPendingChanges = sizeChanged || weightChanged || themeChanged;
+                if (isGoalScreen) {
+                    hasPendingChanges = checkGoalInputHasChanged();
+                }
                 
-                if (H_P_C) {
-                    h_R_C.classList.remove('h_D_n');
-                    o_M_B.classList.add('d_N_m_D');
-                    o_M_B.setAttribute('aria-label', 'Save and Close');
-                    o_M_B.setAttribute('title', 'Save and Close');
+                if (hasPendingChanges) {
+                    headerRightControls.classList.remove('hidden');
+                    openMenuBtn.classList.add('is-done-mode');
+                    openMenuBtn.setAttribute('aria-label', 'Save and Close');
+                    openMenuBtn.setAttribute('title', 'Save and Close');
                 } else {
-                    h_R_C.classList.add('h_D_n');
+                    headerRightControls.classList.add('hidden');
                 }
                 
                 return; 
             }
 
-            if (I_M_O) {
-                h_L_C.classList.add('h_D_n'); 
-                h_R_C.classList.remove('h_D_n'); 
-                o_M_B.classList.add('c_L_m_D'); 
-                o_M_B.setAttribute('aria-label', 'Close Menu');
-                o_M_B.setAttribute('title', 'Close Menu');
+            if (isMenuOpen) {
+                headerLeftControls.classList.add('hidden');
+                headerRightControls.classList.remove('hidden');
+                openMenuBtn.classList.add('is-close-mode');
+                openMenuBtn.setAttribute('aria-label', 'Close Menu');
+                openMenuBtn.setAttribute('title', 'Close Menu');
                 return;
             }
 
-            h_L_C.classList.add('h_D_n'); 
-            h_R_C.classList.remove('h_D_n'); 
+            headerLeftControls.classList.add('hidden');
+            headerRightControls.classList.remove('hidden');
 
-            if (i_G_R) {
-                o_M_B.classList.add('d_N_m_D');
-                o_M_B.setAttribute('aria-label', 'Done');
-                o_M_B.setAttribute('title', 'Done');
+            if (isGoalReached) {
+                openMenuBtn.classList.add('is-done-mode');
+                openMenuBtn.setAttribute('aria-label', 'Done');
+                openMenuBtn.setAttribute('title', 'Done');
             } else {
-                o_M_B.setAttribute('aria-label', 'Open Menu');
-                o_M_B.setAttribute('title', 'Open Menu');
+                openMenuBtn.setAttribute('aria-label', 'Open Menu');
+                openMenuBtn.setAttribute('title', 'Open Menu');
             }
         }
 
-        function u_C_D_P() {
-            localStorage.setItem(S_K_C, c_N_T);
-            c_L_E.textContent = c_N_T; 
-            a_F_Z(c_N_T);
-            u_S_B(s_O_P, 'scale');
-            u_S_B(w_O_P, 'weight');
-            c_G_S(); 
+        function updateCounterDisplay() {
+            localStorage.setItem(STORAGE_KEY_COUNT, count);
+            counterElement.textContent = count; 
+            adjustFontSize(count);
+            updateSelectedButton(sizeOptions, 'scale');
+            updateSelectedButton(weightOptions, 'weight');
+            updateSelectedButton(themeOptions, 'theme');
+            checkGoalStatus(); 
         }
 
-        function u_S_B(C, D_T) {
-            if (!C) return; 
-            Array.from(C.children).forEach(B => {
-                B.classList.remove('s_E_l');
-                const B_V = parseFloat(B.getAttribute(`data-${D_T}`));
-                let C_V = (D_T === 'scale') ? f_S_L : f_W_T;
+        function updateSelectedButton(container, dataType) {
+            if (!container) return; 
+            Array.from(container.children).forEach(btn => {
+                btn.classList.remove('selected');
+                const btnValue = btn.getAttribute(`data-${dataType}`);
+                let currentValue;
                 
-                if (Math.abs(C_V - B_V) < 0.001) {
-                    B.classList.add('s_E_l');
+                if (dataType === 'scale') {
+                    currentValue = fontScale;
+                    if (Math.abs(currentValue - parseFloat(btnValue)) < 0.001) {
+                         btn.classList.add('selected');
+                    }
+                } else if (dataType === 'weight') {
+                    currentValue = fontWeight;
+                    if (currentValue === parseInt(btnValue, 10)) {
+                         btn.classList.add('selected');
+                    }
+                } else if (dataType === 'theme') {
+                    currentValue = currentTheme;
+                    if (currentValue === btnValue) {
+                         btn.classList.add('selected');
+                    }
                 }
             });
         }
 
-        function h_I_N_S() {
-            if (!h_T_P && !i_G_R) {
-                h_T_P = true;
-                i_N_E.classList.add('i_H_d');
+        function hideInstruction() {
+            if (!hasTapped && !isGoalReached) {
+                hasTapped = true;
+                instructionElement.classList.add('instruction-hidden');
             }
         }
         
-        function s_I_N_S() {
-            i_N_E.textContent = "Tap anywhere to count";
-            i_N_E.classList.remove('i_H_d');
-            i_N_E.style.opacity = '1';
-            i_N_E.style.visibility = 'visible';
+        function showInstruction() {
+            instructionElement.textContent = "Tap anywhere to count";
+            instructionElement.classList.remove('instruction-hidden');
+            instructionElement.style.opacity = '1';
+            instructionElement.style.visibility = 'visible';
         }
         
-        function t_G_M(V) {
-            const I_S = V === 'show';
+        function toggleMenu(visibility) {
+            const isShowing = visibility === 'show';
             
-            if (I_S) {
-                f_S_M.classList.add('visible');
+            if (isShowing) {
+                fullScreenMenu.classList.add('visible');
             } else {
-                f_S_M.classList.remove('visible');
+                fullScreenMenu.classList.remove('visible');
                 
-                document.querySelectorAll('.s_M_a').forEach(E => E.classList.remove('s_M_a'));
+                document.querySelectorAll('.sub-menu-active').forEach(el => el.classList.remove('sub-menu-active'));
                 
-                s_C_D = false;
-                w_C_D = false;
-                g_C_D = false; 
+                sizeChanged = false;
+                weightChanged = false;
+                goalChanged = false; 
+                themeChanged = false;
                 
-                if (i_E_M) {
-                    s_N_E_S(false); 
+                if (isEditMode) {
+                    setNumberEditModeState(false); 
                 }
             }
-            u_H_B_S();
+            updateHeaderButtonState();
         }
 
-        function g_B_K(E) {
-            if (E) E.stopPropagation();
+        function goBackFromSubMenu(e) {
+            if (e) e.stopPropagation();
 
-            const A_S_M = g_A_S_M();
-            if (A_S_M) {
-                A_S_M.classList.remove('s_M_a');
+            const activeSubMenu = getActiveSubMenu();
+            if (activeSubMenu) {
+                activeSubMenu.classList.remove('sub-menu-active');
             }
             
-            s_C_D = false;
-            w_C_D = false;
-            g_C_D = false;
+            sizeChanged = false;
+            weightChanged = false;
+            goalChanged = false;
+            themeChanged = false;
             
-            u_H_B_S();
+            updateHeaderButtonState();
         }
         
-        function s_C_G_B(E) {
-             if (E) E.stopPropagation();
+        function saveChangesAndGoBack(e) {
+             if (e) e.stopPropagation();
              
-             const A_S_M = g_A_S_M();
-             if (!A_S_M) return;
+             const activeSubMenu = getActiveSubMenu();
+             if (!activeSubMenu) return;
 
-             if (A_S_M.id === 'g_C_c') {
-                 s_T_G(true); 
-             } else if (A_S_M.id === 's_C_c') {
-                 s_C_D = false;
-             } else if (A_S_M.id === 'w_C_c') {
-                 w_C_D = false;
+             if (activeSubMenu.id === 'goal-controls-container') {
+                 saveTargetGoal(true); 
+                 goalChanged = false;
+             } else if (activeSubMenu.id === 'size-controls-container') {
+                 sizeChanged = false;
+             } else if (activeSubMenu.id === 'weight-controls-container') {
+                 weightChanged = false;
+             } else if (activeSubMenu.id === 'theme-controls-container') {
+                 themeChanged = false;
              }
              
-             A_S_M.classList.remove('s_M_a');
-             
-             u_H_B_S();
+             activeSubMenu.classList.remove('sub-menu-active');
+             updateHeaderButtonState();
         }
 
 
-        function s_N_E_M(I_E) {
-            i_E_M = I_E;
-            s_N_E_S(I_E);
+        function setNumberEditMode(isEditing) {
+            isEditMode = isEditing;
+            setNumberEditModeState(isEditing);
         }
         
-        function s_N_E_S(I_E) {
-            i_E_M = I_E;
-            if (I_E) {
-                c_L_E.contentEditable = 'true';
-                c_L_E.setAttribute('inputmode', 'numeric');
+        function setNumberEditModeState(isEditing) {
+            isEditMode = isEditing;
+            if (isEditing) {
+                counterElement.contentEditable = 'true';
+                counterElement.setAttribute('inputmode', 'numeric');
                 
-                document.body.classList.add('k_B_u_P');
+                document.body.classList.add('keyboard-up');
 
-                if (f_S_M.classList.contains('visible')) {
-                    t_G_M('hide'); 
+                if (fullScreenMenu.classList.contains('visible')) {
+                    toggleMenu('hide'); 
                 }
 
-                c_L_E.focus();
+                counterElement.focus();
                 
-                i_N_E.style.opacity = '0';
-                i_N_E.style.visibility = 'hidden'; 
+                instructionElement.style.opacity = '0';
+                instructionElement.style.visibility = 'hidden'; 
                 
                 try {
                     document.execCommand('selectAll', false, null);
-                } catch (E) {
+                } catch (error) {
                     console.warn("Could not select all text automatically.");
                 }
             } else {
-                c_L_E.contentEditable = 'false';
-                c_L_E.removeAttribute('inputmode');
+                counterElement.contentEditable = 'false';
+                counterElement.removeAttribute('inputmode');
                 
-                document.body.classList.remove('k_B_u_P');
+                document.body.classList.remove('keyboard-up');
                 
-                c_G_S(); 
+                checkGoalStatus(); 
             }
-            u_H_B_S();
+            updateHeaderButtonState();
         }
 
-        function e_S_M(E, C_E) {
-            if (E) E.stopPropagation();
+        function enterSubMenuMode(e, containerElement) {
+            if (e) e.stopPropagation();
             
-            t_G_M('show'); 
+            toggleMenu('show'); 
             
-            document.querySelectorAll('.s_M_a').forEach(E => E.classList.remove('s_M_a'));
+            document.querySelectorAll('.sub-menu-active').forEach(el => el.classList.remove('sub-menu-active'));
             
-            C_E.style.visibility = 'visible'; 
+            containerElement.style.visibility = 'visible'; 
 
-            C_E.classList.add('s_M_a');
+            containerElement.classList.add('sub-menu-active');
             
-            if (C_E.id === 's_C_c') u_S_B(s_O_P, 'scale');
-            if (C_E.id === 'w_C_c') u_S_B(w_O_P, 'weight');
+            if (containerElement.id === 'size-controls-container') updateSelectedButton(sizeOptions, 'scale');
+            if (containerElement.id === 'weight-controls-container') updateSelectedButton(weightOptions, 'weight');
+            if (containerElement.id === 'theme-controls-container') updateSelectedButton(themeOptions, 'theme');
 
-            u_H_B_S(); 
+            updateHeaderButtonState(); 
         }
 
-        function e_S_E(E) {
-            e_S_M(E, s_C_C);
-        }
-        
-        function e_W_E(E) {
-            e_S_M(E, w_C_C);
+        function enterSizeEditMode(e) {
+            enterSubMenuMode(e, sizeControlsContainer);
         }
         
-        function e_G_E(E) { 
-            e_S_M(E, g_C_C);
+        function enterWeightEditMode(e) {
+            enterSubMenuMode(e, weightControlsContainer);
+        }
+        
+        function enterGoalEditMode(e) { 
+            enterSubMenuMode(e, goalControlsContainer);
             
-            g_I_P.textContent = t_G_L === 0 ? '' : t_G_L;
+            goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
             
             setTimeout(() => { 
-                g_I_P.focus();
-                if (t_G_L !== 0) {
+                goalInput.focus();
+                if (targetGoal !== 0) {
                      try {
                         document.execCommand('selectAll', false, null);
-                    } catch (E) {
+                    } catch (error) {
                     }
                 }
             }, 450); 
         }
         
-        function s_T_Z(E) {
-            E.stopPropagation();
-            const B = E.target.closest('.m_I_L');
-            if (!B) return;
-            const S_S = parseFloat(B.getAttribute('data-scale'));
-            
-            if (Math.abs(f_S_L - S_S) > 0.001) {
-                s_C_D = true; 
-            } else {
-                s_C_D = false; 
-            }
-            
-            f_S_L = S_S;
-            localStorage.setItem(S_K_S, f_S_L);
-            u_C_D_P();
-            u_S_B(s_O_P, 'scale');
-            u_H_B_S();
+        function enterThemeEditMode(e) {
+            enterSubMenuMode(e, themeControlsContainer);
         }
         
-        function s_W_T(E) {
-            E.stopPropagation();
-            const B = E.target.closest('.m_I_L');
-            if (!B) return;
-            const S_W = parseInt(B.getAttribute('data-weight'), 10);
+        function setSize(e) {
+            e.stopPropagation();
+            const btn = e.target.closest('.menu-item-link');
+            if (!btn) return;
+            const selectedScale = parseFloat(btn.getAttribute('data-scale'));
             
-            if (f_W_T !== S_W) {
-                w_C_D = true;
+            if (Math.abs(fontScale - selectedScale) > 0.001) {
+                sizeChanged = true; 
             } else {
-                w_C_D = false; 
+                sizeChanged = false; 
             }
             
-            s_F_W(S_W);
-            u_H_B_S();
+            fontScale = selectedScale;
+            localStorage.setItem(STORAGE_KEY_FONT_SCALE, fontScale);
+            updateCounterDisplay();
+            updateSelectedButton(sizeOptions, 'scale');
+            updateHeaderButtonState();
+        }
+        
+        function setWeight(e) {
+            e.stopPropagation();
+            const btn = e.target.closest('.menu-item-link');
+            if (!btn) return;
+            const selectedWeight = parseInt(btn.getAttribute('data-weight'), 10);
+            
+            if (fontWeight !== selectedWeight) {
+                weightChanged = true;
+            } else {
+                weightChanged = false; 
+            }
+            
+            setFontWeight(selectedWeight);
+            updateHeaderButtonState();
         }
 
-        function s_T_G(F_S = false) { 
-            let I_V = g_I_P.textContent.trim();
-            I_V = I_V.replace(/[^\d]/g, '');
-            let N_G = parseInt(I_V, 10);
+        function saveTargetGoal(forceSave = false) { 
+            let inputVal = goalInput.textContent.trim();
+            inputVal = inputVal.replace(/[^\d]/g, '');
+            let newGoal = parseInt(inputVal, 10);
             
-            if (isNaN(N_G) || N_G < 0) {
-                N_G = 0; 
+            if (isNaN(newGoal) || newGoal < 0) {
+                newGoal = 0; 
             }
 
-            const R_C = t_G_L !== N_G;
+            const reallyChanged = targetGoal !== newGoal;
             
-            if (R_C || F_S) {
+            if (reallyChanged || forceSave) {
                 
-                if (R_C) {
-                    c_N_T = 0;
-                    localStorage.setItem(S_K_C, c_N_T);
-                    c_L_E.textContent = c_N_T;
-                    h_T_P = false; 
-                    s_I_N_S(); 
+                if (reallyChanged) {
+                    count = 0;
+                    localStorage.setItem(STORAGE_KEY_COUNT, count);
+                    counterElement.textContent = count;
+                    hasTapped = false; 
+                    showInstruction(); 
                 }
 
-                t_G_L = N_G;
-                localStorage.setItem(S_K_G, t_G_L);
+                targetGoal = newGoal;
+                localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
                 
-                g_I_P.textContent = t_G_L === 0 ? '' : t_G_L;
+                goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
                 
-                g_C_D = false; 
+                goalChanged = false; 
             }
             
-            c_G_S(); 
-            u_H_B_S();
+            checkGoalStatus(); 
+            updateHeaderButtonState();
+        }
+
+        function setTheme(e) {
+            e.stopPropagation();
+            const btn = e.target.closest('.menu-item-link');
+            if (!btn) return;
+            const newTheme = btn.getAttribute('data-theme');
+            
+            if (currentTheme !== newTheme) {
+                themeChanged = true;
+            } else {
+                themeChanged = false;
+            }
+            
+            currentTheme = newTheme;
+            localStorage.setItem(STORAGE_KEY_THEME, currentTheme);
+
+            document.body.classList.remove('theme-white', 'theme-black');
+            
+            let metaColor = '#000000';
+
+            if (currentTheme === 'white') {
+                document.body.classList.add('theme-white');
+                metaColor = '#ffffff';
+            } else if (currentTheme === 'black') {
+                document.body.classList.add('theme-black');
+            } else {
+                document.body.classList.add('theme-dark');
+            }
+
+            if (themeMeta) {
+                themeMeta.setAttribute('content', metaColor);
+            }
+
+            updateSelectedButton(themeOptions, 'theme');
+            updateHeaderButtonState();
         }
         
-        g_I_P.addEventListener('input', () => {
-            u_H_B_S();
-        });
-
-        function e_G_M() {
-            if (!i_G_R) return;
+        function exitGoalMode() {
+            if (!isGoalReached) return;
             
-            c_N_T = 0;
-            localStorage.setItem(S_K_C, c_N_T);
-            c_L_E.textContent = c_N_T;
+            count = 0;
+            localStorage.setItem(STORAGE_KEY_COUNT, count);
+            counterElement.textContent = count;
             
-            t_G_L = 0;
-            localStorage.setItem(S_K_G, t_G_L);
+            targetGoal = 0;
+            localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
             
-            i_G_R = false; 
+            isGoalReached = false; 
             
-            if (t_E_T) clearTimeout(t_E_T);
-            if (g_G_T) clearTimeout(g_G_T);
-            c_L_E.classList.remove('u_l_t_E_F');
-            c_L_E.classList.remove('g_R_p_L'); 
+            if (transientEffectTimer) clearTimeout(transientEffectTimer);
+            if (goalGlowTimer) clearTimeout(goalGlowTimer);
+            counterElement.classList.remove('ultimate-effect');
+            counterElement.classList.remove('goal-reached-pulse'); 
             
-            i_N_E.textContent = "Tap anywhere to count"; 
-            h_T_P = false;
-            s_I_N_S();
+            instructionElement.textContent = "Tap anywhere to count"; 
+            hasTapped = false;
+            showInstruction();
             
-            u_H_B_S();
+            updateHeaderButtonState();
         }
 
-        function c_A_T_E(C_C, F = false) {
-            if (t_G_L > 0 && !F) {
-                c_L_E.classList.remove('u_l_t_E_F'); 
-                c_G_S(); 
+        function checkAndApplyTransientEffect(currentCount, force = false) {
+            if (targetGoal > 0 && !force) {
+                counterElement.classList.remove('ultimate-effect'); 
+                checkGoalStatus(); 
                 return;
             }
             
-            if (t_E_T) {
-                clearTimeout(t_E_T);
-                t_E_T = null;
+            if (transientEffectTimer) {
+                clearTimeout(transientEffectTimer);
+                transientEffectTimer = null;
             }
             
-            c_L_E.classList.remove('u_l_t_E_F');
+            counterElement.classList.remove('ultimate-effect');
             
-            let E_C = null;
+            let effectClass = null;
 
-            if (C_C === 33 || C_C === 66 || C_C === 99) {
-                E_C = 'u_l_t_E_F'; 
+            if (currentCount === 33 || currentCount === 66 || currentCount === 99) {
+                effectClass = 'ultimate-effect'; 
             }
 
-            if (E_C) {
-                c_L_E.classList.add(E_C);
+            if (effectClass) {
+                counterElement.classList.add(effectClass);
 
-                t_E_T = setTimeout(() => {
-                    if (parseInt(c_L_E.textContent, 10) === C_C) {
-                        c_L_E.classList.remove('u_l_t_E_F');
+                transientEffectTimer = setTimeout(() => {
+                    if (parseInt(counterElement.textContent, 10) === currentCount) {
+                        counterElement.classList.remove('ultimate-effect');
                     }
-                    t_E_T = null;
+                    transientEffectTimer = null;
                 }, 400); 
             }
             
-            c_G_S(); 
+            checkGoalStatus(); 
         }
 
-        function i_C_N() {
-            if (i_E_M || g_A_S_M()) {
+        function incrementCounter() {
+            if (isEditMode || getActiveSubMenu()) {
                 return;
             }
             
-            if (f_S_M.classList.contains('visible')) {
-                t_G_M('hide');
+            if (fullScreenMenu.classList.contains('visible')) {
+                toggleMenu('hide');
                 return;
             }
             
-            if (i_G_R) {
+            if (isGoalReached) {
                 return;
             }
 
-            h_I_N_S();
+            hideInstruction();
             
-            c_N_T++;
-            c_L_E.textContent = c_N_T;
-            localStorage.setItem(S_K_C, c_N_T);
-            a_F_Z(c_N_T);
+            count++;
+            counterElement.textContent = count;
+            localStorage.setItem(STORAGE_KEY_COUNT, count);
+            adjustFontSize(count);
 
-            c_A_T_E(c_N_T);
+            checkAndApplyTransientEffect(count);
         }
 
-        function r_C_N(E) {
-            if (E) E.stopPropagation();
+        function resetCounter(e) {
+            if (e) e.stopPropagation();
             
-            if (i_E_M) {
-                s_N_C();
+            if (isEditMode) {
+                saveNewCount();
             }
             
-            c_N_T = 0;
-            t_G_L = 0; 
-            localStorage.setItem(S_K_G, t_G_L);
-            i_G_R = false; 
+            count = 0;
+            targetGoal = 0; 
+            localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
+            isGoalReached = false; 
             
-            if (t_E_T) clearTimeout(t_E_T);
-            if (g_G_T) clearTimeout(g_G_T);
-            c_L_E.classList.remove('u_l_t_E_F');
-            c_L_E.classList.remove('g_R_p_L'); 
+            if (transientEffectTimer) clearTimeout(transientEffectTimer);
+            if (goalGlowTimer) clearTimeout(goalGlowTimer);
+            counterElement.classList.remove('ultimate-effect');
+            counterElement.classList.remove('goal-reached-pulse'); 
             
-            i_N_E.textContent = "Tap anywhere to count";
+            instructionElement.textContent = "Tap anywhere to count";
             
-            h_T_P = false;
-            s_I_N_S();
+            hasTapped = false;
+            showInstruction();
 
-            c_L_E.textContent = c_N_T;
-            g_I_P.textContent = ''; 
-            u_C_D_P(); 
-            t_G_M('hide');
+            counterElement.textContent = count;
+            goalInput.textContent = ''; 
+            updateCounterDisplay(); 
+            toggleMenu('hide');
         }
 
-        function e_N_M(E) {
-            if (E) E.stopPropagation();
-            t_G_M('hide'); 
-            s_N_E_M(true); 
+        function editNumber(e) {
+            if (e) e.stopPropagation();
+            toggleMenu('hide'); 
+            setNumberEditMode(true); 
         }
 
-        function s_N_C() {
-            if (!i_E_M) return;
+        function saveNewCount() {
+            if (!isEditMode) return;
             
-            let I_V = c_L_E.textContent.trim();
-            I_V = I_V.replace(/[^\d]/g, '');
-            let N_C = parseInt(I_V, 10);
+            let inputVal = counterElement.textContent.trim();
+            inputVal = inputVal.replace(/[^\d]/g, '');
+            let newCount = parseInt(inputVal, 10);
             
-            if (isNaN(N_C) || N_C < 0) {
-                N_C = c_N_T;
+            if (isNaN(newCount) || newCount < 0) {
+                newCount = count;
             }
             
-            c_N_T = N_C;
-            u_C_D_P();
-            s_N_E_M(false); 
+            count = newCount;
+            updateCounterDisplay();
+            setNumberEditMode(false); 
             
-            c_A_T_E(c_N_T); 
+            checkAndApplyTransientEffect(count); 
         }
 
-        function u_T_B_T() {
-            t_T_E.textContent = i_D_M ? 'White Mode' : 'Black Mode';
-        }
-
-        function t_G_T(E) {
-            if (E) E.stopPropagation();
-            i_D_M = !i_D_M;
-            const N_T_C = i_D_M ? '#000000' : '#ffffff';
-            
-            if (i_D_M) {
-                document.body.classList.remove('l_M_d');
-                localStorage.setItem(S_K_T, 'dark');
-            } else {
-                document.body.classList.add('l_M_d');
-                localStorage.setItem(S_K_T, 'light');
-            }
-            
-            u_T_B_T();
-            
-            if (t_M_T) {
-                t_M_T.setAttribute('content', N_T_C);
-            }
-            
-            c_G_S(); 
-        }
-
-        function t_G_F(E) {
-            if (E) E.stopPropagation();
+        function toggleFullScreen(e) {
+            if (e) e.stopPropagation();
             if (document.fullscreenElement) {
                 document.exitFullscreen();
             } else {
-                document.documentElement.requestFullscreen().catch(E => {
-                    console.error("Fullscreen API error:", E.message);
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error("Fullscreen API error:", err.message);
                 });
             }
         }
 
-        function h_F_C() {
+        function handleFullscreenChange() {
             if (document.fullscreenElement) {
-                f_T_E.textContent = "Exit Fullscreen";
+                fullscreenTextEl.textContent = "Exit Fullscreen";
             } else {
-                f_T_E.textContent = "Fullscreen";
+                fullscreenTextEl.textContent = "Fullscreen";
             }
             
-            if (f_S_M.classList.contains('visible')) {
-                t_G_M('hide');
+            if (fullScreenMenu.classList.contains('visible')) {
+                toggleMenu('hide');
             }
         }
         
-        function a_S_M_T_L(C) {
-            C.addEventListener('transitionend', function() {
-                if (!C.classList.contains('s_M_a')) {
-                    C.style.visibility = 'hidden';
+        function addSubMenuTransitionEndListeners(container) {
+            container.addEventListener('transitionend', function() {
+                if (!container.classList.contains('sub-menu-active')) {
+                    container.style.visibility = 'hidden';
                 }
             });
         }
         
-        function k_S_t_A_r_T() {
-            const S_M_C = [s_C_C, w_C_C, g_C_C];
-            S_M_C.forEach(C => {
-                C.style.visibility = 'hidden';
-                a_S_M_T_L(C);
+        function init() {
+            const subMenuContainers = [sizeControlsContainer, weightControlsContainer, goalControlsContainer, themeControlsContainer];
+            subMenuContainers.forEach(container => {
+                container.style.visibility = 'hidden';
+                addSubMenuTransitionEndListeners(container);
             });
             
-            const S_C = localStorage.getItem(S_K_C);
-            if (S_C !== null) {
-                c_N_T = parseInt(S_C, 10);
+            const savedCount = localStorage.getItem(STORAGE_KEY_COUNT);
+            if (savedCount !== null) {
+                count = parseInt(savedCount, 10);
             }
-            
-            const S_F_S = localStorage.getItem(S_K_S);
-            if (S_F_S !== null) {
-                f_S_L = parseFloat(S_F_S);
+            const savedFontScale = localStorage.getItem(STORAGE_KEY_FONT_SCALE);
+            if (savedFontScale !== null) {
+                fontScale = parseFloat(savedFontScale);
             } else {
-                f_S_L = 0.6;
+                fontScale = 0.6;
             }
-            
-            const S_F_W = localStorage.getItem(S_K_W);
-            if (S_F_W !== null) {
-                f_W_T = parseInt(S_F_W, 10);
+            const savedFontWeight = localStorage.getItem(STORAGE_KEY_FONT_WEIGHT);
+            if (savedFontWeight !== null) {
+                fontWeight = parseInt(savedFontWeight, 10);
             } else {
-                f_W_T = 100; 
+                fontWeight = 100; 
+            }
+            const savedGoal = localStorage.getItem(STORAGE_KEY_GOAL);
+            if (savedGoal !== null) {
+                targetGoal = parseInt(savedGoal, 10);
             }
             
-            const S_G = localStorage.getItem(S_K_G);
-            if (S_G !== null) {
-                t_G_L = parseInt(S_G, 10);
-            }
-            
-            g_I_P.textContent = t_G_L === 0 ? '' : t_G_L;
-            
-            s_F_W(f_W_T);
-            
-            const S_T = localStorage.getItem(S_K_T);
-            if (S_T === 'light') {
-                i_D_M = false;
-                document.body.classList.add('l_M_d');
-                if (t_M_T) {
-                    t_M_T.setAttribute('content', '#ffffff');
-                }
+            const savedTheme = localStorage.getItem(STORAGE_KEY_THEME);
+            if (savedTheme) {
+                currentTheme = savedTheme;
             } else {
-                i_D_M = true;
-                document.body.classList.remove('l_M_d');
-                if (t_M_T) {
-                    t_M_T.setAttribute('content', '#000000');
-                }
+                currentTheme = 'dark';
             }
-            u_T_B_T();
-
-            u_C_D_P(); 
             
-            if (c_N_T > 0 && !i_G_R) {
-                h_T_P = true;
-                h_I_N_S();
-                c_A_T_E(c_N_T);
-            } else if (i_G_R) {
-            } else {
-                h_T_P = false;
-                s_I_N_S();
+            setTheme({ target: { closest: () => ({ getAttribute: () => currentTheme, dataset: { theme: currentTheme } }) }, stopPropagation: () => {} });
+            
+            goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
+            setFontWeight(fontWeight);
+            updateCounterDisplay(); 
+            
+            if (count > 0 && !isGoalReached) {
+                hasTapped = true;
+                hideInstruction();
+                checkAndApplyTransientEffect(count);
+            } else if (!isGoalReached) {
+                hasTapped = false;
+                showInstruction();
             }
 
-            h_F_C();
-            u_H_B_S(); 
+            handleFullscreenChange();
+            updateHeaderButtonState(); 
 
-            document.body.addEventListener('click', (E) => {
-                if (E.target.closest('.h_C_r') || g_A_S_M()) {
+            document.body.addEventListener('click', (e) => {
+                if (e.target.closest('.header-controls') || getActiveSubMenu()) {
                     return;
                 }
                 
-                if (f_S_M.classList.contains('visible')) {
-                    t_G_M('hide');
+                if (fullScreenMenu.classList.contains('visible')) {
+                    toggleMenu('hide');
                     return;
                 }
                 
-                if (i_G_R) {
+                if (isEditMode || isGoalReached) {
                     return;
                 }
 
-                if (i_E_M) {
-                    c_L_E.blur(); 
-                    return;
-                }
-                
-                i_C_N();
+                incrementCounter();
             });
             
-            c_L_E.addEventListener('blur', s_N_C);
-            c_L_E.addEventListener('keydown', (E) => {
-                if (E.key === 'Enter') {
-                    E.preventDefault();
-                    c_L_E.blur(); 
+            counterElement.addEventListener('blur', saveNewCount);
+            counterElement.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    counterElement.blur(); 
                 }
             });
             
-            g_I_P.addEventListener('blur', () => s_T_G(false)); 
+            goalInput.addEventListener('blur', () => saveTargetGoal(false)); 
             
-            g_I_P.addEventListener('keydown', (E) => {
-                 if (E.key === 'Enter') {
-                    E.preventDefault();
-                    
-                    g_I_P.blur(); 
-                    
-                    if (g_A_S_M() && g_A_S_M().id === 'g_C_c') {
-                        s_C_G_B(E); 
+            goalInput.addEventListener('keydown', (e) => {
+                 if (e.key === 'Enter') {
+                    e.preventDefault();
+                    goalInput.blur(); 
+                    if (getActiveSubMenu() && getActiveSubMenu().id === 'goal-controls-container') {
+                        saveChangesAndGoBack(e); 
                     }
                 }
             });
+            goalInput.addEventListener('input', updateHeaderButtonState);
 
-            o_M_B.addEventListener('click', (E) => {
-                E.stopPropagation();
 
-                const I_M_O = f_S_M.classList.contains('visible');
-                const I_S_V = g_A_S_M();
+            openMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+
+                const isMenuOpen = fullScreenMenu.classList.contains('visible');
+                const isSubMenuVisible = getActiveSubMenu();
                 
-                if (I_S_V && o_M_B.classList.contains('d_N_m_D')) {
-                    s_C_G_B(E);
+                if (isSubMenuVisible && openMenuBtn.classList.contains('is-done-mode')) {
+                    saveChangesAndGoBack(e);
                     return;
                 }
                 
-                if (i_G_R && !I_M_O && !I_S_V) {
-                    e_G_M(); 
+                if (isGoalReached && !isMenuOpen && !isSubMenuVisible) {
+                    exitGoalMode(); 
                     return;
                 }
                 
-                if (!I_M_O) {
-                    t_G_M('show');
+                if (!isMenuOpen) {
+                    toggleMenu('show');
                 } else {
-                    t_G_M('hide');
+                    toggleMenu('hide');
                 }
             });
             
-            b_K_B.addEventListener('click', g_B_K);
+            backBtn.addEventListener('click', goBackFromSubMenu);
 
-            f_B_n.addEventListener('click', (E) => {
-                t_G_F(E);
-                t_G_M('hide');
-            });
-            r_B_n.addEventListener('click', (E) => {
-                r_C_N(E);
-            });
-            e_B_n.addEventListener('click', (E) => {
-                e_N_M(E);
-            });
-            t_B_n.addEventListener('click', (E) => {
-                t_G_T(E);
-            });
 
-            s_E_B.addEventListener('click', e_S_E);
-            w_E_B.addEventListener('click', e_W_E);
-            g_E_B.addEventListener('click', e_G_E); 
-
-            s_O_P.addEventListener('click', s_T_Z);
+            fullscreenBtn.addEventListener('click', (e) => {
+                toggleFullScreen(e);
+                toggleMenu('hide');
+            });
+            resetBtn.addEventListener('click', resetCounter);
+            editBtn.addEventListener('click', editNumber);
             
-            w_O_P.addEventListener('click', s_W_T);
+            sizeEntryBtn.addEventListener('click', enterSizeEditMode);
+            weightEntryBtn.addEventListener('click', enterWeightEditMode);
+            goalEntryBtn.addEventListener('click', enterGoalEditMode); 
+            themeEntryBtn.addEventListener('click', enterThemeEditMode);
 
-            document.addEventListener('fullscreenchange', h_F_C);
+            sizeOptions.addEventListener('click', setSize);
+            weightOptions.addEventListener('click', setWeight);
+            themeOptions.addEventListener('click', setTheme);
+
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
             
-            document.addEventListener('dblclick', function(E) {
-                E.preventDefault();
+            document.addEventListener('dblclick', function(event) {
+                event.preventDefault();
             }, { passive: false });
 
-            document.addEventListener('keydown', (E) => {
-                if (i_E_M) {
-                    if (E.key === 'Enter') return; 
+            document.addEventListener('keydown', (e) => {
+                if (isEditMode) {
+                    if (e.key === 'Enter') return; 
                     return; 
                 }
                 
-                if (E.code === 'Space' || E.code === 'Enter') {
-                    if (!E.target.matches('input, textarea, button, [contenteditable="true"]')) {
-                        i_C_N();
-                        E.preventDefault();
+                if (e.code === 'Space' || e.code === 'Enter') {
+                    if (!e.target.matches('input, textarea, button, [contenteditable="true"]')) {
+                        incrementCounter();
+                        e.preventDefault();
                     }
-                } else if (E.key === 'r' || E.key === 'R') {
-                    r_C_N();
-                } else if (E.key === 'e' || E.key === 'E') {
-                    e_N_M();
-                } else if (E.key === 's' || E.key === 'S') {
-                    e_S_E();
-                    E.preventDefault();
-                } else if (E.key === 'w' || E.key === 'W') {
-                    e_W_E();
-                    E.preventDefault();
-                } else if (E.key === 'g' || E.key === 'G') { 
-                    e_G_E();
-                    E.preventDefault();
-                } else if (E.key === 'Escape') {
-                    const A_S_M = g_A_S_M();
-                    if (A_S_M) {
-                        g_B_K();
-                    } else if (f_S_M.classList.contains('visible')) {
-                        t_G_M('hide');
+                } else if (e.key === 'r' || e.key === 'R') {
+                    resetCounter();
+                } else if (e.key === 'e' || e.key === 'E') {
+                    editNumber();
+                } else if (e.key === 's' || e.key === 'S') {
+                    enterSizeEditMode();
+                    e.preventDefault();
+                } else if (e.key === 'w' || e.key === 'W') {
+                    enterWeightEditMode();
+                    e.preventDefault();
+                } else if (e.key === 'g' || e.key === 'G') { 
+                    enterGoalEditMode();
+                    e.preventDefault();
+                } else if (e.key === 't' || e.key === 'T') {
+                    enterThemeEditMode();
+                    e.preventDefault();
+                } else if (e.key === 'Escape') {
+                    const activeSubMenu = getActiveSubMenu();
+                    if (activeSubMenu) {
+                        goBackFromSubMenu();
+                    } else if (fullScreenMenu.classList.contains('visible')) {
+                        toggleMenu('hide');
                     }
                 }
             });
         }
 
-        k_S_t_A_r_T();
+        init();
     </script>
 </body>
 </html>
