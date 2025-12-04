@@ -29,12 +29,12 @@
             --menu-bg: #1B1B1D; 
             --menu-text: #FFFFFF;
             --menu-hover: rgba(255, 255, 255, 0.1);
-            --selected-bg-dark: #333333; 
+            --selected-bg-dark: #333333;
             --selected-text-dark: #FFFFFF;
-            --ios-blue: #007AFF; 
+            --ios-blue: #007AFF;
         }
 
-        body.light-mode {
+        bdy.lght {
             --bg-color: #ffffff;
             --text-color: #000000;
             --control-color: #000000;
@@ -42,11 +42,11 @@
             --menu-bg: #ffffff;
             --menu-text: #000000;
             --menu-hover: rgba(0, 0, 0, 0.05);
-            --selected-bg-light: #EEEEEE; 
+            --selected-bg-light: #EEEEEE;
             --selected-text-light: #000000;
         }
 
-        body {
+        bdy {
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -63,7 +63,7 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        #main-content-wrapper {
+        #mnctwrp {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -74,11 +74,11 @@
             transition: transform 0.3s ease-out;
         }
 
-        body.keyboard-up #main-content-wrapper {
+        bdy.kybup #mnctwrp {
             transform: translateY(-25%); 
         }
 
-        #counter {
+        #cntr {
             font-size: 35vw;
             line-height: 1;
             text-align: center;
@@ -90,8 +90,8 @@
             margin-bottom: 5px;
         }
         
-        .ultimate-effect {
-            color: #00FF7F !important; 
+        .ultfx {
+            color: #00FF7F !important;
             text-shadow: 0 0 15px #00FF7F, 0 0 25px #00FF7F, 0 0 40px rgba(0, 255, 127, 0.8);
             animation: ultimateGlow 0.75s infinite alternate ease-in-out; 
         }
@@ -107,12 +107,12 @@
             }
         }
         
-        .goal-reached-pulse {
+        .grpls {
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5); 
             animation: goalPulse 1.5s infinite ease-in-out;
         }
         
-        body.light-mode .goal-reached-pulse {
+        bdy.lght .grpls {
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.5); 
         }
 
@@ -126,7 +126,7 @@
         }
 
 
-        #instruction {
+        #istr {
             font-size: 1.1rem;
             font-weight: 300;
             color: var(--instruction-color);
@@ -140,14 +140,14 @@
             white-space: nowrap; 
         }
         
-        .instruction-hidden {
+        .istrhdn {
             opacity: 0 !important;
             height: 0 !important;
             margin-top: 0 !important;
             visibility: hidden !important; 
         }
         
-        .header-controls {
+        .hctl {
             position: fixed;
             top: 0;
             z-index: 250; 
@@ -158,21 +158,21 @@
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        #header-left-controls {
+        #hleft {
             left: 0;
         }
         
-        #header-right-controls {
+        #hright {
             right: 0;
         }
         
-        .header-controls.hidden {
+        .hctl.hdn {
             visibility: hidden;
             opacity: 0;
             pointer-events: none;
         }
 
-        .header-btn {
+        .hbtn {
             background: none;
             border: none;
             color: var(--control-color);
@@ -191,16 +191,15 @@
             position: relative; 
         }
         
-        .header-btn:focus {
+        .hbtn:focus {
             outline: none;
         }
         
-        .is-done-mode {
+        .dnmde {
             color: var(--ios-blue); 
         }
 
-        
-        #menu-icon-svg {
+        #mnicn {
             width: 28px;
             height: 28px;
             stroke-width: 1.5; 
@@ -214,33 +213,30 @@
             transition: stroke 0.3s ease;
         }
         
-        .menu-line {
+        .mnln {
             transform-origin: center;
             transition: transform 0.35s cubic-bezier(0.4, 0.085, 0.68, 0.53);
         }
         
-        #line-top {
+        #lntp {
             transform: translateY(-3px); 
         }
         
-        #line-bottom {
+        #lnbt {
             transform: translateY(3px); 
         }
         
-        
-        .is-close-mode #line-top {
+        .clsmde #lntp {
             transform: translateY(0) rotate(45deg); 
         }
         
-        .is-close-mode #line-bottom {
+        .clsmde #lnbt {
             transform: translateY(0) rotate(-45deg);
         }
 
-
-        
-        #menu-done-text {
+        #mndntxt {
             color: var(--ios-blue); 
-            opacity: 0; 
+            opacity: 0;
             font-size: 1.2rem;
             font-weight: 400;
             line-height: 1;
@@ -251,20 +247,18 @@
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
         
-        
-        .is-done-mode #menu-icon-svg {
+        .dnmde #mnicn {
             opacity: 0;
             transform: translate(-50%, -50%) scale(0.5);
         }
         
-        .is-done-mode #menu-done-text {
+        .dnmde #mndntxt {
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
         }
 
 
-        
-        .back-icon-svg {
+        .bkisn {
             width: 28px;
             height: 28px;
             stroke-width: 1.5; 
@@ -274,8 +268,7 @@
             transform: translateX(-4px); 
         }
 
-        
-        #full-screen-menu {
+        #fllscr {
             position: fixed;
             top: 0; 
             right: 0; 
@@ -286,32 +279,31 @@
             display: flex;
             flex-direction: column;
             
-            transform: translateY(-100%); 
+            transform: translateY(-100%);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0, 1);
             
             pointer-events: none;
-            overflow-y: hidden; 
+            overflow-y: hidden;
             overflow-x: hidden; 
         }
 
-        #full-screen-menu.visible {
+        #fllscr.vsbl {
             transform: translateY(0); 
             pointer-events: auto;
         }
 
-        .menu-header {
+        .mnhdr {
             height: 44px; 
         }
 
-        
-        #menu-inner-container {
+        #mninr {
             display: block;
             width: 100vw; 
             height: auto; 
             transition: none;
         }
 
-        #menu-nav-list {
+        #mnvlst {
             width: 100vw;
             flex-shrink: 0;
             flex-grow: 1;
@@ -320,20 +312,19 @@
             align-items: flex-start;
             padding-top: 20px;
             padding-left: 30px; 
-            padding-right: 30px; 
+            padding-right: 30px;
             overflow-y: auto;
-            max-height: calc(100vh - 44px); 
+            max-height: calc(100vh - 44px);
         }
         
-        
-        #size-controls-container,
-        #weight-controls-container,
-        #goal-controls-container {
+        #szctcnt,
+        #wtctcnt,
+        #glctcnt {
             position: fixed; 
-            top: 0; 
+            top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh; 
+            height: 100vh;
             
             background-color: var(--menu-bg); 
             
@@ -342,7 +333,7 @@
             
             z-index: 101; 
             
-            padding: 70px 30px 20px 30px; 
+            padding: 70px 30px 20px 30px;
             overflow-y: auto;
             
             display: flex;
@@ -350,12 +341,10 @@
             align-items: flex-start;
         }
 
-        
-        .sub-menu-active {
+        .sbmna {
             transform: translateY(0) !important;
         }
 
-        
         @keyframes menuFadeIn {
             from {
                 opacity: 0;
@@ -367,8 +356,7 @@
             }
         }
         
-        
-        .menu-item-link {
+        .mnitmlnk {
             background: none;
             border: none;
             color: var(--menu-text);
@@ -381,70 +369,66 @@
             transition: background-color 0.2s, color 0.2s;
         }
         
-        
-        #menu-nav-list .menu-item-link {
+        #mnvlst .mnitmlnk {
             opacity: 0;
             transform: translateY(10px);
         }
 
-        
-        #full-screen-menu.visible #menu-nav-list .menu-item-link {
+        #fllscr.vsbl #mnvlst .mnitmlnk {
             animation: menuFadeIn 0.3s ease-out forwards;
         }
 
-        
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(1) { animation-delay: 0.1s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(2) { animation-delay: 0.15s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(3) { animation-delay: 0.2s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(4) { animation-delay: 0.25s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(5) { animation-delay: 0.3s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(6) { animation-delay: 0.35s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(7) { animation-delay: 0.4s; }
+        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(1) { animation-delay: 0.1s; }
+        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(2) { animation-delay: 0.15s; }
+        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(3) { animation-delay: 0.2s; }
+        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(4) { animation-delay: 0.25s; }
+        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(5) { animation-delay: 0.3s; }
+        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(6) { animation-delay: 0.35s; }
+        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(7) { animation-delay: 0.4s; }
 
 
-        .menu-sub-header {
+        .mnsbhdr {
             font-size: 2.5rem;
             font-weight: 600;
             padding: 0; 
             margin-bottom: 20px;
         }
         
-        .menu-item-link:focus {
+        .mnitmlnk:focus {
             outline: none;
         }
 
-        .menu-item-link.selected {
+        .mnitmlnk.selected {
             color: var(--selected-text-dark);
             background-color: var(--selected-bg-dark);
             border-radius: 8px;
             padding-left: 15px;
         }
 
-        body.light-mode .menu-item-link.selected {
+        bdy.lght .mnitmlnk.selected {
             color: var(--selected-text-light);
             background-color: var(--selected-bg-light);
         }
 
-        .menu-item-link:active,
-        .menu-item-link:hover {
+        .mnitmlnk:active,
+        .mnitmlnk:hover {
             background-color: var(--menu-hover);
             border-radius: 8px;
             transform: none !important;
             opacity: 1 !important;
         }
 
-        .menu-item-link.selected:hover {
+        .mnitmlnk.selected:hover {
             background-color: var(--selected-bg-dark);
             transform: none;
         }
 
-        body.light-mode .menu-item-link.selected:hover {
+        bdy.lght .mnitmlnk.selected:hover {
             background-color: var(--selected-bg-light);
             transform: none;
         }
 
-        
-        .control-options button {
+        .cntrltns button {
             font-size: 2rem;
             padding: 15px 10px;
             margin-bottom: 5px;
@@ -452,22 +436,21 @@
             text-align: left;
         }
 
-        .info-text {
+        .infxt {
             font-size: 1.2rem;
             color: var(--instruction-color);
             margin-bottom: 40px;
             font-weight: 300;
         }
         
-        
-        #goal-input-wrapper {
+        #glnpwrp {
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-top: 50px;
         }
-        #goal-input {
+        #glnp {
             font-size: 15vw; 
             font-weight: 800;
             color: var(--text-color);
@@ -484,26 +467,26 @@
 
 
         @media (max-width: 400px) {
-            .menu-item-link {
+            .mnitmlnk {
                 font-size: 2rem;
                 padding: 12px 0;
             }
 
-            .control-options button {
+            .cntrltns button {
                 font-size: 1.8rem;
             }
 
-            .header-controls {
+            .hctl {
                 padding: 15px;
             }
         }
     </style>
 </head>
-<body>
+<bdy>
     
-    <div id="header-left-controls" class="header-controls hidden">
-        <button id="back-btn" class="header-btn" aria-label="Go Back" title="Go Back">
-            <svg class="back-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <div id="hleft" class="hctl hdn">
+        <button id="bckbtn" class="hbtn" aria-label="Go Back" title="Go Back">
+            <svg class="bkisn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                 <g id="g-chevron-left">
                     <path d="M15 18l-6-6 6-6"/>
                 </g>
@@ -511,119 +494,113 @@
         </button>
     </div>
 
-    
-    <div id="header-right-controls" class="header-controls">
-        <button id="open-menu-btn" class="header-btn" aria-label="Open Menu" title="Open Menu">
-            <svg id="menu-icon-svg" viewBox="0 0 24 24" fill="none">
-                <line id="line-top" class="menu-line" x1="4" y1="12" x2="20" y2="12"/>
-                <line id="line-bottom" class="menu-line" x1="4" y1="12" x2="20" y2="12"/>
+    <div id="hright" class="hctl">
+        <button id="opnmnb" class="hbtn" aria-label="Open Menu" title="Open Menu">
+            <svg id="mnicn" viewBox="0 0 24 24" fill="none">
+                <line id="lntp" class="mnln" x1="4" y1="12" x2="20" y2="12"/>
+                <line id="lnbt" class="mnln" x1="4" y1="12" x2="20" y2="12"/>
             </svg>
-            <span id="menu-done-text">Done</span>
+            <span id="mndntxt">Done</span>
         </button>
     </div>
 
-    
-    <div id="full-screen-menu" class="hidden-menu">
-        <div class="menu-header"></div> 
-        <div id="menu-inner-container">
-            
-            <nav id="menu-nav-list">
-                <button id="fullscreen-btn" class="menu-item-link" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
-                    <span id="fullscreen-text">Fullscreen</span>
+    <div id="fllscr" class="hidden-menu">
+        <div class="mnhdr"></div> 
+        <div id="mninr">
+            <nav id="mnvlst">
+                <button id="fsbtn" class="mnitmlnk" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
+                    <span id="fxtxt">Fullscreen</span>
                 </button>
-                <button id="reset-btn" class="menu-item-link" aria-label="Reset Counter" title="Reset Counter">
+                <button id="rstbtn" class="mnitmlnk" aria-label="Reset Counter" title="Reset Counter">
                     Reset
                 </button>
-                <button id="edit-btn" class="menu-item-link" aria-label="Edit Number" title="Edit">
+                <button id="edtbtn" class="mnitmlnk" aria-label="Edit Number" title="Edit">
                     Edit
                 </button>
-                <button id="size-entry-btn" class="menu-item-link" aria-label="Adjust Font Size" title="Adjust Font Size">
+                <button id="szntbtn" class="mnitmlnk" aria-label="Adjust Font Size" title="Adjust Font Size">
                     Size
                 </button>
-                <button id="weight-entry-btn" class="menu-item-link" aria-label="Adjust Font Weight" title="Adjust Font Weight">
+                <button id="wtntbtn" class="mnitmlnk" aria-label="Adjust Font Weight" title="Adjust Font Weight">
                     Weight
                 </button>
-                <button id="goal-entry-btn" class="menu-item-link" aria-label="Set Target Goal" title="Set Target Goal">
+                <button id="glntbtn" class="mnitmlnk" aria-label="Set Target Goal" title="Set Target Goal">
                     Set Goal
                 </button>
-                <button id="theme-btn" class="menu-item-link" aria-label="Toggle Theme" title="Toggle Theme">
-                    <span id="theme-text">White Mode</span>
+                <button id="thbtn" class="mnitmlnk" aria-label="Toggle Theme" title="Toggle Theme">
+                    <span id="thtxt">White Mode</span>
                 </button>
             </nav>
         </div>
     </div>
     
-    
-    <div id="size-controls-container">
-        <h2 class="menu-sub-header">Counter Size</h2>
-        <p class="info-text">Select a size below.</p>
-        <div id="size-options" class="control-options">
-            <button id="size-small-btn" class="menu-item-link" data-scale="0.3">Small</button>
-            <button id="size-normal-btn" class="menu-item-link" data-scale="0.6">Normal</button>
-            <button id="size-large-btn" class="menu-item-link" data-scale="1.3">Large</button>
+    <div id="szctcnt">
+        <h2 class="mnsbhdr">Counter Size</h2>
+        <p class="infxt">Select a size below.</p>
+        <div id="szopt" class="cntrltns">
+            <button id="szsmb" class="mnitmlnk" data-scale="0.3">Small</button>
+            <button id="sznmb" class="mnitmlnk" data-scale="0.6">Normal</button>
+            <button id="szlgb" class="mnitmlnk" data-scale="1.3">Large</button>
         </div>
     </div>
 
-    
-    <div id="weight-controls-container">
-        <h2 class="menu-sub-header">Choose Font Weight</h2>
-        <p class="info-text">Affects how thin or thick the number appears.</p>
-        <div id="weight-options" class="control-options">
-            <button id="weight-thin-btn" class="menu-item-link" data-weight="100" style="font-weight: 100;">Thin</button>
-            <button id="weight-regular-btn" class="menu-item-link" data-weight="400" style="font-weight: 400;">Regular</button>
-            <button id="weight-bold-btn" class="menu-item-link" data-weight="800" style="font-weight: 800;">Bold</button>
+    <div id="wtctcnt">
+        <h2 class="mnsbhdr">Choose Font Weight</h2>
+        <p class="infxt">Affects how thin or thick the number appears.</p>
+        <div id="wtopt" class="cntrltns">
+            <button id="wttnb" class="mnitmlnk" data-weight="100" style="font-weight: 100;">Thin</button>
+            <button id="wtrgb" class="mnitmlnk" data-weight="400" style="font-weight: 400;">Regular</button>
+            <button id="wtbdb" class="mnitmlnk" data-weight="800" style="font-weight: 800;">Bold</button>
         </div>
     </div>
     
-    
-    <div id="goal-controls-container">
-        <h2 class="menu-sub-header">Set Target Goal</h2>
-        <p class="info-text">Enter the number you want to reach. The counter will briefly glow and vibrate when reached. Setting a new goal will reset the counter to zero.</p>
-        <div id="goal-input-wrapper">
-            <div id="goal-input" contenteditable="true" inputmode="numeric">0</div> 
+    <div id="glctcnt">
+        <h2 class="mnsbhdr">Set Target Goal</h2>
+        <p class="infxt">Enter the number you want to reach. The counter will briefly glow and vibrate when reached. Setting a new goal will reset the counter to zero.</p>
+        <div id="glnpwrp">
+            <div id="glnp" contenteditable="true" inputmode="numeric">0</div> 
         </div>
     </div>
 
 
-    <div id="main-content-wrapper">
-        <div id="counter" contenteditable="false">0</div>
-        <div id="instruction">Tap anywhere to count</div>
+    <div id="mnctwrp">
+        <div id="cntr" contenteditable="false">0</div>
+        <div id="istr">Tap anywhere to count</div>
     </div>
 
     <script>
-        const counterElement = document.getElementById('counter');
-        const instructionElement = document.getElementById('instruction');
+        const cntr = document.getElementById('cntr');
+        const istr = document.getElementById('istr');
         const themeMeta = document.querySelector('meta[name="theme-color"]');
 
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-        const fullscreenTextEl = document.getElementById('fullscreen-text');
-        const editBtn = document.getElementById('edit-btn');
-        const resetBtn = document.getElementById('reset-btn');
-        const themeBtn = document.getElementById('theme-btn');
-        const themeTextEl = document.getElementById('theme-text');
+        const fsbtn = document.getElementById('fsbtn');
+        const fxtxt = document.getElementById('fxtxt');
+        const edtbtn = document.getElementById('edtbtn');
+        const rstbtn = document.getElementById('rstbtn');
+        const thbtn = document.getElementById('thbtn');
+        const thtxt = document.getElementById('thtxt');
         
-        const sizeEntryBtn = document.getElementById('size-entry-btn');
-        const weightEntryBtn = document.getElementById('weight-entry-btn');
-        const goalEntryBtn = document.getElementById('goal-entry-btn'); 
-        const goalInput = document.getElementById('goal-input'); 
+        const szntbtn = document.getElementById('szntbtn');
+        const wtntbtn = document.getElementById('wtntbtn');
+        const glntbtn = document.getElementById('glntbtn'); 
+        const glnp = document.getElementById('glnp'); 
         
-        const openMenuBtn = document.getElementById('open-menu-btn'); 
-        const backBtn = document.getElementById('back-btn'); 
+        const opnmnb = document.getElementById('opnmnb'); 
+        const bckbtn = document.getElementById('bckbtn'); 
         
-        const menuDoneText = document.getElementById('menu-done-text'); 
+        const mndntxt = document.getElementById('mndntxt'); 
         
-        const headerLeftControls = document.getElementById('header-left-controls');
-        const headerRightControls = document.getElementById('header-right-controls');
+        const hleft = document.getElementById('hleft');
+        const hright = document.getElementById('hright');
         
-        const fullScreenMenu = document.getElementById('full-screen-menu');
-        const menuInnerContainer = document.getElementById('menu-inner-container');
+        const fllscr = document.getElementById('fllscr');
+        const mninr = document.getElementById('mninr');
 
-        const sizeOptions = document.getElementById('size-options');
-        const weightOptions = document.getElementById('weight-options');
+        const szopt = document.getElementById('szopt');
+        const wtopt = document.getElementById('wtopt');
         
-        const sizeControlsContainer = document.getElementById('size-controls-container');
-        const weightControlsContainer = document.getElementById('weight-controls-container');
-        const goalControlsContainer = document.getElementById('goal-controls-container');
+        const szctcnt = document.getElementById('szctcnt');
+        const wtctcnt = document.getElementById('wtctcnt');
+        const glctcnt = document.getElementById('glctcnt');
         
         let count = 0;
         let targetGoal = 0; 
@@ -667,14 +644,14 @@
             }
 
             const finalVw = baseVw * scale;
-            counterElement.style.fontSize = `${finalVw}vw`;
+            cntr.style.fontSize = `${finalVw}vw`;
         }
         
         function setFontWeight(weight) {
             fontWeight = weight;
-            counterElement.style.fontWeight = fontWeight;
+            cntr.style.fontWeight = fontWeight;
             localStorage.setItem(STORAGE_KEY_FONT_WEIGHT, fontWeight);
-            updateSelectedButton(weightOptions, 'weight');
+            updateSelectedButton(wtopt, 'weight');
         }
         
         function triggerGoalReachedGlow() {
@@ -687,10 +664,10 @@
                 goalGlowTimer = null;
             }
             
-            counterElement.classList.add('ultimate-effect');
+            cntr.classList.add('ultfx');
             
             goalGlowTimer = setTimeout(() => {
-                counterElement.classList.remove('ultimate-effect');
+                cntr.classList.remove('ultfx');
                 goalGlowTimer = null;
                 checkAndApplyTransientEffect(count, true); 
             }, 750); 
@@ -706,23 +683,23 @@
                     triggerGoalReachedGlow(); 
                     
                     if (navigator.vibrate) {
-                        navigator.vibrate([200, 100, 200]); 
+                        navigator.vibrate([200, 100, 200]);
                     }
                 }
                 
-                counterElement.classList.remove('goal-reached-pulse'); 
+                cntr.classList.remove('grpls'); 
                 
-                instructionElement.textContent = "Goal Reached!"; 
-                instructionElement.classList.remove('instruction-hidden');
-                instructionElement.style.opacity = '1';
-                instructionElement.style.visibility = 'visible'; 
+                istr.textContent = "Goal Reached!"; 
+                istr.classList.remove('istrhdn');
+                istr.style.opacity = '1';
+                istr.style.visibility = 'visible'; 
 
             } else {
                 isGoalReached = false;
                 
-                counterElement.classList.remove('goal-reached-pulse'); 
+                cntr.classList.remove('grpls'); 
                 
-                instructionElement.textContent = "Tap anywhere to count";
+                istr.textContent = "Tap anywhere to count";
                 if (hasTapped) {
                     hideInstruction();
                 } else {
@@ -734,7 +711,7 @@
         }
 
         function checkGoalInputHasChanged() {
-            let inputVal = goalInput.textContent.trim().replace(/[^\d]/g, '');
+            let inputVal = glnp.textContent.trim().replace(/[^\d]/g, '');
             let newGoal = parseInt(inputVal, 10);
             
             if (isNaN(newGoal) || newGoal < 0) {
@@ -745,61 +722,61 @@
         }
 
         function getActiveSubMenu() {
-            return document.querySelector('.sub-menu-active');
+            return document.querySelector('.sbmna');
         }
 
         function updateHeaderButtonState() {
-            const isMenuOpen = fullScreenMenu.classList.contains('visible');
+            const isMenuOpen = fllscr.classList.contains('vsbl');
             const activeSubMenu = getActiveSubMenu();
             const isSubMenuVisible = !!activeSubMenu;
-            const isGoalScreen = activeSubMenu && activeSubMenu.id === 'goal-controls-container';
+            const isGoalScreen = activeSubMenu && activeSubMenu.id === 'glctcnt';
             
-            openMenuBtn.classList.remove('is-done-mode', 'is-close-mode');
+            opnmnb.classList.remove('dnmde', 'clsmde');
 
             if (isSubMenuVisible) {
-                headerLeftControls.classList.remove('hidden'); 
+                hleft.classList.remove('hdn');
 
                 const hasPendingChanges = isGoalScreen ? checkGoalInputHasChanged() : (sizeChanged || weightChanged);
                 
                 if (hasPendingChanges) {
-                    headerRightControls.classList.remove('hidden');
-                    openMenuBtn.classList.add('is-done-mode');
-                    openMenuBtn.setAttribute('aria-label', 'Save and Close');
-                    openMenuBtn.setAttribute('title', 'Save and Close');
+                    hright.classList.remove('hdn');
+                    opnmnb.classList.add('dnmde');
+                    opnmnb.setAttribute('aria-label', 'Save and Close');
+                    opnmnb.setAttribute('title', 'Save and Close');
                 } else {
-                    headerRightControls.classList.add('hidden');
+                    hright.classList.add('hdn');
                 }
                 
                 return; 
             }
 
             if (isMenuOpen) {
-                headerLeftControls.classList.add('hidden'); 
-                headerRightControls.classList.remove('hidden'); 
-                openMenuBtn.classList.add('is-close-mode'); 
-                openMenuBtn.setAttribute('aria-label', 'Close Menu');
-                openMenuBtn.setAttribute('title', 'Close Menu');
+                hleft.classList.add('hdn');
+                hright.classList.remove('hdn');
+                opnmnb.classList.add('clsmde');
+                opnmnb.setAttribute('aria-label', 'Close Menu');
+                opnmnb.setAttribute('title', 'Close Menu');
                 return;
             }
 
-            headerLeftControls.classList.add('hidden'); 
-            headerRightControls.classList.remove('hidden'); 
+            hleft.classList.add('hdn');
+            hright.classList.remove('hdn');
 
             if (isGoalReached) {
-                openMenuBtn.classList.add('is-done-mode');
-                openMenuBtn.setAttribute('aria-label', 'Done');
-                openMenuBtn.setAttribute('title', 'Done');
+                opnmnb.classList.add('dnmde');
+                opnmnb.setAttribute('aria-label', 'Done');
+                opnmnb.setAttribute('title', 'Done');
             } else {
-                openMenuBtn.setAttribute('aria-label', 'Open Menu');
-                openMenuBtn.setAttribute('title', 'Open Menu');
+                opnmnb.setAttribute('aria-label', 'Open Menu');
+                opnmnb.setAttribute('title', 'Open Menu');
             }
         }
 
         function updateCounterDisplay() {
             localStorage.setItem(STORAGE_KEY_COUNT, count);
             adjustFontSize(count);
-            updateSelectedButton(sizeOptions, 'scale');
-            updateSelectedButton(weightOptions, 'weight');
+            updateSelectedButton(szopt, 'scale');
+            updateSelectedButton(wtopt, 'weight');
             checkGoalStatus(); 
         }
 
@@ -819,26 +796,26 @@
         function hideInstruction() {
             if (!hasTapped && !isGoalReached) {
                 hasTapped = true;
-                instructionElement.classList.add('instruction-hidden');
+                istr.classList.add('istrhdn');
             }
         }
         
         function showInstruction() {
-            instructionElement.textContent = "Tap anywhere to count";
-            instructionElement.classList.remove('instruction-hidden');
-            instructionElement.style.opacity = '1';
-            instructionElement.style.visibility = 'visible';
+            istr.textContent = "Tap anywhere to count";
+            istr.classList.remove('istrhdn');
+            istr.style.opacity = '1';
+            istr.style.visibility = 'visible';
         }
         
         function toggleMenu(visibility) {
             const isShowing = visibility === 'show';
             
             if (isShowing) {
-                fullScreenMenu.classList.add('visible');
+                fllscr.classList.add('vsbl');
             } else {
-                fullScreenMenu.classList.remove('visible');
+                fllscr.classList.remove('vsbl');
                 
-                document.querySelectorAll('.sub-menu-active').forEach(el => el.classList.remove('sub-menu-active'));
+                document.querySelectorAll('.sbmna').forEach(el => el.classList.remove('sbmna'));
                 
                 sizeChanged = false;
                 weightChanged = false;
@@ -856,7 +833,7 @@
 
             const activeSubMenu = getActiveSubMenu();
             if (activeSubMenu) {
-                activeSubMenu.classList.remove('sub-menu-active');
+                activeSubMenu.classList.remove('sbmna');
             }
             
             sizeChanged = false;
@@ -872,15 +849,15 @@
              const activeSubMenu = getActiveSubMenu();
              if (!activeSubMenu) return;
 
-             if (activeSubMenu.id === 'goal-controls-container') {
-                 saveTargetGoal(true); 
-             } else if (activeSubMenu.id === 'size-controls-container') {
+             if (activeSubMenu.id === 'glctcnt') {
+                 saveTargetGoal(true);
+             } else if (activeSubMenu.id === 'szctcnt') {
                  sizeChanged = false;
-             } else if (activeSubMenu.id === 'weight-controls-container') {
+             } else if (activeSubMenu.id === 'wtctcnt') {
                  weightChanged = false;
              }
              
-             activeSubMenu.classList.remove('sub-menu-active');
+             activeSubMenu.classList.remove('sbmna');
              
              updateHeaderButtonState();
         }
@@ -894,19 +871,19 @@
         function setNumberEditModeState(isEditing) {
             isEditMode = isEditing;
             if (isEditing) {
-                counterElement.contentEditable = 'true';
-                counterElement.setAttribute('inputmode', 'numeric');
+                cntr.contentEditable = 'true';
+                cntr.setAttribute('inputmode', 'numeric');
                 
-                document.body.classList.add('keyboard-up');
+                document.body.classList.add('kybup');
 
-                if (fullScreenMenu.classList.contains('visible')) {
+                if (fllscr.classList.contains('vsbl')) {
                     toggleMenu('hide'); 
                 }
 
-                counterElement.focus();
+                cntr.focus();
                 
-                instructionElement.style.opacity = '0';
-                instructionElement.style.visibility = 'hidden'; 
+                istr.style.opacity = '0';
+                istr.style.visibility = 'hidden'; 
                 
                 try {
                     document.execCommand('selectAll', false, null);
@@ -914,12 +891,12 @@
                     console.warn("Could not select all text automatically.");
                 }
             } else {
-                counterElement.contentEditable = 'false';
-                counterElement.removeAttribute('inputmode');
+                cntr.contentEditable = 'false';
+                cntr.removeAttribute('inputmode');
                 
-                document.body.classList.remove('keyboard-up');
+                document.body.classList.remove('kybup');
                 
-                checkGoalStatus(); 
+                checkGoalStatus();
             }
             updateHeaderButtonState();
         }
@@ -929,38 +906,37 @@
             
             toggleMenu('show'); 
             
-            document.querySelectorAll('.sub-menu-active').forEach(el => el.classList.remove('sub-menu-active'));
+            document.querySelectorAll('.sbmna').forEach(el => el.classList.remove('sbmna'));
             
             containerElement.style.visibility = 'visible'; 
 
-            containerElement.classList.add('sub-menu-active');
+            containerElement.classList.add('sbmna');
             
-            if (containerElement.id === 'size-controls-container') updateSelectedButton(sizeOptions, 'scale');
-            if (containerElement.id === 'weight-controls-container') updateSelectedButton(weightOptions, 'weight');
+            if (containerElement.id === 'szctcnt') updateSelectedButton(szopt, 'scale');
+            if (containerElement.id === 'wtctcnt') updateSelectedButton(wtopt, 'weight');
 
             updateHeaderButtonState(); 
         }
 
         function enterSizeEditMode(e) {
-            enterSubMenuMode(e, sizeControlsContainer);
+            enterSubMenuMode(e, szctcnt);
         }
         
         function enterWeightEditMode(e) {
-            enterSubMenuMode(e, weightControlsContainer);
+            enterSubMenuMode(e, wtctcnt);
         }
         
         function enterGoalEditMode(e) { 
-            enterSubMenuMode(e, goalControlsContainer);
+            enterSubMenuMode(e, glctcnt);
             
-            goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
+            glnp.textContent = targetGoal === 0 ? '' : targetGoal;
             
             setTimeout(() => { 
-                goalInput.focus();
+                glnp.focus();
                 if (targetGoal !== 0) {
                      try {
                         document.execCommand('selectAll', false, null);
                     } catch (error) {
-                        
                     }
                 }
             }, 450); 
@@ -968,33 +944,33 @@
         
         function setSize(e) {
             e.stopPropagation();
-            const btn = e.target.closest('.menu-item-link');
+            const btn = e.target.closest('.mnitmlnk');
             if (!btn) return;
             const selectedScale = parseFloat(btn.getAttribute('data-scale'));
             
             if (Math.abs(fontScale - selectedScale) > 0.001) {
                 sizeChanged = true; 
             } else {
-                sizeChanged = false; 
+                sizeChanged = false;
             }
             
             fontScale = selectedScale;
             localStorage.setItem(STORAGE_KEY_FONT_SCALE, fontScale);
             updateCounterDisplay();
-            updateSelectedButton(sizeOptions, 'scale');
+            updateSelectedButton(szopt, 'scale');
             updateHeaderButtonState();
         }
         
         function setWeight(e) {
             e.stopPropagation();
-            const btn = e.target.closest('.menu-item-link');
+            const btn = e.target.closest('.mnitmlnk');
             if (!btn) return;
             const selectedWeight = parseInt(btn.getAttribute('data-weight'), 10);
             
             if (fontWeight !== selectedWeight) {
                 weightChanged = true;
             } else {
-                weightChanged = false; 
+                weightChanged = false;
             }
             
             setFontWeight(selectedWeight);
@@ -1002,7 +978,7 @@
         }
 
         function saveTargetGoal(forceSave = false) { 
-            let inputVal = goalInput.textContent.trim();
+            let inputVal = glnp.textContent.trim();
             inputVal = inputVal.replace(/[^\d]/g, '');
             let newGoal = parseInt(inputVal, 10);
             
@@ -1017,15 +993,15 @@
                 if (reallyChanged) {
                     count = 0;
                     localStorage.setItem(STORAGE_KEY_COUNT, count);
-                    counterElement.textContent = count;
-                    hasTapped = false; 
+                    cntr.textContent = count;
+                    hasTapped = false;
                     showInstruction(); 
                 }
 
                 targetGoal = newGoal;
                 localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
                 
-                goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
+                glnp.textContent = targetGoal === 0 ? '' : targetGoal;
                 
                 goalChanged = false; 
             }
@@ -1034,7 +1010,7 @@
             updateHeaderButtonState();
         }
         
-        goalInput.addEventListener('input', () => {
+        glnp.addEventListener('input', () => {
             updateHeaderButtonState();
         });
 
@@ -1044,7 +1020,7 @@
             
             count = 0;
             localStorage.setItem(STORAGE_KEY_COUNT, count);
-            counterElement.textContent = count;
+            cntr.textContent = count;
             
             targetGoal = 0;
             localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
@@ -1053,10 +1029,10 @@
             
             if (transientEffectTimer) clearTimeout(transientEffectTimer);
             if (goalGlowTimer) clearTimeout(goalGlowTimer);
-            counterElement.classList.remove('ultimate-effect');
-            counterElement.classList.remove('goal-reached-pulse'); 
+            cntr.classList.remove('ultfx');
+            cntr.classList.remove('grpls'); 
             
-            instructionElement.textContent = "Tap anywhere to count"; 
+            istr.textContent = "Tap anywhere to count"; 
             hasTapped = false;
             showInstruction();
             
@@ -1074,20 +1050,20 @@
                 transientEffectTimer = null;
             }
             
-            counterElement.classList.remove('ultimate-effect');
+            cntr.classList.remove('ultfx');
             
             let effectClass = null;
 
             if (currentCount === 33 || currentCount === 66 || currentCount === 99) {
-                effectClass = 'ultimate-effect'; 
+                effectClass = 'ultfx'; 
             }
 
             if (effectClass) {
-                counterElement.classList.add(effectClass);
+                cntr.classList.add(effectClass);
 
                 transientEffectTimer = setTimeout(() => {
-                    if (parseInt(counterElement.textContent, 10) === currentCount) {
-                        counterElement.classList.remove('ultimate-effect');
+                    if (parseInt(cntr.textContent, 10) === currentCount) {
+                        cntr.classList.remove('ultfx');
                     }
                     transientEffectTimer = null;
                 }, 400); 
@@ -1102,7 +1078,7 @@
                 return;
             }
             
-            if (fullScreenMenu.classList.contains('visible')) {
+            if (fllscr.classList.contains('vsbl')) {
                 toggleMenu('hide');
                 return;
             }
@@ -1114,7 +1090,7 @@
             hideInstruction();
             
             count++;
-            counterElement.textContent = count;
+            cntr.textContent = count;
             localStorage.setItem(STORAGE_KEY_COUNT, count);
             adjustFontSize(count);
 
@@ -1135,16 +1111,16 @@
             
             if (transientEffectTimer) clearTimeout(transientEffectTimer);
             if (goalGlowTimer) clearTimeout(goalGlowTimer);
-            counterElement.classList.remove('ultimate-effect');
-            counterElement.classList.remove('goal-reached-pulse'); 
+            cntr.classList.remove('ultfx');
+            cntr.classList.remove('grpls'); 
             
-            instructionElement.textContent = "Tap anywhere to count";
+            istr.textContent = "Tap anywhere to count";
             
             hasTapped = false;
             showInstruction();
 
-            counterElement.textContent = count;
-            goalInput.textContent = ''; 
+            cntr.textContent = count;
+            glnp.textContent = ''; 
             updateCounterDisplay(); 
             toggleMenu('hide');
         }
@@ -1158,7 +1134,7 @@
         function saveNewCount() {
             if (!isEditMode) return;
             
-            let inputVal = counterElement.textContent.trim();
+            let inputVal = cntr.textContent.trim();
             inputVal = inputVal.replace(/[^\d]/g, '');
             let newCount = parseInt(inputVal, 10);
             
@@ -1174,7 +1150,7 @@
         }
 
         function updateThemeButtonText() {
-            themeTextEl.textContent = isDarkMode ? 'White Mode' : 'Black Mode';
+            thtxt.textContent = isDarkMode ? 'White Mode' : 'Black Mode';
         }
 
         function toggleTheme(e) {
@@ -1183,10 +1159,10 @@
             const newThemeColor = isDarkMode ? '#000000' : '#ffffff';
             
             if (isDarkMode) {
-                document.body.classList.remove('light-mode');
+                document.body.classList.remove('lght');
                 localStorage.setItem(STORAGE_KEY_THEME, 'dark');
             } else {
-                document.body.classList.add('light-mode');
+                document.body.classList.add('lght');
                 localStorage.setItem(STORAGE_KEY_THEME, 'light');
             }
             
@@ -1212,26 +1188,26 @@
 
         function handleFullscreenChange() {
             if (document.fullscreenElement) {
-                fullscreenTextEl.textContent = "Exit Fullscreen";
+                fxtxt.textContent = "Exit Fullscreen";
             } else {
-                fullscreenTextEl.textContent = "Fullscreen";
+                fxtxt.textContent = "Fullscreen";
             }
             
-            if (fullScreenMenu.classList.contains('visible')) {
+            if (fllscr.classList.contains('vsbl')) {
                 toggleMenu('hide');
             }
         }
         
         function addSubMenuTransitionEndListeners(container) {
             container.addEventListener('transitionend', function() {
-                if (!container.classList.contains('sub-menu-active')) {
+                if (!container.classList.contains('sbmna')) {
                     container.style.visibility = 'hidden';
                 }
             });
         }
         
         function init() {
-            const subMenuContainers = [sizeControlsContainer, weightControlsContainer, goalControlsContainer];
+            const subMenuContainers = [szctcnt, wtctcnt, glctcnt];
             subMenuContainers.forEach(container => {
                 container.style.visibility = 'hidden';
                 addSubMenuTransitionEndListeners(container);
@@ -1261,20 +1237,20 @@
                 targetGoal = parseInt(savedGoal, 10);
             }
             
-            goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
+            glnp.textContent = targetGoal === 0 ? '' : targetGoal;
             
             setFontWeight(fontWeight);
             
             const savedTheme = localStorage.getItem(STORAGE_KEY_THEME);
             if (savedTheme === 'light') {
                 isDarkMode = false;
-                document.body.classList.add('light-mode');
+                document.body.classList.add('lght');
                 if (themeMeta) {
                     themeMeta.setAttribute('content', '#ffffff');
                 }
             } else {
                 isDarkMode = true;
-                document.body.classList.remove('light-mode');
+                document.body.classList.remove('lght');
                 if (themeMeta) {
                     themeMeta.setAttribute('content', '#000000');
                 }
@@ -1297,17 +1273,17 @@
             updateHeaderButtonState(); 
 
             document.body.addEventListener('click', (e) => {
-                if (e.target.closest('.header-controls') || getActiveSubMenu()) {
+                if (e.target.closest('.hctl') || getActiveSubMenu()) {
                     return;
                 }
                 
-                if (fullScreenMenu.classList.contains('visible')) {
+                if (fllscr.classList.contains('vsbl')) {
                     toggleMenu('hide');
                     return;
                 }
                 
                 if (isEditMode) {
-                    counterElement.blur(); 
+                    cntr.blur(); 
                     return;
                 }
                 
@@ -1318,42 +1294,41 @@
                 incrementCounter();
             });
             
-            counterElement.addEventListener('blur', saveNewCount);
-            counterElement.addEventListener('keydown', (e) => {
+            cntr.addEventListener('blur', saveNewCount);
+            cntr.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    counterElement.blur(); 
+                    cntr.blur(); 
                 }
             });
             
-            goalInput.addEventListener('blur', () => saveTargetGoal(false)); 
+            glnp.addEventListener('blur', () => saveTargetGoal(false)); 
             
-            goalInput.addEventListener('keydown', (e) => {
+            glnp.addEventListener('keydown', (e) => {
                  if (e.key === 'Enter') {
                     e.preventDefault();
                     
-                    goalInput.blur(); 
+                    glnp.blur(); 
                     
-                    if (getActiveSubMenu() && getActiveSubMenu().id === 'goal-controls-container') {
+                    if (getActiveSubMenu() && getActiveSubMenu().id === 'glctcnt') {
                         saveChangesAndGoBack(e); 
                     }
                 }
             });
 
-
-            openMenuBtn.addEventListener('click', (e) => {
+            opnmnb.addEventListener('click', (e) => {
                 e.stopPropagation();
 
-                const isMenuOpen = fullScreenMenu.classList.contains('visible');
+                const isMenuOpen = fllscr.classList.contains('vsbl');
                 const isSubMenuVisible = getActiveSubMenu();
                 
-                if (isSubMenuVisible && openMenuBtn.classList.contains('is-done-mode')) {
+                if (isSubMenuVisible && opnmnb.classList.contains('dnmde')) {
                     saveChangesAndGoBack(e);
                     return;
                 }
                 
                 if (isGoalReached && !isMenuOpen && !isSubMenuVisible) {
-                    exitGoalMode(); 
+                    exitGoalMode();
                     return;
                 }
                 
@@ -1364,30 +1339,30 @@
                 }
             });
             
-            backBtn.addEventListener('click', goBackFromSubMenu);
+            bckbtn.addEventListener('click', goBackFromSubMenu);
 
 
-            fullscreenBtn.addEventListener('click', (e) => {
+            fsbtn.addEventListener('click', (e) => {
                 toggleFullScreen(e);
                 toggleMenu('hide');
             });
-            resetBtn.addEventListener('click', (e) => {
+            rstbtn.addEventListener('click', (e) => {
                 resetCounter(e);
             });
-            editBtn.addEventListener('click', (e) => {
+            edtbtn.addEventListener('click', (e) => {
                 editNumber(e);
             });
-            themeBtn.addEventListener('click', (e) => {
+            thbtn.addEventListener('click', (e) => {
                 toggleTheme(e);
             });
 
-            sizeEntryBtn.addEventListener('click', enterSizeEditMode);
-            weightEntryBtn.addEventListener('click', enterWeightEditMode);
-            goalEntryBtn.addEventListener('click', enterGoalEditMode); 
+            szntbtn.addEventListener('click', enterSizeEditMode);
+            wtntbtn.addEventListener('click', enterWeightEditMode);
+            glntbtn.addEventListener('click', enterGoalEditMode); 
 
-            sizeOptions.addEventListener('click', setSize);
+            szopt.addEventListener('click', setSize);
             
-            weightOptions.addEventListener('click', setWeight);
+            wtopt.addEventListener('click', setWeight);
 
             document.addEventListener('fullscreenchange', handleFullscreenChange);
             
@@ -1397,7 +1372,7 @@
 
             document.addEventListener('keydown', (e) => {
                 if (isEditMode) {
-                    if (e.key === 'Enter') return; 
+                    if (e.key === 'Enter') return;
                     return; 
                 }
                 
@@ -1423,7 +1398,7 @@
                     const activeSubMenu = getActiveSubMenu();
                     if (activeSubMenu) {
                         goBackFromSubMenu();
-                    } else if (fullScreenMenu.classList.contains('visible')) {
+                    } else if (fllscr.classList.contains('vsbl')) {
                         toggleMenu('hide');
                     }
                 }
@@ -1432,6 +1407,6 @@
 
         init();
     </script>
-</body>
+</bdy>
 </html>
 
