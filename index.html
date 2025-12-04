@@ -57,6 +57,19 @@
             --selected-bg: #222222;
             --selected-text: #FFFFFF;
         }
+        
+        body.theme-dark {
+            --counter-bg-color: #000000;
+            --text-color: #ffffff;
+            --control-color: #ffffff;
+            --instruction-color: rgba(255, 255, 255, 0.5);
+            --menu-bg: #1B1B1D; /* Darker than pure black */
+            --menu-text: #FFFFFF;
+            --menu-hover: rgba(255, 255, 255, 0.1);
+            --selected-bg: #333333;
+            --selected-text: #FFFFFF;
+        }
+
 
         body {
             background-color: var(--counter-bg-color); 
@@ -100,6 +113,10 @@
             transition: font-size 0.3s ease-out, color 0.5s ease, text-shadow 0.5s ease, font-weight 0.3s ease; 
             outline: none;
             margin-bottom: 5px;
+            /* Ensure long numbers wrap if necessary, though font size handles this usually */
+            word-break: break-all; 
+            overflow: hidden;
+            max-width: 100%;
         }
         
         .ultimate-effect {
@@ -309,7 +326,7 @@
         #size-controls-container,
         #weight-controls-container,
         #goal-controls-container,
-        #step-controls-container, /* NEW */
+        #step-controls-container, 
         #theme-controls-container {
             position: fixed; 
             top: 0; 
@@ -376,7 +393,7 @@
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(5) { animation-delay: 0.3s; }
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(6) { animation-delay: 0.35s; }
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(7) { animation-delay: 0.4s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(8) { animation-delay: 0.45s; } /* New Item */
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(8) { animation-delay: 0.45s; }
 
 
         .menu-sub-header {
@@ -417,6 +434,15 @@
             width: 100%;
             text-align: left;
         }
+        
+        /* Specific styling for the small explanatory text */
+        .option-description {
+            font-weight: 300; 
+            font-size: 1.5rem; 
+            display: block; 
+            margin-top: 3px; 
+            color: var(--instruction-color);
+        }
 
         .info-text {
             font-size: 1.2rem;
@@ -426,7 +452,7 @@
         }
         
         #goal-input-wrapper,
-        #step-input-wrapper { /* Added step-input-wrapper */
+        #step-input-wrapper { 
             width: 100%;
             display: flex;
             justify-content: center;
@@ -435,11 +461,11 @@
         }
         
         #goal-input,
-        #step-input { /* Added step-input */
+        #step-input { 
             font-size: 15vw; 
             font-weight: 800;
             color: var(--text-color);
-            padding: 0 10px 5px 10px;
+            padding: 0 10px; /* Reduced vertical padding */
             min-width: 50%;
             text-align: center;
             outline: none;
@@ -448,6 +474,10 @@
             background: none; 
             border: none;
             border-bottom: 2px solid var(--control-color);
+            /* Prevent input of non-numeric characters on soft keyboards where inputmode fails */
+            -moz-appearance: textfield; 
+            /* Added margin to help with keyboard focus on mobile */
+            margin-bottom: 10px; 
         }
 
         @media (max-width: 400px) {
@@ -505,7 +535,7 @@
                     Size
                 </button>
                 <button id="weight-entry-btn" class="menu-item-link" aria-label="Adjust Font Thickness" title="Adjust Font Thickness">
-                    Thickness <!-- CHANGED from Weight -->
+                    Thickness
                 </button>
                 <button id="goal-entry-btn" class="menu-item-link" aria-label="Set Target Goal" title="Set Target Goal">
                     Goal
@@ -526,13 +556,15 @@
         <div id="size-options" class="control-options">
             <button id="size-small-btn" class="menu-item-link" data-scale="0.3">Small</button>
             <button id="size-normal-btn" class="menu-item-link" data-scale="0.6">Normal</button>
-            <button id="size-large-btn" class="menu-item-link" data-scale="1.3">Large</button>
+            <button id="size-large-btn" class="menu-item-link" data-scale="1.3">
+                Large
+            </button>
         </div>
     </div>
 
     <div id="weight-controls-container">
-        <h2 class="menu-sub-header">Choose Number Thickness</h2> <!-- UPDATED HEADING -->
-        <p class="info-text">Affects how thin or thick the number appears on screen.</p> <!-- CHANGED -->
+        <h2 class="menu-sub-header">Choose Number Thickness</h2>
+        <p class="info-text">Affects how thin or thick the number appears on screen.</p>
         <div id="weight-options" class="control-options">
             <button id="weight-thin-btn" class="menu-item-link" data-weight="100" style="font-weight: 100;">Thin</button>
             <button id="weight-regular-btn" class="menu-item-link" data-weight="400" style="font-weight: 400;">Regular</button>
@@ -548,10 +580,10 @@
         </div>
     </div>
     
-    <!-- NEW STEP VALUE CONTROL CONTAINER -->
+    <!-- STEP VALUE CONTROL CONTAINER -->
     <div id="step-controls-container">
         <h2 class="menu-sub-header">Step Value</h2>
-        <p class="info-text">Enter the amount the counter should increment by on each tap. To return to default, set to 1</p>
+        <p class="info-text">Enter the amount the counter should increment by on each tap. To return to default, set to 1.</p>
         <div id="step-input-wrapper">
             <div id="step-input" contenteditable="true" inputmode="numeric">1</div> 
         </div>
@@ -562,7 +594,7 @@
         <p class="info-text">Select a color scheme for the counter and menu.</p>
         <div id="theme-options" class="control-options">
             <button id="theme-dark-btn" class="menu-item-link" data-theme="dark">
-                Dark Mode
+                Dark Mode (Default)
                 <span style="font-weight: 300; font-size: 1.8rem; display: block; margin-top: 3px; color: var(--instruction-color);">Menu Dark Gray, Counter Black.</span>
             </button>
             <button id="theme-white-btn" class="menu-item-link" data-theme="white">
@@ -579,11 +611,18 @@
 
     <div id="main-content-wrapper">
         <div id="counter" contenteditable="false">0</div>
+        <!-- Removed shrink-feedback element and its logic from JS -->
         <div id="instruction">Tap anywhere to count</div>
     </div>
 
     <script>
-        // DOM Elements
+        // --- CONSTANTS ---
+        const MAX_SAFE_INTEGER = 9007199254740991; // JavaScript's Number.MAX_SAFE_INTEGER
+        const SHRINK_THRESHOLD = 10000;
+        const NORMAL_SCALE = 0.6;
+        const LARGE_SCALE = 1.3;
+
+        // --- DOM Elements ---
         const counterElement = document.getElementById('counter');
         const instructionElement = document.getElementById('instruction');
         const themeMeta = document.querySelector('meta[name="theme-color"]');
@@ -594,7 +633,7 @@
         const editBtn = document.getElementById('edit-btn');
         
         const sizeEntryBtn = document.getElementById('size-entry-btn');
-        const weightEntryBtn = document.getElementById('weight-entry-btn'); // Renamed to thickness in UI
+        const weightEntryBtn = document.getElementById('weight-entry-btn'); 
         const goalEntryBtn = document.getElementById('goal-entry-btn'); 
         const stepEntryBtn = document.getElementById('step-entry-btn'); 
         const themeEntryBtn = document.getElementById('theme-entry-btn');
@@ -605,14 +644,11 @@
         const openMenuBtn = document.getElementById('open-menu-btn'); 
         const backBtn = document.getElementById('back-btn'); 
         
-        const menuDoneText = document.getElementById('menu-done-text'); 
-        
         const headerLeftControls = document.getElementById('header-left-controls');
         const headerRightControls = document.getElementById('header-right-controls');
         
         const fullScreenMenu = document.getElementById('full-screen-menu');
-        const menuInnerContainer = document.getElementById('menu-inner-container');
-
+        
         const sizeOptions = document.getElementById('size-options');
         const weightOptions = document.getElementById('weight-options');
         const themeOptions = document.getElementById('theme-options');
@@ -623,15 +659,15 @@
         const stepControlsContainer = document.getElementById('step-controls-container'); 
         const themeControlsContainer = document.getElementById('theme-controls-container');
         
-        // State Variables
+        // --- State Variables ---
         let count = 0;
         let targetGoal = 0; 
         let stepValue = 1; 
         let isGoalReached = false; 
         let hasTapped = false;
         let currentTheme = 'dark';
-        let fontScale = 0.6;
-        let fontWeight = 100; // Represents thickness
+        let fontScale = NORMAL_SCALE;
+        let fontWeight = 100; 
         let isEditMode = false; 
         
         let transientEffectTimer = null; 
@@ -639,12 +675,12 @@
         
         // Tracking Changes for 'Done' Button
         let sizeChanged = false;
-        let weightChanged = false; // Tracks thickness change
+        let weightChanged = false; 
         let goalChanged = false; 
         let stepChanged = false; 
         let themeChanged = false;
 
-        // Local Storage Keys
+        // --- Local Storage Keys ---
         const STORAGE_KEY_COUNT = 'minimalCounterCount';
         const STORAGE_KEY_THEME = 'minimalCounterTheme';
         const STORAGE_KEY_FONT_SCALE = 'minimalCounterFontScale';
@@ -653,28 +689,62 @@
         const STORAGE_KEY_STEP = 'minimalCounterStepValue'; 
 
         /**
+         * Cleans and validates a numeric string input, respecting MAX_SAFE_INTEGER.
+         * @param {string} input - The string from a contenteditable element.
+         * @param {number} minValue - Minimum acceptable value (e.g., 0 for count, 1 for step).
+         * @param {number} maxValue - Maximum acceptable value.
+         * @returns {number} The sanitized and validated integer.
+         */
+        function sanitizeInput(input, minValue = 0, maxValue = MAX_SAFE_INTEGER) {
+            let cleanInput = input.trim().replace(/[^\d]/g, '');
+            if (cleanInput === '') {
+                return minValue;
+            }
+            
+            let num = BigInt(cleanInput);
+            
+            if (num > BigInt(maxValue)) {
+                num = BigInt(maxValue);
+            }
+            
+            // Return as standard JS Number, which should be safe due to the check against MAX_SAFE_INTEGER
+            return Number(num);
+        }
+
+        /**
          * Adjusts the font size based on the number of digits and the selected scale.
          */
         function adjustFontSize(currentCount, scale = fontScale) {
-            const countStr = String(currentCount);
+            
+            let effectiveScale = scale;
+            
+            // Shrink Large scale automatically when count hits the threshold (10,000)
+            if (scale === LARGE_SCALE && currentCount >= SHRINK_THRESHOLD) {
+                effectiveScale = NORMAL_SCALE;
+            }
+
+            // Ensure we use the length of the number without separators for calculation
+            const countStr = String(currentCount).replace(/,/g, ''); 
             const length = countStr.length;
             let baseVw;
 
             if (length <= 5) {
-                baseVw = 35;
+                baseVw = 28; // Reduced from 35
             } else if (length === 6) {
-                baseVw = 28;
+                baseVw = 24; // Reduced from 28
             } else if (length === 7) {
-                baseVw = 24;
+                baseVw = 20; // Reduced from 24
             } else if (length === 8) {
-                baseVw = 20;
+                baseVw = 18; // Reduced from 20
             } else if (length === 9) {
-                baseVw = 17;
+                baseVw = 15; // Reduced from 17
+            } else if (length <= 15) { // Handles long numbers efficiently
+                baseVw = 12; // Reduced from 15
             } else {
-                baseVw = 15;
+                baseVw = 10; // For maximum safe integer or near it
             }
 
-            const finalVw = baseVw * scale;
+            const finalVw = baseVw * effectiveScale; // Use effectiveScale here
             counterElement.style.fontSize = `${finalVw}vw`;
         }
         
@@ -734,7 +804,15 @@
                 instructionElement.style.opacity = '1';
                 instructionElement.style.visibility = 'visible'; 
 
-            } else {
+            } else if (count >= MAX_SAFE_INTEGER) {
+                // Special handling for max limit
+                isGoalReached = true; // Treat as goal reached for visual cue
+                instructionElement.textContent = "Max Safe Limit Reached!";
+                instructionElement.classList.remove('instruction-hidden');
+                instructionElement.style.opacity = '1';
+                instructionElement.style.visibility = 'visible'; 
+            }
+            else {
                 isGoalReached = false;
                 
                 counterElement.classList.remove('goal-reached-pulse'); 
@@ -754,13 +832,7 @@
          * Checks if the goal input value has changed from the saved state.
          */
         function checkGoalInputHasChanged() {
-            let inputVal = goalInput.textContent.trim().replace(/[^\d]/g, '');
-            let newGoal = parseInt(inputVal, 10);
-            
-            if (isNaN(newGoal) || newGoal < 0) {
-                 newGoal = 0; 
-            }
-            
+            let newGoal = sanitizeInput(goalInput.textContent, 0, MAX_SAFE_INTEGER);
             return targetGoal !== newGoal;
         }
         
@@ -768,13 +840,7 @@
          * Checks if the step input value has changed from the saved state.
          */
         function checkStepInputHasChanged() {
-            let inputVal = stepInput.textContent.trim().replace(/[^\d]/g, '');
-            let newStep = parseInt(inputVal, 10);
-
-            if (isNaN(newStep) || newStep < 1) {
-                 newStep = 1;
-            }
-            
+            let newStep = sanitizeInput(stepInput.textContent, 1, MAX_SAFE_INTEGER);
             return stepValue !== newStep;
         }
 
@@ -847,7 +913,10 @@
          */
         function updateCounterDisplay() {
             localStorage.setItem(STORAGE_KEY_COUNT, count);
-            counterElement.textContent = count; 
+            
+            // Use toLocaleString for better readability with large numbers
+            counterElement.textContent = count.toLocaleString('en-US'); 
+            
             adjustFontSize(count);
             updateSelectedButton(sizeOptions, 'scale');
             updateSelectedButton(weightOptions, 'weight');
@@ -888,7 +957,7 @@
          * Hides the initial instruction text.
          */
         function hideInstruction() {
-            if (!hasTapped && !isGoalReached) {
+            if (!isGoalReached) {
                 hasTapped = true;
                 instructionElement.classList.add('instruction-hidden');
             }
@@ -918,7 +987,7 @@
                 document.querySelectorAll('.sub-menu-active').forEach(el => el.classList.remove('sub-menu-active'));
                 
                 sizeChanged = false;
-                weightChanged = false; // Tracks thickness change
+                weightChanged = false; 
                 goalChanged = false; 
                 stepChanged = false; 
                 themeChanged = false;
@@ -942,7 +1011,7 @@
             }
             
             sizeChanged = false;
-            weightChanged = false; // Tracks thickness change
+            weightChanged = false; 
             goalChanged = false;
             stepChanged = false; 
             themeChanged = false;
@@ -968,7 +1037,7 @@
              } else if (activeSubMenu.id === 'size-controls-container') {
                  sizeChanged = false;
              } else if (activeSubMenu.id === 'weight-controls-container') {
-                 weightChanged = false; // Tracks thickness change
+                 weightChanged = false; 
              } else if (activeSubMenu.id === 'theme-controls-container') {
                  themeChanged = false;
              }
@@ -1054,7 +1123,8 @@
         function enterGoalEditMode(e) { 
             enterSubMenuMode(e, goalControlsContainer);
             
-            goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
+            // Set input text without thousand separators
+            goalInput.textContent = targetGoal === 0 ? '' : targetGoal.toString();
             
             setTimeout(() => { 
                 goalInput.focus();
@@ -1071,7 +1141,8 @@
         function enterStepEditMode(e) {
             enterSubMenuMode(e, stepControlsContainer);
             
-            stepInput.textContent = stepValue;
+            // Set input text without thousand separators
+            stepInput.textContent = stepValue.toString();
             
             setTimeout(() => { 
                 stepInput.focus();
@@ -1118,7 +1189,7 @@
             const selectedWeight = parseInt(btn.getAttribute('data-weight'), 10);
             
             if (fontWeight !== selectedWeight) {
-                weightChanged = true; // Tracks thickness change
+                weightChanged = true; 
             } else {
                 weightChanged = false; 
             }
@@ -1131,13 +1202,10 @@
          * Saves the target goal value. Resets counter if goal changes.
          */
         function saveTargetGoal(forceSave = false) { 
-            let inputVal = goalInput.textContent.trim();
-            inputVal = inputVal.replace(/[^\d]/g, '');
-            let newGoal = parseInt(inputVal, 10);
+            let newGoal = sanitizeInput(goalInput.textContent, 0, MAX_SAFE_INTEGER);
             
-            if (isNaN(newGoal) || newGoal < 0) {
-                newGoal = 0; 
-            }
+            // Reformat input display to clean value or empty
+            goalInput.textContent = newGoal === 0 ? '' : newGoal.toString(); 
 
             const reallyChanged = targetGoal !== newGoal;
             
@@ -1146,7 +1214,7 @@
                 if (reallyChanged) {
                     count = 0;
                     localStorage.setItem(STORAGE_KEY_COUNT, count);
-                    counterElement.textContent = count;
+                    // Reset tap state for new goal
                     hasTapped = false; 
                     showInstruction(); 
                 }
@@ -1154,14 +1222,10 @@
                 targetGoal = newGoal;
                 localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
                 
-                goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
-                
                 goalChanged = false; 
-            } else {
-                 goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
             }
             
-            checkGoalStatus(); 
+            updateCounterDisplay(); 
             updateHeaderButtonState();
         }
         
@@ -1169,23 +1233,18 @@
          * Saves the step value.
          */
         function saveStepValue(forceSave = false) { 
-            let inputVal = stepInput.textContent.trim();
-            inputVal = inputVal.replace(/[^\d]/g, '');
-            let newStep = parseInt(inputVal, 10);
+            // Min value is 1, so the counter must always increment by at least 1
+            let newStep = sanitizeInput(stepInput.textContent, 1, MAX_SAFE_INTEGER);
 
-            if (isNaN(newStep) || newStep < 1) {
-                newStep = 1;
-            }
+            // Reformat input display to clean value
+            stepInput.textContent = newStep.toString();
 
             const reallyChanged = stepValue !== newStep;
 
             if (reallyChanged || forceSave) {
                 stepValue = newStep;
                 localStorage.setItem(STORAGE_KEY_STEP, stepValue);
-                stepInput.textContent = stepValue;
                 stepChanged = false;
-            } else {
-                 stepInput.textContent = stepValue;
             }
 
             updateHeaderButtonState();
@@ -1209,7 +1268,7 @@
             currentTheme = newTheme;
             localStorage.setItem(STORAGE_KEY_THEME, currentTheme);
 
-            document.body.classList.remove('theme-white', 'theme-black');
+            document.body.classList.remove('theme-white', 'theme-black', 'theme-dark');
             
             let metaColor = '#000000';
 
@@ -1231,17 +1290,18 @@
         }
         
         /**
-         * Exits the Goal Reached mode (resets counter/goal to 0).
+         * Exits the Goal Reached/Max Limit mode (resets counter/goal/step to 0/0/1).
          */
         function exitGoalMode() {
             if (!isGoalReached) return;
             
             count = 0;
-            localStorage.setItem(STORAGE_KEY_COUNT, count);
-            counterElement.textContent = count;
+            targetGoal = 0; 
+            stepValue = 1; 
             
-            targetGoal = 0;
+            localStorage.setItem(STORAGE_KEY_COUNT, count);
             localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
+            localStorage.setItem(STORAGE_KEY_STEP, stepValue); 
             
             isGoalReached = false; 
             
@@ -1254,6 +1314,7 @@
             hasTapped = false;
             showInstruction();
             
+            updateCounterDisplay(); 
             updateHeaderButtonState();
         }
 
@@ -1275,16 +1336,19 @@
             counterElement.classList.remove('ultimate-effect');
             
             let effectClass = null;
-
-            if (currentCount === 33 || currentCount === 66 || currentCount === 99) {
-                effectClass = 'ultimate-effect'; 
+            // Only apply transient effect if the count is small and no goal is set
+            if (currentCount > 0 && currentCount < 100) {
+                if (currentCount % 33 === 0) {
+                    effectClass = 'ultimate-effect'; 
+                }
             }
 
             if (effectClass) {
                 counterElement.classList.add(effectClass);
 
                 transientEffectTimer = setTimeout(() => {
-                    if (parseInt(counterElement.textContent, 10) === currentCount) {
+                    // Re-check count just in case user taps rapidly
+                    if (parseInt(counterElement.textContent.replace(/,/g, ''), 10) === currentCount) {
                         counterElement.classList.remove('ultimate-effect');
                     }
                     transientEffectTimer = null;
@@ -1311,12 +1375,18 @@
                 return;
             }
 
+            // Check if we can still increment safely
+            if (count + stepValue > MAX_SAFE_INTEGER) {
+                count = MAX_SAFE_INTEGER;
+                // Since we hit the hard limit, we force a checkGoalStatus to show the message
+                checkGoalStatus(); 
+                return;
+            }
+            
             hideInstruction();
             
             count += stepValue; 
-            counterElement.textContent = count;
-            localStorage.setItem(STORAGE_KEY_COUNT, count);
-            adjustFontSize(count);
+            updateCounterDisplay();
 
             checkAndApplyTransientEffect(count);
         }
@@ -1350,7 +1420,6 @@
             hasTapped = false;
             showInstruction();
 
-            counterElement.textContent = count;
             goalInput.textContent = ''; 
             stepInput.textContent = stepValue; 
             updateCounterDisplay(); 
@@ -1366,13 +1435,8 @@
         function saveNewCount() {
             if (!isEditMode) return;
             
-            let inputVal = counterElement.textContent.trim();
-            inputVal = inputVal.replace(/[^\d]/g, '');
-            let newCount = parseInt(inputVal, 10);
-            
-            if (isNaN(newCount) || newCount < 0) {
-                newCount = count;
-            }
+            // Sanitize and validate count input (min 0, max MAX_SAFE_INTEGER)
+            let newCount = sanitizeInput(counterElement.textContent, 0, MAX_SAFE_INTEGER);
             
             count = newCount;
             updateCounterDisplay();
@@ -1426,13 +1490,14 @@
             
             const savedCount = localStorage.getItem(STORAGE_KEY_COUNT);
             if (savedCount !== null) {
-                count = parseInt(savedCount, 10);
+                // Ensure loaded count respects MAX_SAFE_INTEGER
+                count = sanitizeInput(savedCount, 0, MAX_SAFE_INTEGER);
             }
             const savedFontScale = localStorage.getItem(STORAGE_KEY_FONT_SCALE);
             if (savedFontScale !== null) {
                 fontScale = parseFloat(savedFontScale);
             } else {
-                fontScale = 0.6;
+                fontScale = NORMAL_SCALE;
             }
             const savedFontWeight = localStorage.getItem(STORAGE_KEY_FONT_WEIGHT);
             if (savedFontWeight !== null) {
@@ -1442,13 +1507,14 @@
             }
             const savedGoal = localStorage.getItem(STORAGE_KEY_GOAL);
             if (savedGoal !== null) {
-                targetGoal = parseInt(savedGoal, 10);
+                // Ensure loaded goal respects MAX_SAFE_INTEGER
+                targetGoal = sanitizeInput(savedGoal, 0, MAX_SAFE_INTEGER);
             }
             
-            // Load Step Value
+            // Load Step Value, minimum 1
             const savedStep = localStorage.getItem(STORAGE_KEY_STEP);
             if (savedStep !== null) {
-                stepValue = parseInt(savedStep, 10);
+                stepValue = sanitizeInput(savedStep, 1, MAX_SAFE_INTEGER);
             } else {
                 stepValue = 1;
             }
@@ -1463,8 +1529,8 @@
             // Set initial values
             setTheme({ target: { closest: () => ({ getAttribute: () => currentTheme, dataset: { theme: currentTheme } }) }, stopPropagation: () => {} });
             
-            goalInput.textContent = targetGoal === 0 ? '' : targetGoal;
-            stepInput.textContent = stepValue; 
+            goalInput.textContent = targetGoal === 0 ? '' : targetGoal.toString();
+            stepInput.textContent = stepValue.toString(); 
             setFontWeight(fontWeight);
             updateCounterDisplay(); 
             
@@ -1609,7 +1675,7 @@
                 } else if (e.key === 's' || e.key === 'S') {
                     enterSizeEditMode();
                     e.preventDefault();
-                } else if (e.key === 'w' || e.key === 'W') { // W for Weight/Thickness
+                } else if (e.key === 'w' || e.key === 'W') { 
                     enterWeightEditMode();
                     e.preventDefault();
                 } else if (e.key === 'g' || e.key === 'G') { 
