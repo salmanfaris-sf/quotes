@@ -29,12 +29,12 @@
             --menu-bg: #1B1B1D; 
             --menu-text: #FFFFFF;
             --menu-hover: rgba(255, 255, 255, 0.1);
-            --selected-bg-dark: #333333;
+            --selected-bg-dark: #333333; 
             --selected-text-dark: #FFFFFF;
-            --ios-blue: #007AFF;
+            --ios-blue: #007AFF; 
         }
 
-        bdy.lght {
+        .B_d_y_K.l_M_d {
             --bg-color: #ffffff;
             --text-color: #000000;
             --control-color: #000000;
@@ -42,11 +42,11 @@
             --menu-bg: #ffffff;
             --menu-text: #000000;
             --menu-hover: rgba(0, 0, 0, 0.05);
-            --selected-bg-light: #EEEEEE;
+            --selected-bg-light: #EEEEEE; 
             --selected-text-light: #000000;
         }
 
-        bdy {
+        .B_d_y_K {
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -63,7 +63,7 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        #mnctwrp {
+        #m_C_w {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -74,11 +74,11 @@
             transition: transform 0.3s ease-out;
         }
 
-        bdy.kybup #mnctwrp {
+        .B_d_y_K.k_B_u_P #m_C_w {
             transform: translateY(-25%); 
         }
 
-        #cntr {
+        #z_D1_P_l_y {
             font-size: 35vw;
             line-height: 1;
             text-align: center;
@@ -90,8 +90,8 @@
             margin-bottom: 5px;
         }
         
-        .ultfx {
-            color: #00FF7F !important;
+        .u_l_t_E_F {
+            color: #00FF7F !important; 
             text-shadow: 0 0 15px #00FF7F, 0 0 25px #00FF7F, 0 0 40px rgba(0, 255, 127, 0.8);
             animation: ultimateGlow 0.75s infinite alternate ease-in-out; 
         }
@@ -107,12 +107,12 @@
             }
         }
         
-        .grpls {
+        .g_R_p_L {
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5); 
             animation: goalPulse 1.5s infinite ease-in-out;
         }
         
-        bdy.lght .grpls {
+        .B_d_y_K.l_M_d .g_R_p_L {
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.5); 
         }
 
@@ -126,7 +126,7 @@
         }
 
 
-        #istr {
+        #i_n_s_t_r_x {
             font-size: 1.1rem;
             font-weight: 300;
             color: var(--instruction-color);
@@ -140,14 +140,14 @@
             white-space: nowrap; 
         }
         
-        .istrhdn {
+        .i_H_d {
             opacity: 0 !important;
             height: 0 !important;
             margin-top: 0 !important;
             visibility: hidden !important; 
         }
         
-        .hctl {
+        .h_C_r {
             position: fixed;
             top: 0;
             z-index: 250; 
@@ -158,21 +158,21 @@
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        #hleft {
+        #h_L_c {
             left: 0;
         }
         
-        #hright {
+        #h_R_c {
             right: 0;
         }
         
-        .hctl.hdn {
+        .h_C_r.h_D_n {
             visibility: hidden;
             opacity: 0;
             pointer-events: none;
         }
 
-        .hbtn {
+        .h_B_t {
             background: none;
             border: none;
             color: var(--control-color);
@@ -191,15 +191,15 @@
             position: relative; 
         }
         
-        .hbtn:focus {
+        .h_B_t:focus {
             outline: none;
         }
         
-        .dnmde {
+        .d_N_m_D {
             color: var(--ios-blue); 
         }
 
-        #mnicn {
+        #m_I_g {
             width: 28px;
             height: 28px;
             stroke-width: 1.5; 
@@ -213,30 +213,31 @@
             transition: stroke 0.3s ease;
         }
         
-        .mnln {
+        .m_L_n {
             transform-origin: center;
             transition: transform 0.35s cubic-bezier(0.4, 0.085, 0.68, 0.53);
         }
         
-        #lntp {
+        #l_t_p {
             transform: translateY(-3px); 
         }
         
-        #lnbt {
+        #l_b_t {
             transform: translateY(3px); 
         }
         
-        .clsmde #lntp {
+        .c_L_m_D #l_t_p {
             transform: translateY(0) rotate(45deg); 
         }
         
-        .clsmde #lnbt {
+        .c_L_m_D #l_b_t {
             transform: translateY(0) rotate(-45deg);
         }
 
-        #mndntxt {
+
+        #m_D_t {
             color: var(--ios-blue); 
-            opacity: 0;
+            opacity: 0; 
             font-size: 1.2rem;
             font-weight: 400;
             line-height: 1;
@@ -247,18 +248,18 @@
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
         
-        .dnmde #mnicn {
+        .d_N_m_D #m_I_g {
             opacity: 0;
             transform: translate(-50%, -50%) scale(0.5);
         }
         
-        .dnmde #mndntxt {
+        .d_N_m_D #m_D_t {
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
         }
 
 
-        .bkisn {
+        .b_I_S {
             width: 28px;
             height: 28px;
             stroke-width: 1.5; 
@@ -268,7 +269,7 @@
             transform: translateX(-4px); 
         }
 
-        #fllscr {
+        #f_S_m {
             position: fixed;
             top: 0; 
             right: 0; 
@@ -279,31 +280,31 @@
             display: flex;
             flex-direction: column;
             
-            transform: translateY(-100%);
+            transform: translateY(-100%); 
             transition: transform 0.4s cubic-bezier(0.4, 0, 0, 1);
             
             pointer-events: none;
-            overflow-y: hidden;
+            overflow-y: hidden; 
             overflow-x: hidden; 
         }
 
-        #fllscr.vsbl {
+        #f_S_m.visible {
             transform: translateY(0); 
             pointer-events: auto;
         }
 
-        .mnhdr {
+        .menu-header {
             height: 44px; 
         }
 
-        #mninr {
+        #m_I_c {
             display: block;
             width: 100vw; 
             height: auto; 
             transition: none;
         }
 
-        #mnvlst {
+        #m_N_l {
             width: 100vw;
             flex-shrink: 0;
             flex-grow: 1;
@@ -312,19 +313,19 @@
             align-items: flex-start;
             padding-top: 20px;
             padding-left: 30px; 
-            padding-right: 30px;
+            padding-right: 30px; 
             overflow-y: auto;
-            max-height: calc(100vh - 44px);
+            max-height: calc(100vh - 44px); 
         }
         
-        #szctcnt,
-        #wtctcnt,
-        #glctcnt {
+        #s_C_c,
+        #w_C_c,
+        #g_C_c {
             position: fixed; 
-            top: 0;
+            top: 0; 
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100vh; 
             
             background-color: var(--menu-bg); 
             
@@ -333,7 +334,7 @@
             
             z-index: 101; 
             
-            padding: 70px 30px 20px 30px;
+            padding: 70px 30px 20px 30px; 
             overflow-y: auto;
             
             display: flex;
@@ -341,7 +342,7 @@
             align-items: flex-start;
         }
 
-        .sbmna {
+        .s_M_a {
             transform: translateY(0) !important;
         }
 
@@ -356,7 +357,7 @@
             }
         }
         
-        .mnitmlnk {
+        .m_I_L {
             background: none;
             border: none;
             color: var(--menu-text);
@@ -369,66 +370,66 @@
             transition: background-color 0.2s, color 0.2s;
         }
         
-        #mnvlst .mnitmlnk {
+        #m_N_l .m_I_L {
             opacity: 0;
             transform: translateY(10px);
         }
 
-        #fllscr.vsbl #mnvlst .mnitmlnk {
+        #f_S_m.visible #m_N_l .m_I_L {
             animation: menuFadeIn 0.3s ease-out forwards;
         }
 
-        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(1) { animation-delay: 0.1s; }
-        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(2) { animation-delay: 0.15s; }
-        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(3) { animation-delay: 0.2s; }
-        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(4) { animation-delay: 0.25s; }
-        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(5) { animation-delay: 0.3s; }
-        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(6) { animation-delay: 0.35s; }
-        #fllscr.vsbl #mnvlst .mnitmlnk:nth-child(7) { animation-delay: 0.4s; }
+        #f_S_m.visible #m_N_l .m_I_L:nth-child(1) { animation-delay: 0.1s; }
+        #f_S_m.visible #m_N_l .m_I_L:nth-child(2) { animation-delay: 0.15s; }
+        #f_S_m.visible #m_N_l .m_I_L:nth-child(3) { animation-delay: 0.2s; }
+        #f_S_m.visible #m_N_l .m_I_L:nth-child(4) { animation-delay: 0.25s; }
+        #f_S_m.visible #m_N_l .m_I_L:nth-child(5) { animation-delay: 0.3s; }
+        #f_S_m.visible #m_N_l .m_I_L:nth-child(6) { animation-delay: 0.35s; }
+        #f_S_m.visible #m_N_l .m_I_L:nth-child(7) { animation-delay: 0.4s; }
 
 
-        .mnsbhdr {
+        .m_S_h {
             font-size: 2.5rem;
             font-weight: 600;
             padding: 0; 
             margin-bottom: 20px;
         }
         
-        .mnitmlnk:focus {
+        .m_I_L:focus {
             outline: none;
         }
 
-        .mnitmlnk.selected {
+        .m_I_L.s_E_l {
             color: var(--selected-text-dark);
             background-color: var(--selected-bg-dark);
             border-radius: 8px;
             padding-left: 15px;
         }
 
-        bdy.lght .mnitmlnk.selected {
+        .B_d_y_K.l_M_d .m_I_L.s_E_l {
             color: var(--selected-text-light);
             background-color: var(--selected-bg-light);
         }
 
-        .mnitmlnk:active,
-        .mnitmlnk:hover {
+        .m_I_L:active,
+        .m_I_L:hover {
             background-color: var(--menu-hover);
             border-radius: 8px;
             transform: none !important;
             opacity: 1 !important;
         }
 
-        .mnitmlnk.selected:hover {
+        .m_I_L.s_E_l:hover {
             background-color: var(--selected-bg-dark);
             transform: none;
         }
 
-        bdy.lght .mnitmlnk.selected:hover {
+        .B_d_y_K.l_M_d .m_I_L.s_E_l:hover {
             background-color: var(--selected-bg-light);
             transform: none;
         }
 
-        .cntrltns button {
+        .c_O_p button {
             font-size: 2rem;
             padding: 15px 10px;
             margin-bottom: 5px;
@@ -436,21 +437,21 @@
             text-align: left;
         }
 
-        .infxt {
+        .i_T_x {
             font-size: 1.2rem;
             color: var(--instruction-color);
             margin-bottom: 40px;
             font-weight: 300;
         }
         
-        #glnpwrp {
+        #g_I_w {
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-top: 50px;
         }
-        #glnp {
+        #g_I_p {
             font-size: 15vw; 
             font-weight: 800;
             color: var(--text-color);
@@ -467,946 +468,945 @@
 
 
         @media (max-width: 400px) {
-            .mnitmlnk {
+            .m_I_L {
                 font-size: 2rem;
                 padding: 12px 0;
             }
 
-            .cntrltns button {
+            .c_O_p button {
                 font-size: 1.8rem;
             }
 
-            .hctl {
+            .h_C_r {
                 padding: 15px;
             }
         }
     </style>
 </head>
-<bdy>
+<body class="B_d_y_K">
     
-    <div id="hleft" class="hctl hdn">
-        <button id="bckbtn" class="hbtn" aria-label="Go Back" title="Go Back">
-            <svg class="bkisn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                <g id="g-chevron-left">
+    <div id="h_L_c" class="h_C_r h_D_n">
+        <button id="b_A_k" class="h_B_t" aria-label="Go Back" title="Go Back">
+            <svg class="b_I_S" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <g id="c_h_v_n">
                     <path d="M15 18l-6-6 6-6"/>
                 </g>
             </svg>
         </button>
     </div>
 
-    <div id="hright" class="hctl">
-        <button id="opnmnb" class="hbtn" aria-label="Open Menu" title="Open Menu">
-            <svg id="mnicn" viewBox="0 0 24 24" fill="none">
-                <line id="lntp" class="mnln" x1="4" y1="12" x2="20" y2="12"/>
-                <line id="lnbt" class="mnln" x1="4" y1="12" x2="20" y2="12"/>
+    <div id="h_R_c" class="h_C_r">
+        <button id="o_M_b" class="h_B_t" aria-label="Open Menu" title="Open Menu">
+            <svg id="m_I_g" viewBox="0 0 24 24" fill="none">
+                <line id="l_t_p" class="m_L_n" x1="4" y1="12" x2="20" y2="12"/>
+                <line id="l_b_t" class="m_L_n" x1="4" y1="12" x2="20" y2="12"/>
             </svg>
-            <span id="mndntxt">Done</span>
+            <span id="m_D_t">Done</span>
         </button>
     </div>
 
-    <div id="fllscr" class="hidden-menu">
-        <div class="mnhdr"></div> 
-        <div id="mninr">
-            <nav id="mnvlst">
-                <button id="fsbtn" class="mnitmlnk" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
-                    <span id="fxtxt">Fullscreen</span>
+    <div id="f_S_m" class="hidden-menu">
+        <div class="menu-header"></div> 
+        <div id="m_I_c">
+            <nav id="m_N_l">
+                <button id="f_S_b" class="m_I_L" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
+                    <span id="f_S_t">Fullscreen</span>
                 </button>
-                <button id="rstbtn" class="mnitmlnk" aria-label="Reset Counter" title="Reset Counter">
+                <button id="r_S_b" class="m_I_L" aria-label="Reset Counter" title="Reset Counter">
                     Reset
                 </button>
-                <button id="edtbtn" class="mnitmlnk" aria-label="Edit Number" title="Edit">
+                <button id="e_D_b" class="m_I_L" aria-label="Edit Number" title="Edit">
                     Edit
                 </button>
-                <button id="szntbtn" class="mnitmlnk" aria-label="Adjust Font Size" title="Adjust Font Size">
+                <button id="s_E_b" class="m_I_L" aria-label="Adjust Font Size" title="Adjust Font Size">
                     Size
                 </button>
-                <button id="wtntbtn" class="mnitmlnk" aria-label="Adjust Font Weight" title="Adjust Font Weight">
+                <button id="w_E_b" class="m_I_L" aria-label="Adjust Font Weight" title="Adjust Font Weight">
                     Weight
                 </button>
-                <button id="glntbtn" class="mnitmlnk" aria-label="Set Target Goal" title="Set Target Goal">
+                <button id="g_E_b" class="m_I_L" aria-label="Set Target Goal" title="Set Target Goal">
                     Set Goal
                 </button>
-                <button id="thbtn" class="mnitmlnk" aria-label="Toggle Theme" title="Toggle Theme">
-                    <span id="thtxt">White Mode</span>
+                <button id="t_H_b" class="m_I_L" aria-label="Toggle Theme" title="Toggle Theme">
+                    <span id="t_H_t">White Mode</span>
                 </button>
             </nav>
         </div>
     </div>
     
-    <div id="szctcnt">
-        <h2 class="mnsbhdr">Counter Size</h2>
-        <p class="infxt">Select a size below.</p>
-        <div id="szopt" class="cntrltns">
-            <button id="szsmb" class="mnitmlnk" data-scale="0.3">Small</button>
-            <button id="sznmb" class="mnitmlnk" data-scale="0.6">Normal</button>
-            <button id="szlgb" class="mnitmlnk" data-scale="1.3">Large</button>
+    <div id="s_C_c">
+        <h2 class="m_S_h">Counter Size</h2>
+        <p class="i_T_x">Select a size below.</p>
+        <div id="s_O_p" class="c_O_p">
+            <button id="s_S_b" class="m_I_L" data-scale="0.3">Small</button>
+            <button id="s_N_b" class="m_I_L" data-scale="0.6">Normal</button>
+            <button id="s_L_b" class="m_I_L" data-scale="1.3">Large</button>
         </div>
     </div>
 
-    <div id="wtctcnt">
-        <h2 class="mnsbhdr">Choose Font Weight</h2>
-        <p class="infxt">Affects how thin or thick the number appears.</p>
-        <div id="wtopt" class="cntrltns">
-            <button id="wttnb" class="mnitmlnk" data-weight="100" style="font-weight: 100;">Thin</button>
-            <button id="wtrgb" class="mnitmlnk" data-weight="400" style="font-weight: 400;">Regular</button>
-            <button id="wtbdb" class="mnitmlnk" data-weight="800" style="font-weight: 800;">Bold</button>
+    <div id="w_C_c">
+        <h2 class="m_S_h">Choose Font Weight</h2>
+        <p class="i_T_x">Affects how thin or thick the number appears.</p>
+        <div id="w_O_p" class="c_O_p">
+            <button id="w_T_b" class="m_I_L" data-weight="100" style="font-weight: 100;">Thin</button>
+            <button id="w_R_b" class="m_I_L" data-weight="400" style="font-weight: 400;">Regular</button>
+            <button id="w_B_b" class="m_I_L" data-weight="800" style="font-weight: 800;">Bold</button>
         </div>
     </div>
     
-    <div id="glctcnt">
-        <h2 class="mnsbhdr">Set Target Goal</h2>
-        <p class="infxt">Enter the number you want to reach. The counter will briefly glow and vibrate when reached. Setting a new goal will reset the counter to zero.</p>
-        <div id="glnpwrp">
-            <div id="glnp" contenteditable="true" inputmode="numeric">0</div> 
+    <div id="g_C_c">
+        <h2 class="m_S_h">Set Target Goal</h2>
+        <p class="i_T_x">Enter the number you want to reach. The counter will briefly glow and vibrate when reached. Setting a new goal will reset the counter to zero.</p>
+        <div id="g_I_w">
+            <div id="g_I_p" contenteditable="true" inputmode="numeric">0</div> 
         </div>
     </div>
 
 
-    <div id="mnctwrp">
-        <div id="cntr" contenteditable="false">0</div>
-        <div id="istr">Tap anywhere to count</div>
+    <div id="m_C_w">
+        <div id="z_D1_P_l_y" contenteditable="false">0</div>
+        <div id="i_n_s_t_r_x">Tap anywhere to count</div>
     </div>
 
     <script>
-        const cntr = document.getElementById('cntr');
-        const istr = document.getElementById('istr');
-        const themeMeta = document.querySelector('meta[name="theme-color"]');
+        const c_L_E = document.getElementById('z_D1_P_l_y');
+        const i_N_E = document.getElementById('i_n_s_t_r_x');
+        const t_M_T = document.querySelector('meta[name="theme-color"]');
 
-        const fsbtn = document.getElementById('fsbtn');
-        const fxtxt = document.getElementById('fxtxt');
-        const edtbtn = document.getElementById('edtbtn');
-        const rstbtn = document.getElementById('rstbtn');
-        const thbtn = document.getElementById('thbtn');
-        const thtxt = document.getElementById('thtxt');
+        const f_B_n = document.getElementById('f_S_b');
+        const f_T_E = document.getElementById('f_S_t');
+        const e_B_n = document.getElementById('e_D_b');
+        const r_B_n = document.getElementById('r_S_b');
+        const t_B_n = document.getElementById('t_H_b');
+        const t_T_E = document.getElementById('t_H_t');
         
-        const szntbtn = document.getElementById('szntbtn');
-        const wtntbtn = document.getElementById('wtntbtn');
-        const glntbtn = document.getElementById('glntbtn'); 
-        const glnp = document.getElementById('glnp'); 
+        const s_E_B = document.getElementById('s_E_b');
+        const w_E_B = document.getElementById('w_E_b');
+        const g_E_B = document.getElementById('g_E_b'); 
+        const g_I_P = document.getElementById('g_I_p'); 
         
-        const opnmnb = document.getElementById('opnmnb'); 
-        const bckbtn = document.getElementById('bckbtn'); 
+        const o_M_B = document.getElementById('o_M_b'); 
+        const b_K_B = document.getElementById('b_A_k'); 
         
-        const mndntxt = document.getElementById('mndntxt'); 
+        const m_D_T = document.getElementById('m_D_t'); 
         
-        const hleft = document.getElementById('hleft');
-        const hright = document.getElementById('hright');
+        const h_L_C = document.getElementById('h_L_c');
+        const h_R_C = document.getElementById('h_R_c');
         
-        const fllscr = document.getElementById('fllscr');
-        const mninr = document.getElementById('mninr');
+        const f_S_M = document.getElementById('f_S_m');
+        const m_I_C = document.getElementById('m_I_c');
 
-        const szopt = document.getElementById('szopt');
-        const wtopt = document.getElementById('wtopt');
+        const s_O_P = document.getElementById('s_O_p');
+        const w_O_P = document.getElementById('w_O_p');
         
-        const szctcnt = document.getElementById('szctcnt');
-        const wtctcnt = document.getElementById('wtctcnt');
-        const glctcnt = document.getElementById('glctcnt');
+        const s_C_C = document.getElementById('s_C_c');
+        const w_C_C = document.getElementById('w_C_c');
+        const g_C_C = document.getElementById('g_C_c');
         
-        let count = 0;
-        let targetGoal = 0; 
-        let isGoalReached = false; 
-        let hasTapped = false;
-        let isDarkMode = true;
-        let fontScale = 0.6;
-        let fontWeight = 100; 
-        let isEditMode = false; 
+        let c_N_T = 0;
+        let t_G_L = 0; 
+        let i_G_R = false; 
+        let h_T_P = false;
+        let i_D_M = true;
+        let f_S_L = 0.6;
+        let f_W_T = 100; 
+        let i_E_M = false; 
         
-        let transientEffectTimer = null; 
-        let goalGlowTimer = null; 
+        let t_E_T = null; 
+        let g_G_T = null; 
         
-        let sizeChanged = false;
-        let weightChanged = false;
-        let goalChanged = false; 
+        let s_C_D = false;
+        let w_C_D = false;
+        let g_C_D = false; 
         
-        const STORAGE_KEY_COUNT = 'minimalCounterCount';
-        const STORAGE_KEY_THEME = 'minimalCounterTheme';
-        const STORAGE_KEY_FONT_SCALE = 'minimalCounterFontScale';
-        const STORAGE_KEY_FONT_WEIGHT = 'minimalCounterFontWeight';
-        const STORAGE_KEY_GOAL = 'minimalCounterTargetGoal'; 
+        const S_K_C = 'minimalCounterCount';
+        const S_K_T = 'minimalCounterTheme';
+        const S_K_S = 'minimalCounterFontScale';
+        const S_K_W = 'minimalCounterFontWeight';
+        const S_K_G = 'minimalCounterTargetGoal'; 
 
-        function adjustFontSize(currentCount, scale = fontScale) {
-            const countStr = String(currentCount);
-            const length = countStr.length;
-            let baseVw;
+        function a_F_Z(C_C, S = f_S_L) {
+            const C_S = String(C_C);
+            const L = C_S.length;
+            let B_V;
 
-            if (length <= 5) {
-                baseVw = 35;
-            } else if (length === 6) {
-                baseVw = 28;
-            } else if (length === 7) {
-                baseVw = 24;
-            } else if (length === 8) {
-                baseVw = 20;
-            } else if (length === 9) {
-                baseVw = 17;
+            if (L <= 5) {
+                B_V = 35;
+            } else if (L === 6) {
+                B_V = 28;
+            } else if (L === 7) {
+                B_V = 24;
+            } else if (L === 8) {
+                B_V = 20;
+            } else if (L === 9) {
+                B_V = 17;
             } else {
-                baseVw = 15;
+                B_V = 15;
             }
 
-            const finalVw = baseVw * scale;
-            cntr.style.fontSize = `${finalVw}vw`;
+            const F_V = B_V * S;
+            c_L_E.style.fontSize = `${F_V}vw`;
         }
         
-        function setFontWeight(weight) {
-            fontWeight = weight;
-            cntr.style.fontWeight = fontWeight;
-            localStorage.setItem(STORAGE_KEY_FONT_WEIGHT, fontWeight);
-            updateSelectedButton(wtopt, 'weight');
+        function s_F_W(W) {
+            f_W_T = W;
+            c_L_E.style.fontWeight = f_W_T;
+            localStorage.setItem(S_K_W, f_W_T);
+            u_S_B(w_O_P, 'weight');
         }
         
-        function triggerGoalReachedGlow() {
-            if (transientEffectTimer) {
-                clearTimeout(transientEffectTimer);
-                transientEffectTimer = null;
+        function t_G_R_G() {
+            if (t_E_T) {
+                clearTimeout(t_E_T);
+                t_E_T = null;
             }
-            if (goalGlowTimer) {
-                clearTimeout(goalGlowTimer);
-                goalGlowTimer = null;
+            if (g_G_T) {
+                clearTimeout(g_G_T);
+                g_G_T = null;
             }
             
-            cntr.classList.add('ultfx');
+            c_L_E.classList.add('u_l_t_E_F');
             
-            goalGlowTimer = setTimeout(() => {
-                cntr.classList.remove('ultfx');
-                goalGlowTimer = null;
-                checkAndApplyTransientEffect(count, true); 
+            g_G_T = setTimeout(() => {
+                c_L_E.classList.remove('u_l_t_E_F');
+                g_G_T = null;
+                c_A_T_E(c_N_T, true); 
             }, 750); 
         }
 
-        function checkGoalStatus() {
-            const wasGoalReachedBefore = isGoalReached;
+        function c_G_S() {
+            const W_G_R_B = i_G_R;
             
-            if (targetGoal > 0 && count >= targetGoal) {
-                isGoalReached = true;
+            if (t_G_L > 0 && c_N_T >= t_G_L) {
+                i_G_R = true;
                 
-                if (!wasGoalReachedBefore) {
-                    triggerGoalReachedGlow(); 
+                if (!W_G_R_B) {
+                    t_G_R_G(); 
                     
                     if (navigator.vibrate) {
-                        navigator.vibrate([200, 100, 200]);
+                        navigator.vibrate([200, 100, 200]); 
                     }
                 }
                 
-                cntr.classList.remove('grpls'); 
+                c_L_E.classList.remove('g_R_p_L'); 
                 
-                istr.textContent = "Goal Reached!"; 
-                istr.classList.remove('istrhdn');
-                istr.style.opacity = '1';
-                istr.style.visibility = 'visible'; 
+                i_N_E.textContent = "Goal Reached!"; 
+                i_N_E.classList.remove('i_H_d');
+                i_N_E.style.opacity = '1';
+                i_N_E.style.visibility = 'visible'; 
 
             } else {
-                isGoalReached = false;
+                i_G_R = false;
                 
-                cntr.classList.remove('grpls'); 
+                c_L_E.classList.remove('g_R_p_L'); 
                 
-                istr.textContent = "Tap anywhere to count";
-                if (hasTapped) {
-                    hideInstruction();
+                i_N_E.textContent = "Tap anywhere to count";
+                if (h_T_P) {
+                    h_I_N_S();
                 } else {
-                    showInstruction();
+                    s_I_N_S();
                 }
             }
             
-            updateHeaderButtonState();
+            u_H_B_S();
         }
 
-        function checkGoalInputHasChanged() {
-            let inputVal = glnp.textContent.trim().replace(/[^\d]/g, '');
-            let newGoal = parseInt(inputVal, 10);
+        function c_G_I_H_C() {
+            let I_V = g_I_P.textContent.trim().replace(/[^\d]/g, '');
+            let N_G = parseInt(I_V, 10);
             
-            if (isNaN(newGoal) || newGoal < 0) {
-                 newGoal = 0; 
+            if (isNaN(N_G) || N_G < 0) {
+                 N_G = 0; 
             }
             
-            return targetGoal !== newGoal;
+            return t_G_L !== N_G;
         }
 
-        function getActiveSubMenu() {
-            return document.querySelector('.sbmna');
+        function g_A_S_M() {
+            return document.querySelector('.s_M_a');
         }
 
-        function updateHeaderButtonState() {
-            const isMenuOpen = fllscr.classList.contains('vsbl');
-            const activeSubMenu = getActiveSubMenu();
-            const isSubMenuVisible = !!activeSubMenu;
-            const isGoalScreen = activeSubMenu && activeSubMenu.id === 'glctcnt';
+        function u_H_B_S() {
+            const I_M_O = f_S_M.classList.contains('visible');
+            const A_S_M = g_A_S_M();
+            const I_S_V = !!A_S_M;
+            const I_G_S = A_S_M && A_S_M.id === 'g_C_c';
             
-            opnmnb.classList.remove('dnmde', 'clsmde');
+            o_M_B.classList.remove('d_N_m_D', 'c_L_m_D');
 
-            if (isSubMenuVisible) {
-                hleft.classList.remove('hdn');
+            if (I_S_V) {
+                h_L_C.classList.remove('h_D_n'); 
 
-                const hasPendingChanges = isGoalScreen ? checkGoalInputHasChanged() : (sizeChanged || weightChanged);
+                const H_P_C = I_G_S ? c_G_I_H_C() : (s_C_D || w_C_D);
                 
-                if (hasPendingChanges) {
-                    hright.classList.remove('hdn');
-                    opnmnb.classList.add('dnmde');
-                    opnmnb.setAttribute('aria-label', 'Save and Close');
-                    opnmnb.setAttribute('title', 'Save and Close');
+                if (H_P_C) {
+                    h_R_C.classList.remove('h_D_n');
+                    o_M_B.classList.add('d_N_m_D');
+                    o_M_B.setAttribute('aria-label', 'Save and Close');
+                    o_M_B.setAttribute('title', 'Save and Close');
                 } else {
-                    hright.classList.add('hdn');
+                    h_R_C.classList.add('h_D_n');
                 }
                 
                 return; 
             }
 
-            if (isMenuOpen) {
-                hleft.classList.add('hdn');
-                hright.classList.remove('hdn');
-                opnmnb.classList.add('clsmde');
-                opnmnb.setAttribute('aria-label', 'Close Menu');
-                opnmnb.setAttribute('title', 'Close Menu');
+            if (I_M_O) {
+                h_L_C.classList.add('h_D_n'); 
+                h_R_C.classList.remove('h_D_n'); 
+                o_M_B.classList.add('c_L_m_D'); 
+                o_M_B.setAttribute('aria-label', 'Close Menu');
+                o_M_B.setAttribute('title', 'Close Menu');
                 return;
             }
 
-            hleft.classList.add('hdn');
-            hright.classList.remove('hdn');
+            h_L_C.classList.add('h_D_n'); 
+            h_R_C.classList.remove('h_D_n'); 
 
-            if (isGoalReached) {
-                opnmnb.classList.add('dnmde');
-                opnmnb.setAttribute('aria-label', 'Done');
-                opnmnb.setAttribute('title', 'Done');
+            if (i_G_R) {
+                o_M_B.classList.add('d_N_m_D');
+                o_M_B.setAttribute('aria-label', 'Done');
+                o_M_B.setAttribute('title', 'Done');
             } else {
-                opnmnb.setAttribute('aria-label', 'Open Menu');
-                opnmnb.setAttribute('title', 'Open Menu');
+                o_M_B.setAttribute('aria-label', 'Open Menu');
+                o_M_B.setAttribute('title', 'Open Menu');
             }
         }
 
-        function updateCounterDisplay() {
-            localStorage.setItem(STORAGE_KEY_COUNT, count);
-            adjustFontSize(count);
-            updateSelectedButton(szopt, 'scale');
-            updateSelectedButton(wtopt, 'weight');
-            checkGoalStatus(); 
+        function u_C_D_P() {
+            localStorage.setItem(S_K_C, c_N_T);
+            c_L_E.textContent = c_N_T; 
+            a_F_Z(c_N_T);
+            u_S_B(s_O_P, 'scale');
+            u_S_B(w_O_P, 'weight');
+            c_G_S(); 
         }
 
-        function updateSelectedButton(container, dataType) {
-            if (!container) return; 
-            Array.from(container.children).forEach(btn => {
-                btn.classList.remove('selected');
-                const btnValue = parseFloat(btn.getAttribute(`data-${dataType}`));
-                let currentValue = (dataType === 'scale') ? fontScale : fontWeight;
+        function u_S_B(C, D_T) {
+            if (!C) return; 
+            Array.from(C.children).forEach(B => {
+                B.classList.remove('s_E_l');
+                const B_V = parseFloat(B.getAttribute(`data-${D_T}`));
+                let C_V = (D_T === 'scale') ? f_S_L : f_W_T;
                 
-                if (Math.abs(currentValue - btnValue) < 0.001) {
-                    btn.classList.add('selected');
+                if (Math.abs(C_V - B_V) < 0.001) {
+                    B.classList.add('s_E_l');
                 }
             });
         }
 
-        function hideInstruction() {
-            if (!hasTapped && !isGoalReached) {
-                hasTapped = true;
-                istr.classList.add('istrhdn');
+        function h_I_N_S() {
+            if (!h_T_P && !i_G_R) {
+                h_T_P = true;
+                i_N_E.classList.add('i_H_d');
             }
         }
         
-        function showInstruction() {
-            istr.textContent = "Tap anywhere to count";
-            istr.classList.remove('istrhdn');
-            istr.style.opacity = '1';
-            istr.style.visibility = 'visible';
+        function s_I_N_S() {
+            i_N_E.textContent = "Tap anywhere to count";
+            i_N_E.classList.remove('i_H_d');
+            i_N_E.style.opacity = '1';
+            i_N_E.style.visibility = 'visible';
         }
         
-        function toggleMenu(visibility) {
-            const isShowing = visibility === 'show';
+        function t_G_M(V) {
+            const I_S = V === 'show';
             
-            if (isShowing) {
-                fllscr.classList.add('vsbl');
+            if (I_S) {
+                f_S_M.classList.add('visible');
             } else {
-                fllscr.classList.remove('vsbl');
+                f_S_M.classList.remove('visible');
                 
-                document.querySelectorAll('.sbmna').forEach(el => el.classList.remove('sbmna'));
+                document.querySelectorAll('.s_M_a').forEach(E => E.classList.remove('s_M_a'));
                 
-                sizeChanged = false;
-                weightChanged = false;
-                goalChanged = false; 
+                s_C_D = false;
+                w_C_D = false;
+                g_C_D = false; 
                 
-                if (isEditMode) {
-                    setNumberEditModeState(false); 
+                if (i_E_M) {
+                    s_N_E_S(false); 
                 }
             }
-            updateHeaderButtonState();
+            u_H_B_S();
         }
 
-        function goBackFromSubMenu(e) {
-            if (e) e.stopPropagation();
+        function g_B_K(E) {
+            if (E) E.stopPropagation();
 
-            const activeSubMenu = getActiveSubMenu();
-            if (activeSubMenu) {
-                activeSubMenu.classList.remove('sbmna');
+            const A_S_M = g_A_S_M();
+            if (A_S_M) {
+                A_S_M.classList.remove('s_M_a');
             }
             
-            sizeChanged = false;
-            weightChanged = false;
-            goalChanged = false;
+            s_C_D = false;
+            w_C_D = false;
+            g_C_D = false;
             
-            updateHeaderButtonState();
+            u_H_B_S();
         }
         
-        function saveChangesAndGoBack(e) {
-             if (e) e.stopPropagation();
+        function s_C_G_B(E) {
+             if (E) E.stopPropagation();
              
-             const activeSubMenu = getActiveSubMenu();
-             if (!activeSubMenu) return;
+             const A_S_M = g_A_S_M();
+             if (!A_S_M) return;
 
-             if (activeSubMenu.id === 'glctcnt') {
-                 saveTargetGoal(true);
-             } else if (activeSubMenu.id === 'szctcnt') {
-                 sizeChanged = false;
-             } else if (activeSubMenu.id === 'wtctcnt') {
-                 weightChanged = false;
+             if (A_S_M.id === 'g_C_c') {
+                 s_T_G(true); 
+             } else if (A_S_M.id === 's_C_c') {
+                 s_C_D = false;
+             } else if (A_S_M.id === 'w_C_c') {
+                 w_C_D = false;
              }
              
-             activeSubMenu.classList.remove('sbmna');
+             A_S_M.classList.remove('s_M_a');
              
-             updateHeaderButtonState();
+             u_H_B_S();
         }
 
 
-        function setNumberEditMode(isEditing) {
-            isEditMode = isEditing;
-            setNumberEditModeState(isEditing);
+        function s_N_E_M(I_E) {
+            i_E_M = I_E;
+            s_N_E_S(I_E);
         }
         
-        function setNumberEditModeState(isEditing) {
-            isEditMode = isEditing;
-            if (isEditing) {
-                cntr.contentEditable = 'true';
-                cntr.setAttribute('inputmode', 'numeric');
+        function s_N_E_S(I_E) {
+            i_E_M = I_E;
+            if (I_E) {
+                c_L_E.contentEditable = 'true';
+                c_L_E.setAttribute('inputmode', 'numeric');
                 
-                document.body.classList.add('kybup');
+                document.body.classList.add('k_B_u_P');
 
-                if (fllscr.classList.contains('vsbl')) {
-                    toggleMenu('hide'); 
+                if (f_S_M.classList.contains('visible')) {
+                    t_G_M('hide'); 
                 }
 
-                cntr.focus();
+                c_L_E.focus();
                 
-                istr.style.opacity = '0';
-                istr.style.visibility = 'hidden'; 
+                i_N_E.style.opacity = '0';
+                i_N_E.style.visibility = 'hidden'; 
                 
                 try {
                     document.execCommand('selectAll', false, null);
-                } catch (error) {
+                } catch (E) {
                     console.warn("Could not select all text automatically.");
                 }
             } else {
-                cntr.contentEditable = 'false';
-                cntr.removeAttribute('inputmode');
+                c_L_E.contentEditable = 'false';
+                c_L_E.removeAttribute('inputmode');
                 
-                document.body.classList.remove('kybup');
+                document.body.classList.remove('k_B_u_P');
                 
-                checkGoalStatus();
+                c_G_S(); 
             }
-            updateHeaderButtonState();
+            u_H_B_S();
         }
 
-        function enterSubMenuMode(e, containerElement) {
-            if (e) e.stopPropagation();
+        function e_S_M(E, C_E) {
+            if (E) E.stopPropagation();
             
-            toggleMenu('show'); 
+            t_G_M('show'); 
             
-            document.querySelectorAll('.sbmna').forEach(el => el.classList.remove('sbmna'));
+            document.querySelectorAll('.s_M_a').forEach(E => E.classList.remove('s_M_a'));
             
-            containerElement.style.visibility = 'visible'; 
+            C_E.style.visibility = 'visible'; 
 
-            containerElement.classList.add('sbmna');
+            C_E.classList.add('s_M_a');
             
-            if (containerElement.id === 'szctcnt') updateSelectedButton(szopt, 'scale');
-            if (containerElement.id === 'wtctcnt') updateSelectedButton(wtopt, 'weight');
+            if (C_E.id === 's_C_c') u_S_B(s_O_P, 'scale');
+            if (C_E.id === 'w_C_c') u_S_B(w_O_P, 'weight');
 
-            updateHeaderButtonState(); 
+            u_H_B_S(); 
         }
 
-        function enterSizeEditMode(e) {
-            enterSubMenuMode(e, szctcnt);
-        }
-        
-        function enterWeightEditMode(e) {
-            enterSubMenuMode(e, wtctcnt);
+        function e_S_E(E) {
+            e_S_M(E, s_C_C);
         }
         
-        function enterGoalEditMode(e) { 
-            enterSubMenuMode(e, glctcnt);
+        function e_W_E(E) {
+            e_S_M(E, w_C_C);
+        }
+        
+        function e_G_E(E) { 
+            e_S_M(E, g_C_C);
             
-            glnp.textContent = targetGoal === 0 ? '' : targetGoal;
+            g_I_P.textContent = t_G_L === 0 ? '' : t_G_L;
             
             setTimeout(() => { 
-                glnp.focus();
-                if (targetGoal !== 0) {
+                g_I_P.focus();
+                if (t_G_L !== 0) {
                      try {
                         document.execCommand('selectAll', false, null);
-                    } catch (error) {
+                    } catch (E) {
                     }
                 }
             }, 450); 
         }
         
-        function setSize(e) {
-            e.stopPropagation();
-            const btn = e.target.closest('.mnitmlnk');
-            if (!btn) return;
-            const selectedScale = parseFloat(btn.getAttribute('data-scale'));
+        function s_T_Z(E) {
+            E.stopPropagation();
+            const B = E.target.closest('.m_I_L');
+            if (!B) return;
+            const S_S = parseFloat(B.getAttribute('data-scale'));
             
-            if (Math.abs(fontScale - selectedScale) > 0.001) {
-                sizeChanged = true; 
+            if (Math.abs(f_S_L - S_S) > 0.001) {
+                s_C_D = true; 
             } else {
-                sizeChanged = false;
+                s_C_D = false; 
             }
             
-            fontScale = selectedScale;
-            localStorage.setItem(STORAGE_KEY_FONT_SCALE, fontScale);
-            updateCounterDisplay();
-            updateSelectedButton(szopt, 'scale');
-            updateHeaderButtonState();
+            f_S_L = S_S;
+            localStorage.setItem(S_K_S, f_S_L);
+            u_C_D_P();
+            u_S_B(s_O_P, 'scale');
+            u_H_B_S();
         }
         
-        function setWeight(e) {
-            e.stopPropagation();
-            const btn = e.target.closest('.mnitmlnk');
-            if (!btn) return;
-            const selectedWeight = parseInt(btn.getAttribute('data-weight'), 10);
+        function s_W_T(E) {
+            E.stopPropagation();
+            const B = E.target.closest('.m_I_L');
+            if (!B) return;
+            const S_W = parseInt(B.getAttribute('data-weight'), 10);
             
-            if (fontWeight !== selectedWeight) {
-                weightChanged = true;
+            if (f_W_T !== S_W) {
+                w_C_D = true;
             } else {
-                weightChanged = false;
+                w_C_D = false; 
             }
             
-            setFontWeight(selectedWeight);
-            updateHeaderButtonState();
+            s_F_W(S_W);
+            u_H_B_S();
         }
 
-        function saveTargetGoal(forceSave = false) { 
-            let inputVal = glnp.textContent.trim();
-            inputVal = inputVal.replace(/[^\d]/g, '');
-            let newGoal = parseInt(inputVal, 10);
+        function s_T_G(F_S = false) { 
+            let I_V = g_I_P.textContent.trim();
+            I_V = I_V.replace(/[^\d]/g, '');
+            let N_G = parseInt(I_V, 10);
             
-            if (isNaN(newGoal) || newGoal < 0) {
-                newGoal = 0; 
+            if (isNaN(N_G) || N_G < 0) {
+                N_G = 0; 
             }
 
-            const reallyChanged = targetGoal !== newGoal;
+            const R_C = t_G_L !== N_G;
             
-            if (reallyChanged || forceSave) {
+            if (R_C || F_S) {
                 
-                if (reallyChanged) {
-                    count = 0;
-                    localStorage.setItem(STORAGE_KEY_COUNT, count);
-                    cntr.textContent = count;
-                    hasTapped = false;
-                    showInstruction(); 
+                if (R_C) {
+                    c_N_T = 0;
+                    localStorage.setItem(S_K_C, c_N_T);
+                    c_L_E.textContent = c_N_T;
+                    h_T_P = false; 
+                    s_I_N_S(); 
                 }
 
-                targetGoal = newGoal;
-                localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
+                t_G_L = N_G;
+                localStorage.setItem(S_K_G, t_G_L);
                 
-                glnp.textContent = targetGoal === 0 ? '' : targetGoal;
+                g_I_P.textContent = t_G_L === 0 ? '' : t_G_L;
                 
-                goalChanged = false; 
+                g_C_D = false; 
             }
             
-            checkGoalStatus(); 
-            updateHeaderButtonState();
+            c_G_S(); 
+            u_H_B_S();
         }
         
-        glnp.addEventListener('input', () => {
-            updateHeaderButtonState();
+        g_I_P.addEventListener('input', () => {
+            u_H_B_S();
         });
 
-
-        function exitGoalMode() {
-            if (!isGoalReached) return;
+        function e_G_M() {
+            if (!i_G_R) return;
             
-            count = 0;
-            localStorage.setItem(STORAGE_KEY_COUNT, count);
-            cntr.textContent = count;
+            c_N_T = 0;
+            localStorage.setItem(S_K_C, c_N_T);
+            c_L_E.textContent = c_N_T;
             
-            targetGoal = 0;
-            localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
+            t_G_L = 0;
+            localStorage.setItem(S_K_G, t_G_L);
             
-            isGoalReached = false; 
+            i_G_R = false; 
             
-            if (transientEffectTimer) clearTimeout(transientEffectTimer);
-            if (goalGlowTimer) clearTimeout(goalGlowTimer);
-            cntr.classList.remove('ultfx');
-            cntr.classList.remove('grpls'); 
+            if (t_E_T) clearTimeout(t_E_T);
+            if (g_G_T) clearTimeout(g_G_T);
+            c_L_E.classList.remove('u_l_t_E_F');
+            c_L_E.classList.remove('g_R_p_L'); 
             
-            istr.textContent = "Tap anywhere to count"; 
-            hasTapped = false;
-            showInstruction();
+            i_N_E.textContent = "Tap anywhere to count"; 
+            h_T_P = false;
+            s_I_N_S();
             
-            updateHeaderButtonState();
+            u_H_B_S();
         }
 
-
-        function checkAndApplyTransientEffect(currentCount, force = false) {
-            if (isGoalReached && !force) {
+        function c_A_T_E(C_C, F = false) {
+            if (t_G_L > 0 && !F) {
+                c_L_E.classList.remove('u_l_t_E_F'); 
+                c_G_S(); 
                 return;
             }
             
-            if (transientEffectTimer) {
-                clearTimeout(transientEffectTimer);
-                transientEffectTimer = null;
+            if (t_E_T) {
+                clearTimeout(t_E_T);
+                t_E_T = null;
             }
             
-            cntr.classList.remove('ultfx');
+            c_L_E.classList.remove('u_l_t_E_F');
             
-            let effectClass = null;
+            let E_C = null;
 
-            if (currentCount === 33 || currentCount === 66 || currentCount === 99) {
-                effectClass = 'ultfx'; 
+            if (C_C === 33 || C_C === 66 || C_C === 99) {
+                E_C = 'u_l_t_E_F'; 
             }
 
-            if (effectClass) {
-                cntr.classList.add(effectClass);
+            if (E_C) {
+                c_L_E.classList.add(E_C);
 
-                transientEffectTimer = setTimeout(() => {
-                    if (parseInt(cntr.textContent, 10) === currentCount) {
-                        cntr.classList.remove('ultfx');
+                t_E_T = setTimeout(() => {
+                    if (parseInt(c_L_E.textContent, 10) === C_C) {
+                        c_L_E.classList.remove('u_l_t_E_F');
                     }
-                    transientEffectTimer = null;
+                    t_E_T = null;
                 }, 400); 
             }
             
-            checkGoalStatus(); 
+            c_G_S(); 
         }
 
-
-        function incrementCounter() {
-            if (isEditMode || getActiveSubMenu()) {
+        function i_C_N() {
+            if (i_E_M || g_A_S_M()) {
                 return;
             }
             
-            if (fllscr.classList.contains('vsbl')) {
-                toggleMenu('hide');
+            if (f_S_M.classList.contains('visible')) {
+                t_G_M('hide');
                 return;
             }
             
-            if (isGoalReached) {
+            if (i_G_R) {
                 return;
             }
 
-            hideInstruction();
+            h_I_N_S();
             
-            count++;
-            cntr.textContent = count;
-            localStorage.setItem(STORAGE_KEY_COUNT, count);
-            adjustFontSize(count);
+            c_N_T++;
+            c_L_E.textContent = c_N_T;
+            localStorage.setItem(S_K_C, c_N_T);
+            a_F_Z(c_N_T);
 
-            checkAndApplyTransientEffect(count);
+            c_A_T_E(c_N_T);
         }
 
-        function resetCounter(e) {
-            if (e) e.stopPropagation();
+        function r_C_N(E) {
+            if (E) E.stopPropagation();
             
-            if (isEditMode) {
-                saveNewCount();
+            if (i_E_M) {
+                s_N_C();
             }
             
-            count = 0;
-            targetGoal = 0; 
-            localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
-            isGoalReached = false; 
+            c_N_T = 0;
+            t_G_L = 0; 
+            localStorage.setItem(S_K_G, t_G_L);
+            i_G_R = false; 
             
-            if (transientEffectTimer) clearTimeout(transientEffectTimer);
-            if (goalGlowTimer) clearTimeout(goalGlowTimer);
-            cntr.classList.remove('ultfx');
-            cntr.classList.remove('grpls'); 
+            if (t_E_T) clearTimeout(t_E_T);
+            if (g_G_T) clearTimeout(g_G_T);
+            c_L_E.classList.remove('u_l_t_E_F');
+            c_L_E.classList.remove('g_R_p_L'); 
             
-            istr.textContent = "Tap anywhere to count";
+            i_N_E.textContent = "Tap anywhere to count";
             
-            hasTapped = false;
-            showInstruction();
+            h_T_P = false;
+            s_I_N_S();
 
-            cntr.textContent = count;
-            glnp.textContent = ''; 
-            updateCounterDisplay(); 
-            toggleMenu('hide');
+            c_L_E.textContent = c_N_T;
+            g_I_P.textContent = ''; 
+            u_C_D_P(); 
+            t_G_M('hide');
         }
 
-        function editNumber(e) {
-            if (e) e.stopPropagation();
-            toggleMenu('hide'); 
-            setNumberEditMode(true); 
+        function e_N_M(E) {
+            if (E) E.stopPropagation();
+            t_G_M('hide'); 
+            s_N_E_M(true); 
         }
 
-        function saveNewCount() {
-            if (!isEditMode) return;
+        function s_N_C() {
+            if (!i_E_M) return;
             
-            let inputVal = cntr.textContent.trim();
-            inputVal = inputVal.replace(/[^\d]/g, '');
-            let newCount = parseInt(inputVal, 10);
+            let I_V = c_L_E.textContent.trim();
+            I_V = I_V.replace(/[^\d]/g, '');
+            let N_C = parseInt(I_V, 10);
             
-            if (isNaN(newCount) || newCount < 0) {
-                newCount = count;
+            if (isNaN(N_C) || N_C < 0) {
+                N_C = c_N_T;
             }
             
-            count = newCount;
-            updateCounterDisplay();
-            setNumberEditMode(false); 
+            c_N_T = N_C;
+            u_C_D_P();
+            s_N_E_M(false); 
             
-            checkAndApplyTransientEffect(count); 
+            c_A_T_E(c_N_T); 
         }
 
-        function updateThemeButtonText() {
-            thtxt.textContent = isDarkMode ? 'White Mode' : 'Black Mode';
+        function u_T_B_T() {
+            t_T_E.textContent = i_D_M ? 'White Mode' : 'Black Mode';
         }
 
-        function toggleTheme(e) {
-            if (e) e.stopPropagation();
-            isDarkMode = !isDarkMode;
-            const newThemeColor = isDarkMode ? '#000000' : '#ffffff';
+        function t_G_T(E) {
+            if (E) E.stopPropagation();
+            i_D_M = !i_D_M;
+            const N_T_C = i_D_M ? '#000000' : '#ffffff';
             
-            if (isDarkMode) {
-                document.body.classList.remove('lght');
-                localStorage.setItem(STORAGE_KEY_THEME, 'dark');
+            if (i_D_M) {
+                document.body.classList.remove('l_M_d');
+                localStorage.setItem(S_K_T, 'dark');
             } else {
-                document.body.classList.add('lght');
-                localStorage.setItem(STORAGE_KEY_THEME, 'light');
+                document.body.classList.add('l_M_d');
+                localStorage.setItem(S_K_T, 'light');
             }
             
-            updateThemeButtonText();
+            u_T_B_T();
             
-            if (themeMeta) {
-                themeMeta.setAttribute('content', newThemeColor);
+            if (t_M_T) {
+                t_M_T.setAttribute('content', N_T_C);
             }
             
-            checkGoalStatus(); 
+            c_G_S(); 
         }
 
-        function toggleFullScreen(e) {
-            if (e) e.stopPropagation();
+        function t_G_F(E) {
+            if (E) E.stopPropagation();
             if (document.fullscreenElement) {
                 document.exitFullscreen();
             } else {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.error("Fullscreen API error:", err.message);
+                document.documentElement.requestFullscreen().catch(E => {
+                    console.error("Fullscreen API error:", E.message);
                 });
             }
         }
 
-        function handleFullscreenChange() {
+        function h_F_C() {
             if (document.fullscreenElement) {
-                fxtxt.textContent = "Exit Fullscreen";
+                f_T_E.textContent = "Exit Fullscreen";
             } else {
-                fxtxt.textContent = "Fullscreen";
+                f_T_E.textContent = "Fullscreen";
             }
             
-            if (fllscr.classList.contains('vsbl')) {
-                toggleMenu('hide');
+            if (f_S_M.classList.contains('visible')) {
+                t_G_M('hide');
             }
         }
         
-        function addSubMenuTransitionEndListeners(container) {
-            container.addEventListener('transitionend', function() {
-                if (!container.classList.contains('sbmna')) {
-                    container.style.visibility = 'hidden';
+        function a_S_M_T_L(C) {
+            C.addEventListener('transitionend', function() {
+                if (!C.classList.contains('s_M_a')) {
+                    C.style.visibility = 'hidden';
                 }
             });
         }
         
-        function init() {
-            const subMenuContainers = [szctcnt, wtctcnt, glctcnt];
-            subMenuContainers.forEach(container => {
-                container.style.visibility = 'hidden';
-                addSubMenuTransitionEndListeners(container);
+        function k_S_t_A_r_T() {
+            const S_M_C = [s_C_C, w_C_C, g_C_C];
+            S_M_C.forEach(C => {
+                C.style.visibility = 'hidden';
+                a_S_M_T_L(C);
             });
             
-            const savedCount = localStorage.getItem(STORAGE_KEY_COUNT);
-            if (savedCount !== null) {
-                count = parseInt(savedCount, 10);
+            const S_C = localStorage.getItem(S_K_C);
+            if (S_C !== null) {
+                c_N_T = parseInt(S_C, 10);
             }
             
-            const savedFontScale = localStorage.getItem(STORAGE_KEY_FONT_SCALE);
-            if (savedFontScale !== null) {
-                fontScale = parseFloat(savedFontScale);
+            const S_F_S = localStorage.getItem(S_K_S);
+            if (S_F_S !== null) {
+                f_S_L = parseFloat(S_F_S);
             } else {
-                fontScale = 0.6;
+                f_S_L = 0.6;
             }
             
-            const savedFontWeight = localStorage.getItem(STORAGE_KEY_FONT_WEIGHT);
-            if (savedFontWeight !== null) {
-                fontWeight = parseInt(savedFontWeight, 10);
+            const S_F_W = localStorage.getItem(S_K_W);
+            if (S_F_W !== null) {
+                f_W_T = parseInt(S_F_W, 10);
             } else {
-                fontWeight = 100; 
+                f_W_T = 100; 
             }
             
-            const savedGoal = localStorage.getItem(STORAGE_KEY_GOAL);
-            if (savedGoal !== null) {
-                targetGoal = parseInt(savedGoal, 10);
+            const S_G = localStorage.getItem(S_K_G);
+            if (S_G !== null) {
+                t_G_L = parseInt(S_G, 10);
             }
             
-            glnp.textContent = targetGoal === 0 ? '' : targetGoal;
+            g_I_P.textContent = t_G_L === 0 ? '' : t_G_L;
             
-            setFontWeight(fontWeight);
+            s_F_W(f_W_T);
             
-            const savedTheme = localStorage.getItem(STORAGE_KEY_THEME);
-            if (savedTheme === 'light') {
-                isDarkMode = false;
-                document.body.classList.add('lght');
-                if (themeMeta) {
-                    themeMeta.setAttribute('content', '#ffffff');
+            const S_T = localStorage.getItem(S_K_T);
+            if (S_T === 'light') {
+                i_D_M = false;
+                document.body.classList.add('l_M_d');
+                if (t_M_T) {
+                    t_M_T.setAttribute('content', '#ffffff');
                 }
             } else {
-                isDarkMode = true;
-                document.body.classList.remove('lght');
-                if (themeMeta) {
-                    themeMeta.setAttribute('content', '#000000');
+                i_D_M = true;
+                document.body.classList.remove('l_M_d');
+                if (t_M_T) {
+                    t_M_T.setAttribute('content', '#000000');
                 }
             }
-            updateThemeButtonText();
+            u_T_B_T();
 
-            updateCounterDisplay(); 
+            u_C_D_P(); 
             
-            if (count > 0 && !isGoalReached) {
-                hasTapped = true;
-                hideInstruction();
-                checkAndApplyTransientEffect(count);
-            } else if (isGoalReached) {
+            if (c_N_T > 0 && !i_G_R) {
+                h_T_P = true;
+                h_I_N_S();
+                c_A_T_E(c_N_T);
+            } else if (i_G_R) {
             } else {
-                hasTapped = false;
-                showInstruction();
+                h_T_P = false;
+                s_I_N_S();
             }
 
-            handleFullscreenChange();
-            updateHeaderButtonState(); 
+            h_F_C();
+            u_H_B_S(); 
 
-            document.body.addEventListener('click', (e) => {
-                if (e.target.closest('.hctl') || getActiveSubMenu()) {
+            document.body.addEventListener('click', (E) => {
+                if (E.target.closest('.h_C_r') || g_A_S_M()) {
                     return;
                 }
                 
-                if (fllscr.classList.contains('vsbl')) {
-                    toggleMenu('hide');
+                if (f_S_M.classList.contains('visible')) {
+                    t_G_M('hide');
                     return;
                 }
                 
-                if (isEditMode) {
-                    cntr.blur(); 
-                    return;
-                }
-                
-                if (isGoalReached) {
+                if (i_G_R) {
                     return;
                 }
 
-                incrementCounter();
+                if (i_E_M) {
+                    c_L_E.blur(); 
+                    return;
+                }
+                
+                i_C_N();
             });
             
-            cntr.addEventListener('blur', saveNewCount);
-            cntr.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    cntr.blur(); 
+            c_L_E.addEventListener('blur', s_N_C);
+            c_L_E.addEventListener('keydown', (E) => {
+                if (E.key === 'Enter') {
+                    E.preventDefault();
+                    c_L_E.blur(); 
                 }
             });
             
-            glnp.addEventListener('blur', () => saveTargetGoal(false)); 
+            g_I_P.addEventListener('blur', () => s_T_G(false)); 
             
-            glnp.addEventListener('keydown', (e) => {
-                 if (e.key === 'Enter') {
-                    e.preventDefault();
+            g_I_P.addEventListener('keydown', (E) => {
+                 if (E.key === 'Enter') {
+                    E.preventDefault();
                     
-                    glnp.blur(); 
+                    g_I_P.blur(); 
                     
-                    if (getActiveSubMenu() && getActiveSubMenu().id === 'glctcnt') {
-                        saveChangesAndGoBack(e); 
+                    if (g_A_S_M() && g_A_S_M().id === 'g_C_c') {
+                        s_C_G_B(E); 
                     }
                 }
             });
 
-            opnmnb.addEventListener('click', (e) => {
-                e.stopPropagation();
+            o_M_B.addEventListener('click', (E) => {
+                E.stopPropagation();
 
-                const isMenuOpen = fllscr.classList.contains('vsbl');
-                const isSubMenuVisible = getActiveSubMenu();
+                const I_M_O = f_S_M.classList.contains('visible');
+                const I_S_V = g_A_S_M();
                 
-                if (isSubMenuVisible && opnmnb.classList.contains('dnmde')) {
-                    saveChangesAndGoBack(e);
+                if (I_S_V && o_M_B.classList.contains('d_N_m_D')) {
+                    s_C_G_B(E);
                     return;
                 }
                 
-                if (isGoalReached && !isMenuOpen && !isSubMenuVisible) {
-                    exitGoalMode();
+                if (i_G_R && !I_M_O && !I_S_V) {
+                    e_G_M(); 
                     return;
                 }
                 
-                if (!isMenuOpen) {
-                    toggleMenu('show');
+                if (!I_M_O) {
+                    t_G_M('show');
                 } else {
-                    toggleMenu('hide');
+                    t_G_M('hide');
                 }
             });
             
-            bckbtn.addEventListener('click', goBackFromSubMenu);
+            b_K_B.addEventListener('click', g_B_K);
 
+            f_B_n.addEventListener('click', (E) => {
+                t_G_F(E);
+                t_G_M('hide');
+            });
+            r_B_n.addEventListener('click', (E) => {
+                r_C_N(E);
+            });
+            e_B_n.addEventListener('click', (E) => {
+                e_N_M(E);
+            });
+            t_B_n.addEventListener('click', (E) => {
+                t_G_T(E);
+            });
 
-            fsbtn.addEventListener('click', (e) => {
-                toggleFullScreen(e);
-                toggleMenu('hide');
-            });
-            rstbtn.addEventListener('click', (e) => {
-                resetCounter(e);
-            });
-            edtbtn.addEventListener('click', (e) => {
-                editNumber(e);
-            });
-            thbtn.addEventListener('click', (e) => {
-                toggleTheme(e);
-            });
+            s_E_B.addEventListener('click', e_S_E);
+            w_E_B.addEventListener('click', e_W_E);
+            g_E_B.addEventListener('click', e_G_E); 
 
-            szntbtn.addEventListener('click', enterSizeEditMode);
-            wtntbtn.addEventListener('click', enterWeightEditMode);
-            glntbtn.addEventListener('click', enterGoalEditMode); 
-
-            szopt.addEventListener('click', setSize);
+            s_O_P.addEventListener('click', s_T_Z);
             
-            wtopt.addEventListener('click', setWeight);
+            w_O_P.addEventListener('click', s_W_T);
 
-            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            document.addEventListener('fullscreenchange', h_F_C);
             
-            document.addEventListener('dblclick', function(event) {
-                event.preventDefault();
+            document.addEventListener('dblclick', function(E) {
+                E.preventDefault();
             }, { passive: false });
 
-            document.addEventListener('keydown', (e) => {
-                if (isEditMode) {
-                    if (e.key === 'Enter') return;
+            document.addEventListener('keydown', (E) => {
+                if (i_E_M) {
+                    if (E.key === 'Enter') return; 
                     return; 
                 }
                 
-                if (e.code === 'Space' || e.code === 'Enter') {
-                    if (!e.target.matches('input, textarea, button, [contenteditable="true"]')) {
-                        incrementCounter();
-                        e.preventDefault();
+                if (E.code === 'Space' || E.code === 'Enter') {
+                    if (!E.target.matches('input, textarea, button, [contenteditable="true"]')) {
+                        i_C_N();
+                        E.preventDefault();
                     }
-                } else if (e.key === 'r' || e.key === 'R') {
-                    resetCounter();
-                } else if (e.key === 'e' || e.key === 'E') {
-                    editNumber();
-                } else if (e.key === 's' || e.key === 'S') {
-                    enterSizeEditMode();
-                    e.preventDefault();
-                } else if (e.key === 'w' || e.key === 'W') {
-                    enterWeightEditMode();
-                    e.preventDefault();
-                } else if (e.key === 'g' || e.key === 'G') { 
-                    enterGoalEditMode();
-                    e.preventDefault();
-                } else if (e.key === 'Escape') {
-                    const activeSubMenu = getActiveSubMenu();
-                    if (activeSubMenu) {
-                        goBackFromSubMenu();
-                    } else if (fllscr.classList.contains('vsbl')) {
-                        toggleMenu('hide');
+                } else if (E.key === 'r' || E.key === 'R') {
+                    r_C_N();
+                } else if (E.key === 'e' || E.key === 'E') {
+                    e_N_M();
+                } else if (E.key === 's' || E.key === 'S') {
+                    e_S_E();
+                    E.preventDefault();
+                } else if (E.key === 'w' || E.key === 'W') {
+                    e_W_E();
+                    E.preventDefault();
+                } else if (E.key === 'g' || E.key === 'G') { 
+                    e_G_E();
+                    E.preventDefault();
+                } else if (E.key === 'Escape') {
+                    const A_S_M = g_A_S_M();
+                    if (A_S_M) {
+                        g_B_K();
+                    } else if (f_S_M.classList.contains('visible')) {
+                        t_G_M('hide');
                     }
                 }
             });
         }
 
-        init();
+        k_S_t_A_r_T();
     </script>
-</bdy>
+</body>
 </html>
 
