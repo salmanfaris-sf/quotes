@@ -32,6 +32,7 @@
             --selected-bg: #333333;
             --selected-text: #FFFFFF;
             --ios-blue: #007AFF;
+            --ios-red: #FF3B30; /* For decrement/reset actions (NO LONGER USED IN MENU) */
         }
         
         body.theme-white {
@@ -45,7 +46,7 @@
             --selected-bg: #EEEEEE;
             --selected-text: #000000;
         }
-
+        
         body.theme-black {
             --counter-bg-color: #000000;
             --text-color: #ffffff;
@@ -327,7 +328,7 @@
         #goal-controls-container,
         #step-controls-container, 
         #theme-controls-container,
-        #awake-controls-container { /* Added new container */
+        #awake-controls-container { 
             position: fixed; 
             top: 0; 
             left: 0;
@@ -377,6 +378,11 @@
             transition: background-color 0.2s, color 0.2s;
         }
         
+        /* The .decrement-color class is removed from the HTML for reset/decrement buttons */
+        /* .menu-item-link.decrement-color {
+            color: var(--ios-red);
+        } */ 
+
         #menu-nav-list .menu-item-link {
             opacity: 0;
             transform: translateY(10px);
@@ -394,7 +400,8 @@
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(6) { animation-delay: 0.35s; }
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(7) { animation-delay: 0.4s; }
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(8) { animation-delay: 0.45s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(9) { animation-delay: 0.5s; } /* New item */
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(9) { animation-delay: 0.5s; } 
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(10) { animation-delay: 0.55s; } /* Decrement button */
 
 
         .menu-sub-header {
@@ -521,30 +528,43 @@
         <div class="menu-header"></div> 
         <div id="menu-inner-container">
             <nav id="menu-nav-list">
+                <!-- 1. Full screen -->
                 <button id="fullscreen-btn" class="menu-item-link" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
                     <span id="fullscreen-text">Fullscreen</span>
                 </button>
+                <!-- 2. Reset -->
                 <button id="reset-btn" class="menu-item-link" aria-label="Reset Counter" title="Reset Counter">
                     Reset
                 </button>
+                <!-- 3. Edit -->
                 <button id="edit-btn" class="menu-item-link" aria-label="Edit Number" title="Edit">
                     Edit
                 </button>
-                <button id="size-entry-btn" class="menu-item-link" aria-label="Adjust Font Size" title="Adjust Font Size">
-                    Size
+                <!-- 4. Decrement -->
+                <button id="decrement-btn" class="menu-item-link" aria-label="Decrement Counter" title="Decrement Counter">
+                    Decrement
                 </button>
-                <button id="weight-entry-btn" class="menu-item-link" aria-label="Adjust Font Thickness" title="Adjust Font Thickness">
-                    Thickness
-                </button>
-                <button id="goal-entry-btn" class="menu-item-link" aria-label="Set Target Goal" title="Set Target Goal">
-                    Goal
-                </button>
+                <!-- 5. Step Value -->
                 <button id="step-entry-btn" class="menu-item-link" aria-label="Adjust Increment Step" title="Adjust Increment Step">
                     Step Value
                 </button>
+                <!-- 6. Goal -->
+                <button id="goal-entry-btn" class="menu-item-link" aria-label="Set Target Goal" title="Set Target Goal">
+                    Goal
+                </button>
+                <!-- 7. Size -->
+                <button id="size-entry-btn" class="menu-item-link" aria-label="Adjust Font Size" title="Adjust Font Size">
+                    Size
+                </button>
+                <!-- 8. Thickness -->
+                <button id="weight-entry-btn" class="menu-item-link" aria-label="Adjust Font Thickness" title="Adjust Font Thickness">
+                    Thickness
+                </button>
+                <!-- 9. Theme -->
                 <button id="theme-entry-btn" class="menu-item-link" aria-label="Adjust Theme" title="Adjust Theme">
                     Theme
                 </button>
+                <!-- 10. Screen Awake -->
                 <button id="awake-entry-btn" class="menu-item-link" aria-label="Screen Awake" title="Screen Awake">
                     Screen Awake
                 </button>
@@ -610,7 +630,7 @@
         </div>
     </div>
     
-    <!-- AWAKE CONTROL CONTAINER (New Feature) -->
+    <!-- AWAKE CONTROL CONTAINER -->
     <div id="awake-controls-container">
         <h2 class="menu-sub-header">Screen Awake</h2>
         <p class="info-text" id="awake-info-text">Stops the screen from turning off automatically.</p>
@@ -648,13 +668,14 @@
         const fullscreenTextEl = document.getElementById('fullscreen-text');
         const resetBtn = document.getElementById('reset-btn');
         const editBtn = document.getElementById('edit-btn');
+        const decrementBtn = document.getElementById('decrement-btn'); // New Decrement Button
         
         const sizeEntryBtn = document.getElementById('size-entry-btn');
         const weightEntryBtn = document.getElementById('weight-entry-btn'); 
         const goalEntryBtn = document.getElementById('goal-entry-btn'); 
         const stepEntryBtn = document.getElementById('step-entry-btn'); 
         const themeEntryBtn = document.getElementById('theme-entry-btn');
-        const awakeEntryBtn = document.getElementById('awake-entry-btn'); // Updated text in HTML/CSS
+        const awakeEntryBtn = document.getElementById('awake-entry-btn'); 
         
         const goalInput = document.getElementById('goal-input'); 
         const stepInput = document.getElementById('step-input'); 
@@ -670,15 +691,15 @@
         const sizeOptions = document.getElementById('size-options');
         const weightOptions = document.getElementById('weight-options');
         const themeOptions = document.getElementById('theme-options');
-        const awakeOptions = document.getElementById('awake-options'); // New
+        const awakeOptions = document.getElementById('awake-options'); 
         
         const sizeControlsContainer = document.getElementById('size-controls-container');
         const weightControlsContainer = document.getElementById('weight-controls-container');
         const goalControlsContainer = document.getElementById('goal-controls-container');
         const stepControlsContainer = document.getElementById('step-controls-container'); 
         const themeControlsContainer = document.getElementById('theme-controls-container');
-        const awakeControlsContainer = document.getElementById('awake-controls-container'); // New
-        const awakeInfoText = document.getElementById('awake-info-text'); // New
+        const awakeControlsContainer = document.getElementById('awake-controls-container'); 
+        const awakeInfoText = document.getElementById('awake-info-text'); 
         
         // --- Permanent State Variables (Saved to Storage) ---
         let count = 0;
@@ -687,7 +708,7 @@
         let currentTheme = 'dark';
         let fontScale = NORMAL_SCALE;
         let fontWeight = 100; 
-        let isScreenAwake = false; // New
+        let isScreenAwake = false; 
 
         // --- Transient State Variables ---
         let isGoalReached = false; 
@@ -695,13 +716,13 @@
         let isEditMode = false; 
         let transientEffectTimer = null; 
         let goalGlowTimer = null; 
-        let wakeLock = null; // New
+        let wakeLock = null; 
 
         // --- TEMPORARY STATE VARIABLES (For Menu Preview) ---
         let tempFontScale;
         let tempFontWeight;
         let tempTheme;
-        let tempIsScreenAwake; // New
+        let tempIsScreenAwake; 
 
 
         // --- Local Storage Keys ---
@@ -711,7 +732,7 @@
         const STORAGE_KEY_FONT_WEIGHT = 'minimalCounterFontWeight';
         const STORAGE_KEY_GOAL = 'minimalCounterTargetGoal'; 
         const STORAGE_KEY_STEP = 'minimalCounterStepValue'; 
-        const STORAGE_KEY_SCREEN_AWAKE = 'minimalCounterScreenAwake'; // New
+        const STORAGE_KEY_SCREEN_AWAKE = 'minimalCounterScreenAwake'; 
 
         /**
          * Cleans and validates a numeric string input, respecting MAX_SAFE_INTEGER.
@@ -888,7 +909,7 @@
                     if (currentValue === btnValue) {
                          btn.classList.add('selected');
                     }
-                } else if (dataType === 'awake') { // New
+                } else if (dataType === 'awake') { 
                     const awakeState = currentValue ? 'on' : 'off';
                     if (awakeState === btnValue) {
                         btn.classList.add('selected');
@@ -925,7 +946,7 @@
                     hasPendingChanges = tempFontWeight !== fontWeight;
                 } else if (activeSubMenu.id === 'theme-controls-container') {
                     hasPendingChanges = tempTheme !== currentTheme;
-                } else if (activeSubMenu.id === 'awake-controls-container') { // New
+                } else if (activeSubMenu.id === 'awake-controls-container') { 
                     hasPendingChanges = tempIsScreenAwake !== isScreenAwake;
                 }
                 
@@ -968,6 +989,11 @@
          * Updates counter display using permanent state and saves count to storage.
          */
         function updateCounterDisplay() {
+            // Ensure count doesn't drop below 0
+            if (count < 0) {
+                count = 0;
+            }
+
             localStorage.setItem(STORAGE_KEY_COUNT, count);
             
             counterElement.textContent = count.toLocaleString('en-US'); 
@@ -1044,7 +1070,7 @@
                 } else if (activeSubMenu.id === 'step-controls-container') {
                      // Revert input text to permanent step value
                      stepInput.textContent = stepValue.toString();
-                } else if (activeSubMenu.id === 'awake-controls-container') { // New
+                } else if (activeSubMenu.id === 'awake-controls-container') { 
                      // Revert screen awake state to permanent
                      toggleScreenAwake(isScreenAwake, false); 
                 }
@@ -1077,7 +1103,7 @@
                  currentTheme = tempTheme;
                  localStorage.setItem(STORAGE_KEY_THEME, currentTheme);
                  // applyTheme was already called, just the state needed saving
-             } else if (activeSubMenu.id === 'awake-controls-container') { // New
+             } else if (activeSubMenu.id === 'awake-controls-container') { 
                  isScreenAwake = tempIsScreenAwake;
                  localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
                  // toggleScreenAwake was already called, just the state needed saving
@@ -1178,8 +1204,7 @@
                     } catch (error) {
                     }
                 }, 450);
-            } else if (containerElement.id === 'awake-controls-container') { // New
-                // The HTML holds the simple, user-requested text: "Stops the screen from turning off automatically."
+            } else if (containerElement.id === 'awake-controls-container') { 
                 awakeInfoText.textContent = "Stops the screen from turning off automatically.";
 
                 if (!('wakeLock' in navigator)) {
@@ -1235,7 +1260,7 @@
             updateHeaderButtonState();
         }
         
-        function setAwakePreview(e) { // New
+        function setAwakePreview(e) { 
             e.stopPropagation();
             const btn = e.target.closest('.menu-item-link');
             if (!btn) return;
@@ -1347,12 +1372,37 @@
         function enterGoalEditMode(e) { enterSubMenuMode(e, goalControlsContainer); }
         function enterStepEditMode(e) { enterSubMenuMode(e, stepControlsContainer); }
         function enterThemeEditMode(e) { enterSubMenuMode(e, themeControlsContainer); }
-        function enterAwakeEditMode(e) { enterSubMenuMode(e, awakeControlsContainer); } // New
+        function enterAwakeEditMode(e) { enterSubMenuMode(e, awakeControlsContainer); } 
         
         function editNumber(e) {
             if (e) e.stopPropagation();
             toggleMenu('hide'); 
             setNumberEditModeState(true); 
+        }
+
+        /**
+         * Decrements the counter by the current step value, preventing negative numbers.
+         */
+        function decrementCounter(e) {
+            if (e) e.stopPropagation();
+            toggleMenu('hide'); // Close menu after action
+            
+            if (isEditMode || isGoalReached) {
+                return;
+            }
+            
+            hideInstruction();
+
+            if (count - stepValue < 0) {
+                count = 0;
+            } else {
+                count -= stepValue;
+            }
+            
+            updateCounterDisplay();
+
+            // Do not apply transient effects on decrement to keep it simple/distinction from increment
+            checkGoalStatus(); 
         }
 
 
@@ -1466,7 +1516,7 @@
             fontWeight = 100;
             currentTheme = 'dark'; // Explicitly reset theme
             
-            // New: Reset screen awake setting
+            // Reset screen awake setting
             toggleScreenAwake(false, true); 
             isScreenAwake = false;
             localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
@@ -1561,13 +1611,13 @@
             targetGoal = sanitizeInput(localStorage.getItem(STORAGE_KEY_GOAL) || '0', 0, MAX_SAFE_INTEGER);
             stepValue = sanitizeInput(localStorage.getItem(STORAGE_KEY_STEP) || '1', 1, MAX_SAFE_INTEGER);
             currentTheme = localStorage.getItem(STORAGE_KEY_THEME) || 'dark';
-            isScreenAwake = localStorage.getItem(STORAGE_KEY_SCREEN_AWAKE) === 'true'; // New
+            isScreenAwake = localStorage.getItem(STORAGE_KEY_SCREEN_AWAKE) === 'true'; 
             
             // --- INITIALIZE TEMPORARY STATE ---
             tempFontScale = fontScale;
             tempFontWeight = fontWeight;
             tempTheme = currentTheme;
-            tempIsScreenAwake = isScreenAwake; // New
+            tempIsScreenAwake = isScreenAwake; 
             
             // --- APPLY PERMANENT STATE TO UI ---
             applyTheme(currentTheme); 
@@ -1683,6 +1733,7 @@
             });
             resetBtn.addEventListener('click', resetCounter);
             editBtn.addEventListener('click', editNumber);
+            decrementBtn.addEventListener('click', decrementCounter); // New Decrement Handler
             
             // Sub-Menu Entry Handlers
             sizeEntryBtn.addEventListener('click', enterSizeEditMode);
@@ -1690,13 +1741,13 @@
             goalEntryBtn.addEventListener('click', enterGoalEditMode); 
             stepEntryBtn.addEventListener('click', enterStepEditMode); 
             themeEntryBtn.addEventListener('click', enterThemeEditMode);
-            awakeEntryBtn.addEventListener('click', enterAwakeEditMode); // New
+            awakeEntryBtn.addEventListener('click', enterAwakeEditMode); 
 
             // Control Option Handlers (use Preview handlers)
             sizeOptions.addEventListener('click', setSizePreview);
             weightOptions.addEventListener('click', setWeightPreview);
             themeOptions.addEventListener('click', setThemePreview);
-            awakeOptions.addEventListener('click', setAwakePreview); // New
+            awakeOptions.addEventListener('click', setAwakePreview); 
 
             document.addEventListener('fullscreenchange', handleFullscreenChange);
             
@@ -1719,9 +1770,14 @@
                     return; 
                 }
                 
-                if (e.code === 'Space' || e.code === 'Enter') {
+                if (e.code === 'Space' || e.code === 'Enter' || e.key === '+' || e.key === '=') {
                     if (!e.target.matches('input, textarea, button, [contenteditable="true"]')) {
                         incrementCounter();
+                        e.preventDefault();
+                    }
+                } else if (e.key === '-' || e.key === '_') { // Decrement shortcut
+                    if (!e.target.matches('input, textarea, [contenteditable="true"]')) {
+                        decrementCounter();
                         e.preventDefault();
                     }
                 } else if (e.key === 'r' || e.key === 'R') {
@@ -1743,7 +1799,7 @@
                 } else if (e.key === 't' || e.key === 'T') {
                     enterThemeEditMode();
                     e.preventDefault();
-                } else if (e.key === 'a' || e.key === 'A') { // New shortcut for Awake
+                } else if (e.key === 'a' || e.key === 'A') { 
                     enterAwakeEditMode();
                     e.preventDefault();
                 } else if (e.key === 'Escape') {
