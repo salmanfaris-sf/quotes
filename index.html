@@ -14,7 +14,6 @@
       gtag('config', 'G-1K1TKBQFFK');
     </script>
     <style>
-        /* Styles remain largely the same, only minor adjustments for clarity and consistency */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -36,7 +35,7 @@
             --ios-red: #FF3B30;
         }
         
-        body.theme-white {
+        body.uW1 {
             --counter-bg-color: #ffffff;
             --text-color: #000000;
             --control-color: #000000;
@@ -48,7 +47,7 @@
             --selected-text: #000000;
         }
         
-        body.theme-black {
+        body.cW2 {
             --counter-bg-color: #000000;
             --text-color: #ffffff;
             --control-color: #ffffff;
@@ -60,7 +59,7 @@
             --selected-text: #FFFFFF;
         }
         
-        body.theme-dark {
+        body.pY3 {
             --counter-bg-color: #000000;
             --text-color: #ffffff;
             --control-color: #ffffff;
@@ -85,12 +84,12 @@
             align-items: center;
             cursor: pointer;
             user-select: none;
-            touch-action: pan-y; /* Allow vertical scrolling, but handle taps/horizontal swipes */
+            touch-action: pan-y;
             position: relative;
             transition: background-color 0.3s, color 0.3s;
         }
 
-        #main-content-wrapper {
+        #yP4 {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -101,11 +100,11 @@
             transition: transform 0.3s ease-out;
         }
 
-        body.keyboard-up #main-content-wrapper {
+        body.hT5 #yP4 {
             transform: translateY(-25%); 
         }
 
-        #counter {
+        #nJ6 {
             font-size: 35vw;
             line-height: 1;
             text-align: center;
@@ -120,7 +119,7 @@
             max-width: 100%;
         }
         
-        .ultimate-effect {
+        .gV7 {
             color: #00FF7F !important;
             text-shadow: 0 0 15px #00FF7F, 0 0 25px #00FF7F, 0 0 40px rgba(0, 255, 127, 0.8);
             animation: ultimateGlow 0.75s infinite alternate ease-in-out; 
@@ -137,7 +136,7 @@
             }
         }
         
-        #instruction {
+        #kB8 {
             font-size: 1.1rem;
             font-weight: 300;
             color: var(--instruction-color);
@@ -151,14 +150,14 @@
             white-space: nowrap; 
         }
         
-        .instruction-hidden {
+        .eZ9 {
             opacity: 0 !important;
             height: 0 !important;
             margin-top: 0 !important;
             visibility: hidden !important; 
         }
         
-        .header-controls {
+        .lJ10 {
             position: fixed;
             top: 0;
             z-index: 250; 
@@ -169,21 +168,21 @@
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        #header-left-controls {
+        #gH11 {
             left: 0;
         }
         
-        #header-right-controls {
+        #xV12 {
             right: 0;
         }
         
-        .header-controls.hidden {
+        .lJ10.qM13 {
             visibility: hidden;
             opacity: 0;
             pointer-events: none;
         }
 
-        .header-btn {
+        .lK14 {
             background: none;
             border: none;
             color: var(--control-color);
@@ -202,15 +201,15 @@
             position: relative; 
         }
         
-        .header-btn:focus {
+        .lK14:focus {
             outline: none;
         }
         
-        .is-done-mode {
+        .oT15 {
             color: var(--ios-blue); 
         }
 
-        #menu-icon-svg {
+        #jI16 {
             width: 28px;
             height: 28px;
             stroke-width: 1.5; 
@@ -224,28 +223,28 @@
             transition: stroke 0.3s ease;
         }
         
-        .menu-line {
+        .tS17 {
             transform-origin: center;
             transition: transform 0.35s cubic-bezier(0.4, 0.085, 0.68, 0.53);
         }
         
-        #line-top {
+        #nM18 {
             transform: translateY(-3px); 
         }
         
-        #line-bottom {
+        #kV19 {
             transform: translateY(3px); 
         }
         
-        .is-close-mode #line-top {
+        .yR20 #nM18 {
             transform: translateY(0) rotate(45deg); 
         }
         
-        .is-close-mode #line-bottom {
+        .yR20 #kV19 {
             transform: translateY(0) rotate(-45deg);
         }
 
-        #menu-done-text {
+        #uO21 {
             color: var(--ios-blue); 
             opacity: 0;
             font-size: 1.2rem;
@@ -258,17 +257,17 @@
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
         
-        .is-done-mode #menu-icon-svg {
+        .oT15 #jI16 {
             opacity: 0;
             transform: translate(-50%, -50%) scale(0.5);
         }
         
-        .is-done-mode #menu-done-text {
+        .oT15 #uO21 {
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
         }
 
-        .back-icon-svg {
+        .iN22 {
             width: 28px;
             height: 28px;
             stroke-width: 1.5; 
@@ -278,7 +277,7 @@
             transform: translateX(-4px); 
         }
 
-        #full-screen-menu {
+        #jK23 {
             position: fixed;
             top: 0; 
             right: 0; 
@@ -297,16 +296,16 @@
             overflow-x: hidden; 
         }
 
-        #full-screen-menu.visible {
+        #jK23.hT24 {
             transform: translateY(0); 
             pointer-events: auto;
         }
 
-        .menu-header {
+        .lQ25 {
             height: 44px; 
         }
 
-        #menu-inner-container {
+        #tS26 {
             width: 100vw;
             flex-shrink: 0;
             flex-grow: 1;
@@ -320,17 +319,17 @@
             max-height: calc(100vh - 44px); 
         }
 
-        #menu-nav-list {
+        #aS27 {
             width: 100%; 
         }
         
-        #size-controls-container,
-        #weight-controls-container,
-        #goal-controls-container,
-        #step-controls-container, 
-        #theme-controls-container,
-        #awake-controls-container,
-        #gesture-controls-container { /* Added gesture container */
+        #wI28,
+        #qK29,
+        #zL30,
+        #fR31, 
+        #cD32,
+        #eG33,
+        #hU34 {
             position: fixed; 
             top: 0; 
             left: 0;
@@ -352,7 +351,7 @@
             align-items: flex-start;
         }
 
-        .sub-menu-active {
+        .rZ35 {
             transform: translateY(0) !important;
         }
 
@@ -367,7 +366,7 @@
             }
         }
         
-        .menu-item-link {
+        .jC36 {
             background: none;
             border: none;
             color: var(--menu-text);
@@ -380,60 +379,60 @@
             transition: background-color 0.2s, color 0.2s;
         }
         
-        #menu-nav-list .menu-item-link {
+        #aS27 .jC36 {
             opacity: 0;
             transform: translateY(10px);
         }
 
-        #full-screen-menu.visible #menu-nav-list .menu-item-link {
+        #jK23.hT24 #aS27 .jC36 {
             animation: menuFadeIn 0.3s ease-out forwards;
         }
 
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(1) { animation-delay: 0.1s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(2) { animation-delay: 0.15s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(3) { animation-delay: 0.2s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(4) { animation-delay: 0.25s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(5) { animation-delay: 0.3s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(6) { animation-delay: 0.35s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(7) { animation-delay: 0.4s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(8) { animation-delay: 0.45s; }
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(9) { animation-delay: 0.5s; } 
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(10) { animation-delay: 0.55s; } 
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(11) { animation-delay: 0.60s; } /* New item delay */
+        #jK23.hT24 #aS27 .jC36:nth-child(1) { animation-delay: 0.1s; }
+        #jK23.hT24 #aS27 .jC36:nth-child(2) { animation-delay: 0.15s; }
+        #jK23.hT24 #aS27 .jC36:nth-child(3) { animation-delay: 0.2s; }
+        #jK23.hT24 #aS27 .jC36:nth-child(4) { animation-delay: 0.25s; }
+        #jK23.hT24 #aS27 .jC36:nth-child(5) { animation-delay: 0.3s; }
+        #jK23.hT24 #aS27 .jC36:nth-child(6) { animation-delay: 0.35s; }
+        #jK23.hT24 #aS27 .jC36:nth-child(7) { animation-delay: 0.4s; }
+        #jK23.hT24 #aS27 .jC36:nth-child(8) { animation-delay: 0.45s; }
+        #jK23.hT24 #aS27 .jC36:nth-child(9) { animation-delay: 0.5s; } 
+        #jK23.hT24 #aS27 .jC36:nth-child(10) { animation-delay: 0.55s; } 
+        #jK23.hT24 #aS27 .jC36:nth-child(11) { animation-delay: 0.60s; }
 
 
-        .menu-sub-header {
+        .sD37 {
             font-size: 2.5rem;
             font-weight: 600;
             padding: 0; 
             margin-bottom: 20px;
         }
         
-        .menu-item-link:focus {
+        .jC36:focus {
             outline: none;
         }
 
-        .menu-item-link.selected {
+        .jC36.zQ38 {
             color: var(--selected-text);
             background-color: var(--selected-bg);
             border-radius: 8px;
             padding-left: 15px;
         }
 
-        .menu-item-link:active,
-        .menu-item-link:hover {
+        .jC36:active,
+        .jC36:hover {
             background-color: var(--menu-hover);
             border-radius: 8px;
             transform: none !important;
             opacity: 1 !important;
         }
 
-        .menu-item-link.selected:hover {
+        .jC36.zQ38:hover {
             background-color: var(--selected-bg);
             transform: none;
         }
 
-        .control-options button {
+        .iH39 button {
             font-size: 2rem;
             padding: 15px 10px;
             margin-bottom: 5px;
@@ -441,8 +440,7 @@
             text-align: left;
         }
         
-        /* Specific styling for the small explanatory text */
-        .option-description {
+        .lM40 {
             font-weight: 300; 
             font-size: 1.5rem; 
             display: block; 
@@ -450,15 +448,15 @@
             color: var(--instruction-color);
         }
 
-        .info-text {
+        .oU41 {
             font-size: 1.2rem;
             color: var(--instruction-color);
             margin-bottom: 40px;
             font-weight: 300;
         }
         
-        #goal-input-wrapper,
-        #step-input-wrapper { 
+        #jG42,
+        #aD43 { 
             width: 100%;
             display: flex;
             justify-content: center;
@@ -466,8 +464,8 @@
             margin-top: 50px;
         }
         
-        #goal-input,
-        #step-input { 
+        #fT44,
+        #kF45 { 
             font-size: 15vw; 
             font-weight: 800;
             color: var(--text-color);
@@ -484,8 +482,7 @@
             margin-bottom: 10px; 
         }
 
-        /* Custom iOS-style Toggle Switch */
-        .toggle-switch-wrapper {
+        .xL46 {
             width: 100%;
             display: flex;
             justify-content: space-between;
@@ -493,43 +490,42 @@
             padding: 15px 0;
         }
 
-        .toggle-switch-label {
+        .gA47 {
             font-size: 2.5rem;
             font-weight: 600;
             color: var(--menu-text);
-            /* Make the label take up more space to be touchable */
             flex-grow: 1; 
-            cursor: pointer; /* Indicate it's clickable */
+            cursor: pointer;
             user-select: none;
         }
 
-        .switch {
+        .qB48 {
             position: relative;
             display: inline-block;
             width: 51px;
             height: 31px;
-            flex-shrink: 0; /* Keep the switch size fixed */
+            flex-shrink: 0;
         }
 
-        .switch input { 
+        .qB48 input { 
             opacity: 0;
             width: 0;
             height: 0;
         }
 
-        .slider {
+        .eZ49 {
             position: absolute;
             cursor: pointer;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #767680; /* iOS Off Gray */
+            background-color: #767680;
             transition: .4s;
             border-radius: 31px;
         }
 
-        .slider:before {
+        .eZ49:before {
             position: absolute;
             content: "";
             height: 27px;
@@ -541,33 +537,32 @@
             border-radius: 50%;
         }
 
-        input:checked + .slider {
-            background-color: var(--ios-blue); /* iOS On Blue */
+        input:checked + .eZ49 {
+            background-color: var(--ios-blue);
         }
 
-        input:checked + .slider:before {
+        input:checked + .eZ49:before {
             transform: translateX(20px);
         }
-        /* End Custom Toggle Switch */
 
 
         @media (max-width: 400px) {
-            .menu-item-link {
+            .jC36 {
                 font-size: 2rem;
                 padding: 12px 0;
             }
 
-            .control-options button {
+            .iH39 button {
                 font-size: 1.8rem;
             }
 
-            .header-controls {
+            .lJ10 {
                 padding: 15px;
             }
         }
-        #menu-nav-list .menu-item-link,
-     #menu-nav-list .menu-item-link:hover,
-     #menu-nav-list .menu-item-link:active {
+        #aS27 .jC36,
+     #aS27 .jC36:hover,
+     #aS27 .jC36:active {
       background: none !important;
      border-radius: 0 !important;
     }
@@ -576,9 +571,9 @@
 </head>
 <body>
     
-    <div id="header-left-controls" class="header-controls hidden">
-        <button id="back-btn" class="header-btn" aria-label="Go Back" title="Go Back">
-            <svg class="back-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <div id="gH11" class="lJ10 qM13">
+        <button id="wL50" class="lK14" aria-label="Go Back" title="Go Back">
+            <svg class="iN22" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                 <g id="g-chevron-left">
                     <path d="M15 18l-6-6 6-6"/>
                 </g>
@@ -586,1454 +581,1267 @@
         </button>
     </div>
 
-    <div id="header-right-controls" class="header-controls">
-        <button id="open-menu-btn" class="header-btn" aria-label="Open Menu" title="Open Menu">
-            <svg id="menu-icon-svg" viewBox="0 0 24 24" fill="none">
-                <line id="line-top" class="menu-line" x1="4" y1="12" x2="20" y2="12"/>
-                <line id="line-bottom" class="menu-line" x1="4" y1="12" x2="20" y2="12"/>
+    <div id="xV12" class="lJ10">
+        <button id="rA51" class="lK14" aria-label="Open Menu" title="Open Menu">
+            <svg id="jI16" viewBox="0 0 24 24" fill="none">
+                <line id="nM18" class="tS17" x1="4" y1="12" x2="20" y2="12"/>
+                <line id="kV19" class="tS17" x1="4" y1="12" x2="20" y2="12"/>
             </svg>
-            <span id="menu-done-text">Done</span>
+            <span id="uO21">Done</span>
         </button>
     </div>
 
-    <div id="full-screen-menu" class="hidden-menu">
-        <div class="menu-header"></div> 
-        <div id="menu-inner-container">
-            <nav id="menu-nav-list">
-                <button id="fullscreen-btn" class="menu-item-link" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
-                    <span id="fullscreen-text">Fullscreen</span>
+    <div id="jK23" class="hidden-menu">
+        <div class="lQ25"></div> 
+        <div id="tS26">
+            <nav id="aS27">
+                <button id="zZ52" class="jC36" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
+                    <span id="fM53">Fullscreen</span>
                 </button>
-                <button id="reset-btn" class="menu-item-link" aria-label="Reset Counter (Swipe Left on Counter)" title="Reset Counter (Swipe Left on Counter)">
+                <button id="lH54" class="jC36" aria-label="Reset Counter (Swipe Left on Counter)" title="Reset Counter (Swipe Left on Counter)">
                     Reset
                 </button>
-                <button id="edit-btn" class="menu-item-link" aria-label="Edit Number" title="Edit">
+                <button id="eN55" class="jC36" aria-label="Edit Number" title="Edit">
                     Edit
                 </button>
-                <button id="decrement-btn" class="menu-item-link" aria-label="Decrement Counter" title="Decrement Counter">
+                <button id="iO56" class="jC36" aria-label="Decrement Counter" title="Decrement Counter">
                     Decrement
                 </button>
-                <button id="step-entry-btn" class="menu-item-link" aria-label="Adjust Increment Step" title="Adjust Increment Step">
+                <button id="pP57" class="jC36" aria-label="Adjust Increment Step" title="Adjust Increment Step">
                     Step Value
                 </button>
-                <button id="goal-entry-btn" class="menu-item-link" aria-label="Set Target Goal" title="Set Target Goal">
+                <button id="yE58" class="jC36" aria-label="Set Target Goal" title="Set Target Goal">
                     Goal
                 </button>
-                <button id="size-entry-btn" class="menu-item-link" aria-label="Adjust Font Size" title="Adjust Font Size">
+                <button id="oN59" class="jC36" aria-label="Adjust Font Size" title="Adjust Font Size">
                     Size
                 </button>
-                <button id="weight-entry-btn" class="menu-item-link" aria-label="Adjust Font Thickness" title="Adjust Font Thickness">
+                <button id="wQ60" class="jC36" aria-label="Adjust Font Thickness" title="Adjust Font Thickness">
                     Thickness
                 </button>
-                <button id="theme-entry-btn" class="menu-item-link" aria-label="Adjust Theme" title="Adjust Theme">
+                <button id="xH61" class="jC36" aria-label="Adjust Theme" title="Adjust Theme">
                     Theme
                 </button>
-                <button id="awake-entry-btn" class="menu-item-link" aria-label="Screen Awake" title="Screen Awake">
+                <button id="rV62" class="jC36" aria-label="Screen Awake" title="Screen Awake">
                     Screen Awake
                 </button>
-                <button id="gesture-entry-btn" class="menu-item-link" aria-label="Toggle Swipe Gestures" title="Toggle Swipe Gestures">
+                <button id="mB63" class="jC36" aria-label="Toggle Swipe Gestures" title="Toggle Swipe Gestures">
                     Swipe Gestures
                 </button>
             </nav>
         </div>
     </div>
     
-    <div id="size-controls-container">
-        <h2 class="menu-sub-header">Counter Size</h2>
-        <p class="info-text">Select a size below.</p>
-        <div id="size-options" class="control-options">
-            <button id="size-small-btn" class="menu-item-link" data-scale="0.3">Small</button>
-            <button id="size-normal-btn" class="menu-item-link" data-scale="0.6">Normal</button>
-            <button id="size-large-btn" class="menu-item-link" data-scale="1.3">
+    <div id="wI28">
+        <h2 class="sD37">Counter Size</h2>
+        <p class="oU41">Select a size below.</p>
+        <div id="oZ64" class="iH39">
+            <button id="dI65" class="jC36" data-scale="0.3">Small</button>
+            <button id="qU66" class="jC36" data-scale="0.6">Normal</button>
+            <button id="uT67" class="jC36" data-scale="1.3">
                 Large
             </button>
         </div>
     </div>
 
-    <div id="weight-controls-container">
-        <h2 class="menu-sub-header">Choose Number Thickness</h2>
-        <p class="info-text">Affects how thin or thick the number appears on screen.</p>
-        <div id="weight-options" class="control-options">
-            <button id="weight-thin-btn" class="menu-item-link" data-weight="100" style="font-weight: 100;">Thin</button>
-            <button id="weight-regular-btn" class="menu-item-link" data-weight="400" style="font-weight: 400;">Regular</button>
-            <button id="weight-bold-btn" class="menu-item-link" data-weight="800" style="font-weight: 800;">Bold</button>
+    <div id="qK29">
+        <h2 class="sD37">Choose Number Thickness</h2>
+        <p class="oU41">Affects how thin or thick the number appears on screen.</p>
+        <div id="eL68" class="iH39">
+            <button id="dM69" class="jC36" data-weight="100" style="font-weight: 100;">Thin</button>
+            <button id="vG70" class="jC36" data-weight="400" style="font-weight: 400;">Regular</button>
+            <button id="yH71" class="jC36" data-weight="800" style="font-weight: 800;">Bold</button>
         </div>
     </div>
     
-    <div id="goal-controls-container">
-        <h2 class="menu-sub-header">Set Target Goal</h2>
-        <p class="info-text">Enter the number you want to reach. The counter will briefly glow and vibrate when reached. Setting a new goal will reset the counter to zero.</p>
-        <div id="goal-input-wrapper">
-            <div id="goal-input" contenteditable="true" inputmode="numeric"></div> 
+    <div id="zL30">
+        <h2 class="sD37">Set Target Goal</h2>
+        <p class="oU41">Enter the number you want to reach. The counter will briefly glow and vibrate when reached. Setting a new goal will reset the counter to zero.</p>
+        <div id="jG42">
+            <div id="fT44" contenteditable="true" inputmode="numeric"></div> 
         </div>
     </div>
     
-    <div id="step-controls-container">
-        <h2 class="menu-sub-header">Step Value</h2>
-        <p class="info-text">Enter the amount the counter should increment by on each tap. To return to default, set to 1.</p>
-        <div id="step-input-wrapper">
-            <div id="step-input" contenteditable="true" inputmode="numeric">1</div> 
+    <div id="fR31">
+        <h2 class="sD37">Step Value</h2>
+        <p class="oU41">Enter the amount the counter should increment by on each tap. To return to default, set to 1.</p>
+        <div id="aD43">
+            <div id="kF45" contenteditable="true" inputmode="numeric">1</div> 
         </div>
     </div>
     
-    <div id="theme-controls-container">
-        <h2 class="menu-sub-header">Choose Theme</h2>
-        <p class="info-text">Select a color scheme for the counter and menu.</p>
-        <div id="theme-options" class="control-options">
-            <button id="theme-dark-btn" class="menu-item-link" data-theme="dark">
+    <div id="cD32">
+        <h2 class="sD37">Choose Theme</h2>
+        <p class="oU41">Select a color scheme for the counter and menu.</p>
+        <div id="eR72" class="iH39">
+            <button id="aC73" class="jC36" data-theme="dark">
                 Dark Mode (Default)
                 <span style="font-weight: 300; font-size: 1.8rem; display: block; margin-top: 3px; color: var(--instruction-color);">Menu Dark Gray, Counter Black.</span>
             </button>
-            <button id="theme-white-btn" class="menu-item-link" data-theme="white">
+            <button id="bW74" class="jC36" data-theme="white">
                 White Mode
                 <span style="font-weight: 300; font-size: 1.8rem; display: block; margin-top: 3px; color: var(--instruction-color);">Full white.</span>
             </button>
-            <button id="theme-black-btn" class="menu-item-link" data-theme="black">
+            <button id="hE75" class="jC36" data-theme="black">
                 Black Mode
                 <span style="font-weight: 300; font-size: 1.8rem; display: block; margin-top: 3px; color: var(--instruction-color);">Full black.</span>
             </button>
         </div>
     </div>
     
-    <div id="awake-controls-container">
-        <h2 class="menu-sub-header">Screen Awake</h2>
-        <p class="info-text" id="awake-info-text">Stops the screen from turning off automatically.</p>
-        <div id="awake-options" class="control-options">
-            <button id="awake-on-btn" class="menu-item-link" data-awake="on">
+    <div id="eG33">
+        <h2 class="sD37">Screen Awake</h2>
+        <p class="oU41" id="aF76">Stops the screen from turning off automatically.</p>
+        <div id="gR77" class="iH39">
+            <button id="hQ78" class="jC36" data-awake="on">
                 On
-                <span class="option-description">Screen stays awake.</span>
+                <span class="lM40">Screen stays awake.</span>
             </button>
-            <button id="awake-off-btn" class="menu-item-link" data-awake="off">
+            <button id="jP79" class="jC36" data-awake="off">
                 Off
-                <span class="option-description">Screen follows device sleep settings.</span>
+                <span class="lM40">Screen follows device sleep settings.</span>
             </button>
         </div>
     </div>
     
-    <div id="gesture-controls-container">
-        <h2 class="menu-sub-header">Swipe Gestures</h2>
-        <p class="info-text">Enables/disables the special swipe gestures on the counter. Swipe up to close the menu.</p>
-        <div class="toggle-switch-wrapper">
-            <span class="toggle-switch-label" id="gesture-toggle-label">Swipe Left to Reset</span>
-            <label class="switch">
-                <input type="checkbox" id="gesture-toggle-input">
-                <span class="slider"></span>
+    <div id="hU34">
+        <h2 class="sD37">Swipe Gestures</h2>
+        <p class="oU41">Enables/disables the special swipe gestures on the counter. Swipe up to close the menu.</p>
+        <div class="xL46">
+            <span class="gA47" id="bP80">Swipe Left to Reset</span>
+            <label class="qB48">
+                <input type="checkbox" id="cE81">
+                <span class="eZ49"></span>
             </label>
         </div>
     </div>
 
 
-    <div id="main-content-wrapper">
-        <div id="counter" contenteditable="false">0</div>
-        <div id="instruction">Tap anywhere to count</div>
+    <div id="yP4">
+        <div id="nJ6" contenteditable="false">0</div>
+        <div id="kB8">Tap anywhere to count</div>
     </div>
 
     <script>
-        // --- CONSTANTS ---
-        const MAX_SAFE_INTEGER = 9007199254740991; 
-        const SHRINK_THRESHOLD = 10000;
-        const NORMAL_SCALE = 0.6;
-        const LARGE_SCALE = 1.3;
-        const SWIPE_THRESHOLD = 50; // Minimum pixels for a successful swipe
+        const iQ82 = 9007199254740991; 
+        const aZ83 = 10000;
+        const jZ84 = 0.6;
+        const oV85 = 1.3;
+        const kE86 = 50;
 
-        // --- DOM Elements ---
-        const counterElement = document.getElementById('counter');
-        const instructionElement = document.getElementById('instruction');
-        const themeMeta = document.querySelector('meta[name="theme-color"]');
+        const sF87 = document.getElementById('nJ6');
+        const vH88 = document.getElementById('kB8');
+        const lZ89 = document.querySelector('meta[name="theme-color"]');
 
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-        const fullscreenTextEl = document.getElementById('fullscreen-text');
-        const resetBtn = document.getElementById('reset-btn');
-        const editBtn = document.getElementById('edit-btn');
-        const decrementBtn = document.getElementById('decrement-btn'); 
+        const gL90 = document.getElementById('zZ52');
+        const rT91 = document.getElementById('fM53');
+        const bD92 = document.getElementById('lH54');
+        const cG93 = document.getElementById('eN55');
+        const hA94 = document.getElementById('iO56'); 
         
-        const sizeEntryBtn = document.getElementById('size-entry-btn');
-        const weightEntryBtn = document.getElementById('weight-entry-btn'); 
-        const goalEntryBtn = document.getElementById('goal-entry-btn'); 
-        const stepEntryBtn = document.getElementById('step-entry-btn'); 
-        const themeEntryBtn = document.getElementById('theme-entry-btn');
-        const awakeEntryBtn = document.getElementById('awake-entry-btn'); 
-        const gestureEntryBtn = document.getElementById('gesture-entry-btn'); 
+        const qY95 = document.getElementById('oN59');
+        const kL96 = document.getElementById('wQ60'); 
+        const dN97 = document.getElementById('yE58'); 
+        const uE98 = document.getElementById('pP57'); 
+        const iJ99 = document.getElementById('xH61');
+        const jD100 = document.getElementById('rV62'); 
+        const mX101 = document.getElementById('mB63'); 
         
-        const goalInput = document.getElementById('goal-input'); 
-        const stepInput = document.getElementById('step-input'); 
+        const rL102 = document.getElementById('fT44'); 
+        const sP103 = document.getElementById('kF45'); 
         
-        const openMenuBtn = document.getElementById('open-menu-btn'); 
-        const backBtn = document.getElementById('back-btn'); 
+        const fF104 = document.getElementById('rA51'); 
+        const wL105 = document.getElementById('wL50'); 
         
-        const headerLeftControls = document.getElementById('header-left-controls');
-        const headerRightControls = document.getElementById('header-right-controls');
+        const bA106 = document.getElementById('gH11');
+        const pR107 = document.getElementById('xV12');
         
-        const fullScreenMenu = document.getElementById('full-screen-menu');
+        const hC108 = document.getElementById('jK23');
         
-        const sizeOptions = document.getElementById('size-options');
-        const weightOptions = document.getElementById('weight-options');
-        const themeOptions = document.getElementById('theme-options');
-        const awakeOptions = document.getElementById('awake-options'); 
+        const kG109 = document.getElementById('oZ64');
+        const fS110 = document.getElementById('eL68');
+        const gQ111 = document.getElementById('eR72');
+        const wM112 = document.getElementById('gR77'); 
         
-        const sizeControlsContainer = document.getElementById('size-controls-container');
-        const weightControlsContainer = document.getElementById('weight-controls-container');
-        const goalControlsContainer = document.getElementById('goal-controls-container');
-        const stepControlsContainer = document.getElementById('step-controls-container'); 
-        const themeControlsContainer = document.getElementById('theme-controls-container');
-        const awakeControlsContainer = document.getElementById('awake-controls-container'); 
-        const gestureControlsContainer = document.getElementById('gesture-controls-container'); 
+        const tJ113 = document.getElementById('wI28');
+        const bB114 = document.getElementById('qK29');
+        const yN115 = document.getElementById('zL30');
+        const pS116 = document.getElementById('fR31'); 
+        const uX117 = document.getElementById('cD32');
+        const zP118 = document.getElementById('eG33'); 
+        const xT119 = document.getElementById('hU34'); 
         
-        const awakeInfoText = document.getElementById('awake-info-text'); 
-        const gestureToggleInput = document.getElementById('gesture-toggle-input'); 
-        const gestureToggleLabel = document.getElementById('gesture-toggle-label'); // NEW DOM ELEMENT
+        const qF120 = document.getElementById('aF76'); 
+        const hM121 = document.getElementById('cE81'); 
+        const rK122 = document.getElementById('bP80');
 
-        // --- Permanent State Variables (Saved to Storage) ---
-        let count = 0;
-        let targetGoal = 0; 
-        let stepValue = 1; 
-        let currentTheme = 'dark';
-        let fontScale = NORMAL_SCALE;
-        let fontWeight = 100; 
-        let isScreenAwake = false; 
-        let isSwipeGestureEnabled = false; 
+        let aV123 = 0;
+        let vX124 = 0; 
+        let dD125 = 1; 
+        let mZ126 = 'dark';
+        let xI127 = jZ84;
+        let oL128 = 100; 
+        let gD129 = false; 
+        let oP130 = false; 
 
-        // --- Transient State Variables ---
-        let isGoalReached = false; 
-        let hasTapped = false;
-        let isEditMode = false; 
-        let transientEffectTimer = null; 
-        let goalGlowTimer = null; 
-        let wakeLock = null; 
-        let touchStartX = 0; // For swipe gesture
-        let touchStartY = 0; // For swipe gesture
+        let bV131 = false; 
+        let iW132 = false;
+        let cJ133 = false; 
+        let dH134 = null; 
+        let mG135 = null; 
+        let jV136 = null; 
+        let pO137 = 0;
+        let qG138 = 0;
 
-        // --- TEMPORARY STATE VARIABLES (For Menu Preview) ---
-        let tempFontScale;
-        let tempFontWeight;
-        let tempTheme;
-        let tempIsScreenAwake; 
-        let tempIsSwipeGestureEnabled; 
+        let rI139;
+        let sM140;
+        let tK141;
+        let yF142; 
+        let zJ143; 
 
+        const eK144 = 'minimalCounterCount';
+        const hB145 = 'minimalCounterTheme';
+        const vO146 = 'minimalCounterFontScale';
+        const xC147 = 'minimalCounterFontWeight';
+        const bJ148 = 'minimalCounterTargetGoal'; 
+        const fN149 = 'minimalCounterStepValue'; 
+        const gZ150 = 'minimalCounterScreenAwake'; 
+        const wD151 = 'minimalCounterSwipeGesture'; 
 
-        // --- Local Storage Keys ---
-        const STORAGE_KEY_COUNT = 'minimalCounterCount';
-        const STORAGE_KEY_THEME = 'minimalCounterTheme';
-        const STORAGE_KEY_FONT_SCALE = 'minimalCounterFontScale';
-        const STORAGE_KEY_FONT_WEIGHT = 'minimalCounterFontWeight';
-        const STORAGE_KEY_GOAL = 'minimalCounterTargetGoal'; 
-        const STORAGE_KEY_STEP = 'minimalCounterStepValue'; 
-        const STORAGE_KEY_SCREEN_AWAKE = 'minimalCounterScreenAwake'; 
-        const STORAGE_KEY_SWIPE_GESTURE = 'minimalCounterSwipeGesture'; 
-
-        /**
-         * Cleans and validates a numeric string input, respecting MAX_SAFE_INTEGER.
-         */
-        function sanitizeInput(input, minValue = 0, maxValue = MAX_SAFE_INTEGER) {
-            let cleanInput = input.trim().replace(/[^\d]/g, '');
-            if (cleanInput === '') {
-                return minValue;
+        function kR152(aL153, dX154 = 0, fV155 = iQ82) {
+            let bE156 = aL153.trim().replace(/[^\d]/g, '');
+            if (bE156 === '') {
+                return dX154;
             }
             
-            let num = BigInt(cleanInput);
+            let cC157 = BigInt(bE156);
             
-            if (num > BigInt(maxValue)) {
-                num = BigInt(maxValue);
+            if (cC157 > BigInt(fV155)) {
+                cC157 = BigInt(fV155);
             }
             
-            return Number(num);
+            return Number(cC157);
         }
 
-        /**
-         * Helper to apply theme colors to the document body and meta tag (no storage save).
-         */
-        function applyTheme(theme) {
-            document.body.classList.remove('theme-white', 'theme-black', 'theme-dark');
+        function wE158(bQ159) {
+            document.body.classList.remove('uW1', 'cW2', 'pY3');
             
-            let metaColor = '#000000';
+            let eI160 = '#000000';
 
-            if (theme === 'white') {
-                document.body.classList.add('theme-white');
-                metaColor = '#ffffff';
-            } else if (theme === 'black') {
-                document.body.classList.add('theme-black');
+            if (bQ159 === 'white') {
+                document.body.classList.add('uW1');
+                eI160 = '#ffffff';
+            } else if (bQ159 === 'black') {
+                document.body.classList.add('cW2');
             } else {
-                document.body.classList.add('theme-dark');
-                metaColor = '#000000'; // Default dark theme background
+                document.body.classList.add('pY3');
+                eI160 = '#000000';
             }
 
-            if (themeMeta) {
-                themeMeta.setAttribute('content', metaColor);
+            if (lZ89) {
+                lZ89.setAttribute('content', eI160);
             }
         }
         
-        /**
-         * Adjusts the font size based on the number of digits and the selected scale.
-         * @param {number} currentCount - The current counter value.
-         * @param {number} scale - The scale factor to apply (e.g., fontScale or tempFontScale).
-         */
-        function adjustFontSize(currentCount, scale) {
-            let effectiveScale = scale;
+        function oQ161(kH162, wA163) {
+            let uK164 = wA163;
             
-            // Shrink Large scale automatically when count hits the threshold (10,000)
-            if (scale === LARGE_SCALE && currentCount >= SHRINK_THRESHOLD) {
-                effectiveScale = NORMAL_SCALE;
+            if (wA163 === oV85 && kH162 >= aZ83) {
+                uK164 = jZ84;
             }
 
-            const countStr = String(currentCount).replace(/,/g, ''); 
-            const length = countStr.length;
-            let baseVw;
+            const pF165 = String(kH162).replace(/,/g, ''); 
+            const sJ166 = pF165.length;
+            let hR167;
 
-            if (length <= 5) {
-                baseVw = 28; 
-            } else if (length === 6) {
-                baseVw = 24; 
-            } else if (length === 7) {
-                baseVw = 20; 
-            } else if (length === 8) {
-                baseVw = 18; 
-            } else if (length === 9) {
-                baseVw = 15; 
-            } else if (length <= 15) { 
-                baseVw = 12; 
+            if (sJ166 <= 5) {
+                hR167 = 28; 
+            } else if (sJ166 === 6) {
+                hR167 = 24; 
+            } else if (sJ166 === 7) {
+                hR167 = 20; 
+            } else if (sJ166 === 8) {
+                hR167 = 18; 
+            } else if (sJ166 === 9) {
+                hR167 = 15; 
+            } else if (sJ166 <= 15) { 
+                hR167 = 12; 
             } else {
-                baseVw = 10; 
+                hR167 = 10; 
             }
 
-            const finalVw = baseVw * effectiveScale;
-            counterElement.style.fontSize = `${finalVw}vw`;
+            const zB168 = hR167 * uK164;
+            sF87.style.fontSize = `${zB168}vw`;
         }
 
-        /**
-         * Triggers a visual glow effect when the goal is reached.
-         */
-        function triggerGoalReachedGlow() {
-            if (transientEffectTimer) {
-                clearTimeout(transientEffectTimer);
-                transientEffectTimer = null;
+        function fJ169() {
+            if (dH134) {
+                clearTimeout(dH134);
+                dH134 = null;
             }
-            if (goalGlowTimer) {
-                clearTimeout(goalGlowTimer);
-                goalGlowTimer = null;
+            if (mG135) {
+                clearTimeout(mG135);
+                mG135 = null;
             }
             
-            counterElement.classList.add('ultimate-effect');
+            sF87.classList.add('gV7');
             
-            goalGlowTimer = setTimeout(() => {
-                counterElement.classList.remove('ultimate-effect');
-                goalGlowTimer = null;
-                checkAndApplyTransientEffect(count, true); 
+            mG135 = setTimeout(() => {
+                sF87.classList.remove('gV7');
+                mG135 = null;
+                qW170(aV123, true); 
             }, 750); 
+            
+            if (navigator.vibrate) {
+                navigator.vibrate([200, 100, 200]);
+            }
         }
 
-        /**
-         * Checks if the goal is met and updates UI/vibration.
-         */
-        function checkGoalStatus() {
-            const wasGoalReachedBefore = isGoalReached;
+        function nZ171() {
+            const hL172 = bV131;
             
-            if (targetGoal > 0 && count >= targetGoal) {
-                isGoalReached = true;
+            if (vX124 > 0 && aV123 >= vX124) {
+                bV131 = true;
                 
-                if (!wasGoalReachedBefore) {
-                    triggerGoalReachedGlow(); 
-                    
-                    if (navigator.vibrate) {
-                        navigator.vibrate([200, 100, 200]);
-                    }
+                if (!hL172) {
+                    fJ169(); 
                 }
                 
-                counterElement.classList.remove('goal-reached-pulse'); 
+                sF87.classList.remove('goal-reached-pulse'); 
                 
-                instructionElement.textContent = "Goal Reached!"; 
-                instructionElement.classList.remove('instruction-hidden');
-                instructionElement.style.opacity = '1';
-                instructionElement.style.visibility = 'visible'; 
+                vH88.textContent = "Goal Reached!"; 
+                vH88.classList.remove('eZ9');
+                vH88.style.opacity = '1';
+                vH88.style.visibility = 'visible'; 
 
-            } else if (count >= MAX_SAFE_INTEGER) {
-                isGoalReached = true; 
-                instructionElement.textContent = "Max Safe Limit Reached!";
-                instructionElement.classList.remove('instruction-hidden');
-                instructionElement.style.opacity = '1';
-                instructionElement.style.visibility = 'visible'; 
+            } else if (aV123 >= iQ82) {
+                bV131 = true; 
+                vH88.textContent = "Max Safe Limit Reached!";
+                vH88.classList.remove('eZ9');
+                vH88.style.opacity = '1';
+                vH88.style.visibility = 'visible'; 
             }
             else {
-                isGoalReached = false;
+                bV131 = false;
                 
-                counterElement.classList.remove('goal-reached-pulse'); 
+                sF87.classList.remove('goal-reached-pulse'); 
                 
-                instructionElement.textContent = "Tap anywhere to count";
-                if (hasTapped) {
-                    hideInstruction();
+                vH88.textContent = "Tap anywhere to count";
+                if (iW132) {
+                    vM173();
                 } else {
-                    showInstruction();
+                    fO174();
                 }
             }
             
-            updateHeaderButtonState();
+            xS175();
         }
 
-        /**
-         * Returns the currently active sub-menu container element.
-         */
-        function getActiveSubMenu() {
-            return document.querySelector('.sub-menu-active');
+        function lP176() {
+            return document.querySelector('.rZ35');
         }
         
-        /**
-         * Helper to update selection UI based on a provided value (temp or permanent)
-         */
-        function updateSelectedButton(container, dataType, currentValue) {
-            if (!container) return;
-            // Only used for button list controls
-            if (dataType !== 'awake') {
-                Array.from(container.children).forEach(btn => {
-                    btn.classList.remove('selected');
-                    const btnValue = btn.getAttribute(`data-${dataType}`);
+        function vR177(sA178, hP179, nI180) {
+            if (!sA178) return;
+            if (hP179 !== 'awake') {
+                Array.from(sA178.children).forEach(zN181 => {
+                    zN181.classList.remove('zQ38');
+                    const wF182 = zN181.getAttribute(`data-${hP179}`);
 
-                    if (dataType === 'scale') {
-                        if (Math.abs(currentValue - parseFloat(btnValue)) < 0.001) {
-                             btn.classList.add('selected');
+                    if (hP179 === 'scale') {
+                        if (Math.abs(nI180 - parseFloat(wF182)) < 0.001) {
+                             zN181.classList.add('zQ38');
                         }
-                    } else if (dataType === 'weight') {
-                        if (currentValue === parseInt(btnValue, 10)) {
-                             btn.classList.add('selected');
+                    } else if (hP179 === 'weight') {
+                        if (nI180 === parseInt(wF182, 10)) {
+                             zN181.classList.add('zQ38');
                         }
-                    } else if (dataType === 'theme') {
-                        if (currentValue === btnValue) {
-                             btn.classList.add('selected');
+                    } else if (hP179 === 'theme') {
+                        if (nI180 === wF182) {
+                             zN181.classList.add('zQ38');
                         }
-                    } else if (dataType === 'awake') { 
-                        const awakeState = currentValue ? 'on' : 'off';
-                        if (awakeState === btnValue) {
-                            btn.classList.add('selected');
+                    } else if (hP179 === 'awake') { 
+                        const oE183 = nI180 ? 'on' : 'off';
+                        if (oE183 === wF182) {
+                            zN181.classList.add('zQ38');
                         }
                     }
                 });
             }
         }
 
-        /**
-         * Updates the state and visibility of the header controls (Menu/Done/Back).
-         * Checks against permanent vs. temporary state for the 'Done' button.
-         */
-        function updateHeaderButtonState() {
-            const isMenuOpen = fullScreenMenu.classList.contains('visible');
-            const activeSubMenu = getActiveSubMenu();
-            const isSubMenuVisible = !!activeSubMenu;
+        function xS175() {
+            const hA184 = hC108.classList.contains('hT24');
+            const cL185 = lP176();
+            const bX186 = !!cL185;
             
-            openMenuBtn.classList.remove('is-done-mode', 'is-close-mode');
+            fF104.classList.remove('oT15', 'yR20');
 
-            if (isSubMenuVisible) {
-                headerLeftControls.classList.remove('hidden');
+            if (bX186) {
+                bA106.classList.remove('qM13');
 
-                let hasPendingChanges = false;
+                let rM187 = false;
                 
-                if (activeSubMenu.id === 'goal-controls-container') {
-                    const newGoal = sanitizeInput(goalInput.textContent, 0, MAX_SAFE_INTEGER);
-                    hasPendingChanges = targetGoal !== newGoal;
-                } else if (activeSubMenu.id === 'step-controls-container') {
-                    const newStep = sanitizeInput(stepInput.textContent, 1, MAX_SAFE_INTEGER);
-                    hasPendingChanges = stepValue !== newStep;
-                } else if (activeSubMenu.id === 'size-controls-container') {
-                    hasPendingChanges = tempFontScale !== fontScale;
-                } else if (activeSubMenu.id === 'weight-controls-container') {
-                    hasPendingChanges = tempFontWeight !== fontWeight;
-                } else if (activeSubMenu.id === 'theme-controls-container') {
-                    hasPendingChanges = tempTheme !== currentTheme;
-                } else if (activeSubMenu.id === 'awake-controls-container') { 
-                    hasPendingChanges = tempIsScreenAwake !== isScreenAwake;
-                } else if (activeSubMenu.id === 'gesture-controls-container') { 
-                    hasPendingChanges = tempIsSwipeGestureEnabled !== isSwipeGestureEnabled;
+                if (cL185.id === 'zL30') {
+                    const uA188 = kR152(rL102.textContent, 0, iQ82);
+                    rM187 = vX124 !== uA188;
+                } else if (cL185.id === 'fR31') {
+                    const gT189 = kR152(sP103.textContent, 1, iQ82);
+                    rM187 = dD125 !== gT189;
+                } else if (cL185.id === 'wI28') {
+                    rM187 = rI139 !== xI127;
+                } else if (cL185.id === 'qK29') {
+                    rM187 = sM140 !== oL128;
+                } else if (cL185.id === 'cD32') {
+                    rM187 = tK141 !== mZ126;
+                } else if (cL185.id === 'eG33') { 
+                    rM187 = yF142 !== gD129;
+                } else if (cL185.id === 'hU34') { 
+                    rM187 = zJ143 !== oP130;
                 }
                 
-                if (hasPendingChanges) {
-                    headerRightControls.classList.remove('hidden');
-                    openMenuBtn.classList.add('is-done-mode');
-                    openMenuBtn.setAttribute('aria-label', 'Save and Close');
-                    openMenuBtn.setAttribute('title', 'Save and Close');
+                if (rM187) {
+                    pR107.classList.remove('qM13');
+                    fF104.classList.add('oT15');
+                    fF104.setAttribute('aria-label', 'Save and Close');
+                    fF104.setAttribute('title', 'Save and Close');
                 } else {
-                    // If no changes, the Done button is hidden, user must use Back
-                    headerRightControls.classList.add('hidden');
+                    pR107.classList.add('qM13');
                 }
                 
                 return; 
             }
 
-            if (isMenuOpen) {
-                headerLeftControls.classList.add('hidden');
-                headerRightControls.classList.remove('hidden');
-                openMenuBtn.classList.add('is-close-mode');
-                openMenuBtn.setAttribute('aria-label', 'Close Menu');
-                openMenuBtn.setAttribute('title', 'Close Menu');
+            if (hA184) {
+                bA106.classList.add('qM13');
+                pR107.classList.remove('qM13');
+                fF104.classList.add('yR20');
+                fF104.setAttribute('aria-label', 'Close Menu');
+                fF104.setAttribute('title', 'Close Menu');
                 return;
             }
 
-            headerLeftControls.classList.add('hidden');
-            headerRightControls.classList.remove('hidden');
+            bA106.classList.add('qM13');
+            pR107.classList.remove('qM13');
 
-            if (isGoalReached) {
-                openMenuBtn.classList.add('is-done-mode');
-                openMenuBtn.setAttribute('aria-label', 'Done');
-                openMenuBtn.setAttribute('title', 'Done');
+            if (bV131) {
+                fF104.classList.add('oT15');
+                fF104.setAttribute('aria-label', 'Done');
+                fF104.setAttribute('title', 'Done');
             } else {
-                openMenuBtn.setAttribute('aria-label', 'Open Menu');
-                openMenuBtn.setAttribute('title', 'Open Menu');
+                fF104.setAttribute('aria-label', 'Open Menu');
+                fF104.setAttribute('title', 'Open Menu');
             }
         }
 
-        /**
-         * Updates counter display using permanent state and saves count to storage.
-         */
-        function updateCounterDisplay() {
-            // Ensure count doesn't drop below 0
-            if (count < 0) {
-                count = 0;
+        function gN190() {
+            if (aV123 < 0) {
+                aV123 = 0;
             }
 
-            localStorage.setItem(STORAGE_KEY_COUNT, count);
+            localStorage.setItem(eK144, aV123);
             
-            counterElement.textContent = count.toLocaleString('en-US'); 
+            sF87.textContent = aV123.toLocaleString('en-US'); 
             
-            // Apply permanent styles
-            adjustFontSize(count, fontScale);
-            counterElement.style.fontWeight = fontWeight;
+            oQ161(aV123, xI127);
+            sF87.style.fontWeight = oL128;
 
-            checkGoalStatus(); 
+            nZ171(); 
         }
 
-        /**
-         * Hides the initial instruction text.
-         */
-        function hideInstruction() {
-            if (!isGoalReached) {
-                hasTapped = true;
-                instructionElement.classList.add('instruction-hidden');
+        function vM173() {
+            if (!bV131) {
+                iW132 = true;
+                vH88.classList.add('eZ9');
             }
         }
         
-        /**
-         * Shows the initial instruction text.
-         */
-        function showInstruction() {
-            instructionElement.textContent = "Tap anywhere to count";
-            instructionElement.classList.remove('instruction-hidden');
-            instructionElement.style.opacity = '1';
-            instructionElement.style.visibility = 'visible';
+        function fO174() {
+            vH88.textContent = "Tap anywhere to count";
+            vH88.classList.remove('eZ9');
+            vH88.style.opacity = '1';
+            vH88.style.visibility = 'visible';
         }
         
-        /**
-         * Shows or hides the full-screen menu.
-         */
-        function toggleMenu(visibility) {
-            const isShowing = visibility === 'show';
+        function yQ191(uH192) {
+            const hN193 = uH192 === 'show';
             
-            if (isShowing) {
-                fullScreenMenu.classList.add('visible');
+            if (hN193) {
+                hC108.classList.add('hT24');
             } else {
-                fullScreenMenu.classList.remove('visible');
+                hC108.classList.remove('hT24');
                 
-                document.querySelectorAll('.sub-menu-active').forEach(el => el.classList.remove('sub-menu-active'));
+                document.querySelectorAll('.rZ35').forEach(sK194 => sK194.classList.remove('rZ35'));
                 
-                if (isEditMode) {
-                    setNumberEditModeState(false); 
+                if (cJ133) {
+                    aO195(false); 
                 }
             }
-            updateHeaderButtonState();
+            xS175();
         }
 
-        /**
-         * Discards temporary changes and navigates back from a sub-menu to the main menu.
-         */
-        function goBackFromSubMenu(e) {
-            if (e) e.stopPropagation();
+        function iL196(qL197) {
+            if (qL197) qL197.stopPropagation();
 
-            const activeSubMenu = getActiveSubMenu();
-            if (activeSubMenu) {
+            const pC198 = lP176();
+            if (pC198) {
                 
-                // --- REVERT UI/STATE TO PERMANENT VALUES (DISCARDING TEMP) ---
-                if (activeSubMenu.id === 'size-controls-container') {
-                    // Revert counter style to permanent scale
-                    adjustFontSize(count, fontScale);
-                } else if (activeSubMenu.id === 'weight-controls-container') {
-                    // Revert counter style to permanent weight
-                    counterElement.style.fontWeight = fontWeight;
-                } else if (activeSubMenu.id === 'theme-controls-container') {
-                    // Revert theme to permanent theme
-                    applyTheme(currentTheme);
-                } else if (activeSubMenu.id === 'goal-controls-container') {
-                     // Revert input text to permanent goal
-                     goalInput.textContent = targetGoal === 0 ? '' : targetGoal.toString();
-                } else if (activeSubMenu.id === 'step-controls-container') {
-                     // Revert input text to permanent step value
-                     stepInput.textContent = stepValue.toString();
-                } else if (activeSubMenu.id === 'awake-controls-container') { 
-                     // Revert screen awake state to permanent
-                     toggleScreenAwake(isScreenAwake, false); 
-                } else if (activeSubMenu.id === 'gesture-controls-container') { 
-                     // Revert gesture state to permanent
-                     toggleSwipeGesture(isSwipeGestureEnabled, false);
+                if (pC198.id === 'wI28') {
+                    oQ161(aV123, xI127);
+                } else if (pC198.id === 'qK29') {
+                    sF87.style.fontWeight = oL128;
+                } else if (pC198.id === 'cD32') {
+                    wE158(mZ126);
+                } else if (pC198.id === 'zL30') {
+                     rL102.textContent = vX124 === 0 ? '' : vX124.toString();
+                } else if (pC198.id === 'fR31') {
+                     sP103.textContent = dD125.toString();
+                } else if (pC198.id === 'eG33') { 
+                     xI199(gD129, false); 
+                } else if (pC198.id === 'hU34') { 
+                     hK200(oP130, false);
                 }
-                // -------------------------------------------------------------
 
-                activeSubMenu.classList.remove('sub-menu-active');
+                pC198.classList.remove('rZ35');
             }
             
-            updateHeaderButtonState();
+            xS175();
         }
         
-        /**
-         * Commits temporary changes to permanent state/storage and navigates back.
-         */
-        function saveChangesAndGoBack(e) {
-             if (e) e.stopPropagation();
+        function zE201(sN202) {
+             if (sN202) sN202.stopPropagation();
              
-             const activeSubMenu = getActiveSubMenu();
-             if (!activeSubMenu) return;
+             const jM203 = lP176();
+             if (!jM203) return;
 
-             // 1. COMMIT TEMPORARY STYLES AND SAVE TO STORAGE
-             if (activeSubMenu.id === 'size-controls-container') {
-                 fontScale = tempFontScale;
-                 localStorage.setItem(STORAGE_KEY_FONT_SCALE, fontScale);
-             } else if (activeSubMenu.id === 'weight-controls-container') {
-                 fontWeight = tempFontWeight;
-                 localStorage.setItem(STORAGE_KEY_FONT_WEIGHT, fontWeight);
-                 counterElement.style.fontWeight = fontWeight; // Ensure the final style is set
-             } else if (activeSubMenu.id === 'theme-controls-container') {
-                 currentTheme = tempTheme;
-                 localStorage.setItem(STORAGE_KEY_THEME, currentTheme);
-                 // applyTheme was already called, just the state needed saving
-             } else if (activeSubMenu.id === 'awake-controls-container') { 
-                 isScreenAwake = tempIsScreenAwake;
-                 localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
-                 // toggleScreenAwake was already called, just the state needed saving
-             } else if (activeSubMenu.id === 'gesture-controls-container') { 
-                 isSwipeGestureEnabled = tempIsSwipeGestureEnabled;
-                 localStorage.setItem(STORAGE_KEY_SWIPE_GESTURE, isSwipeGestureEnabled);
+             if (jM203.id === 'wI28') {
+                 xI127 = rI139;
+                 localStorage.setItem(vO146, xI127);
+             } else if (jM203.id === 'qK29') {
+                 oL128 = sM140;
+                 localStorage.setItem(xC147, oL128);
+                 sF87.style.fontWeight = oL128;
+             } else if (jM203.id === 'cD32') {
+                 mZ126 = tK141;
+                 localStorage.setItem(hB145, mZ126);
+             } else if (jM203.id === 'eG33') { 
+                 gD129 = yF142;
+                 localStorage.setItem(gZ150, gD129);
+             } else if (jM203.id === 'hU34') { 
+                 oP130 = zJ143;
+                 localStorage.setItem(wD151, oP130);
              }
 
-             // 2. COMMIT INPUT VALUES (Goal/Step) and save
-             if (activeSubMenu.id === 'goal-controls-container') {
-                 saveTargetGoal(true);
-             } else if (activeSubMenu.id === 'step-controls-container') {
-                 saveStepValue(true);
+             if (jM203.id === 'zL30') {
+                 sO204(true);
+             } else if (jM203.id === 'fR31') {
+                 bZ205(true);
              }
 
-             // 3. Clean up
-             updateCounterDisplay(); // Ensure counter display reflects final, saved values
-             activeSubMenu.classList.remove('sub-menu-active');
-             updateHeaderButtonState();
+             gN190();
+             jM203.classList.remove('rZ35');
+             xS175();
         }
 
-        /**
-         * Helper function to manage UI state for number editing.
-         */
-        function setNumberEditModeState(isEditing) {
-            isEditMode = isEditing;
-            if (isEditing) {
-                counterElement.contentEditable = 'true';
-                counterElement.setAttribute('inputmode', 'numeric');
+        function aO195(qO206) {
+            cJ133 = qO206;
+            if (qO206) {
+                sF87.contentEditable = 'true';
+                sF87.setAttribute('inputmode', 'numeric');
                 
-                document.body.classList.add('keyboard-up');
+                document.body.classList.add('hT5');
 
-                if (fullScreenMenu.classList.contains('visible')) {
-                    toggleMenu('hide'); 
+                if (hC108.classList.contains('hT24')) {
+                    yQ191('hide'); 
                 }
 
-                counterElement.focus();
+                sF87.focus();
                 
-                instructionElement.style.opacity = '0';
-                instructionElement.style.visibility = 'hidden'; 
+                vH88.style.opacity = '0';
+                vH88.style.visibility = 'hidden'; 
                 
                 try {
                     document.execCommand('selectAll', false, null);
-                } catch (error) {
-                    console.warn("Could not select all text automatically.");
+                } catch (rG207) {
                 }
             } else {
-                counterElement.contentEditable = 'false';
-                counterElement.removeAttribute('inputmode');
+                sF87.contentEditable = 'false';
+                sF87.removeAttribute('inputmode');
                 
-                document.body.classList.remove('keyboard-up');
+                document.body.classList.remove('hT5');
                 
-                checkGoalStatus(); 
+                nZ171(); 
             }
-            updateHeaderButtonState();
+            xS175();
         }
 
-        /**
-         * Enters a specific sub-menu mode and prepares temporary state/UI.
-         */
-        function enterSubMenuMode(e, containerElement) {
-            if (e) e.stopPropagation();
+        function aG208(gU209, cX210) {
+            if (gU209) gU209.stopPropagation();
             
-            toggleMenu('show'); 
+            yQ191('show'); 
             
-            document.querySelectorAll('.sub-menu-active').forEach(el => el.classList.remove('sub-menu-active'));
+            document.querySelectorAll('.rZ35').forEach(hF211 => hF211.classList.remove('rZ35'));
             
-            containerElement.style.visibility = 'visible'; 
-            containerElement.classList.add('sub-menu-active');
+            cX210.style.visibility = 'visible'; 
+            cX210.classList.add('rZ35');
             
-            // --- SETUP TEMP STATE AND UI FOR SUB-MENUS ---
-            if (containerElement.id === 'size-controls-container') {
-                tempFontScale = fontScale; // Reset temp state to permanent state
-                adjustFontSize(count, tempFontScale); // Apply current scale to counter for preview
-                updateSelectedButton(sizeOptions, 'scale', tempFontScale); // Select button based on temp state
-            } else if (containerElement.id === 'weight-controls-container') {
-                tempFontWeight = fontWeight;
-                counterElement.style.fontWeight = tempFontWeight; // Apply current weight to counter for preview
-                updateSelectedButton(weightOptions, 'weight', tempFontWeight);
-            } else if (containerElement.id === 'theme-controls-container') {
-                tempTheme = currentTheme;
-                applyTheme(tempTheme);
-                updateSelectedButton(themeOptions, 'theme', tempTheme);
-            } else if (containerElement.id === 'goal-controls-container') {
-                goalInput.textContent = targetGoal === 0 ? '' : targetGoal.toString();
+            if (cX210.id === 'wI28') {
+                rI139 = xI127;
+                oQ161(aV123, rI139);
+                vR177(kG109, 'scale', rI139);
+            } else if (cX210.id === 'qK29') {
+                sM140 = oL128;
+                sF87.style.fontWeight = sM140;
+                vR177(fS110, 'weight', sM140);
+            } else if (cX210.id === 'cD32') {
+                tK141 = mZ126;
+                wE158(tK141);
+                vR177(gQ111, 'theme', tK141);
+            } else if (cX210.id === 'zL30') {
+                rL102.textContent = vX124 === 0 ? '' : vX124.toString();
                 setTimeout(() => { 
-                    goalInput.focus();
-                    if (targetGoal !== 0) {
+                    rL102.focus();
+                    if (vX124 !== 0) {
                         try {
                            document.execCommand('selectAll', false, null);
-                       } catch (error) {
+                       } catch (wG212) {
                        }
                     }
                 }, 450); 
-            } else if (containerElement.id === 'step-controls-container') {
-                stepInput.textContent = stepValue.toString();
+            } else if (cX210.id === 'fR31') {
+                sP103.textContent = dD125.toString();
                 setTimeout(() => { 
-                    stepInput.focus();
+                    sP103.focus();
                     try {
                         document.execCommand('selectAll', false, null);
-                    } catch (error) {
+                    } catch (yL213) {
                     }
                 }, 450);
-            } else if (containerElement.id === 'awake-controls-container') { 
-                awakeInfoText.textContent = "Stops the screen from turning off automatically.";
+            } else if (cX210.id === 'eG33') { 
+                qF120.textContent = "Stops the screen from turning off automatically.";
 
                 if (!('wakeLock' in navigator)) {
-                    // Update text to warn user about lack of support
-                    awakeInfoText.textContent = "This feature is not supported by your current browser.";
+                    qF120.textContent = "This feature is not supported by your current browser.";
                 }
                 
-                tempIsScreenAwake = isScreenAwake;
-                // Apply temp state for preview (but don't save to perm state yet)
-                toggleScreenAwake(tempIsScreenAwake, false); 
-                updateSelectedButton(awakeOptions, 'awake', tempIsScreenAwake);
-            } else if (containerElement.id === 'gesture-controls-container') { 
-                 tempIsSwipeGestureEnabled = isSwipeGestureEnabled;
-                 // Set the toggle visual based on the temporary state
-                 toggleSwipeGesture(tempIsSwipeGestureEnabled, false); 
+                yF142 = gD129;
+                xI199(yF142, false); 
+                vR177(wM112, 'awake', yF142);
+            } else if (cX210.id === 'hU34') { 
+                 zJ143 = oP130;
+                 hK200(zJ143, false); 
             }
-            // ---------------------------------------------
 
-            updateHeaderButtonState(); 
+            xS175(); 
         }
 
-        // --- PREVIEW HANDLERS (Update temp state only) ---
+        function bN214(uD215) {
+            uD215.stopPropagation();
+            const wS216 = uD215.target.closest('.jC36');
+            if (!wS216) return;
+            const yM217 = parseFloat(wS216.getAttribute('data-scale'));
 
-        function setSizePreview(e) {
-            e.stopPropagation();
-            const btn = e.target.closest('.menu-item-link');
-            if (!btn) return;
-            const selectedScale = parseFloat(btn.getAttribute('data-scale'));
-
-            tempFontScale = selectedScale;
-            adjustFontSize(count, tempFontScale); 
-            updateSelectedButton(sizeOptions, 'scale', tempFontScale);
-            updateHeaderButtonState();
+            rI139 = yM217;
+            oQ161(aV123, rI139); 
+            vR177(kG109, 'scale', rI139);
+            xS175();
         }
         
-        function setWeightPreview(e) {
-            e.stopPropagation();
-            const btn = e.target.closest('.menu-item-link');
-            if (!btn) return;
-            const selectedWeight = parseInt(btn.getAttribute('data-weight'), 10);
+        function cK218(fI219) {
+            fI219.stopPropagation();
+            const zF220 = fI219.target.closest('.jC36');
+            if (!zF220) return;
+            const hG221 = parseInt(zF220.getAttribute('data-weight'), 10);
 
-            tempFontWeight = selectedWeight;
-            counterElement.style.fontWeight = tempFontWeight;
-            updateSelectedButton(weightOptions, 'weight', tempFontWeight);
-            updateHeaderButtonState();
+            sM140 = hG221;
+            sF87.style.fontWeight = sM140;
+            vR177(fS110, 'weight', sM140);
+            xS175();
         }
 
-        function setThemePreview(e) {
-            e.stopPropagation();
-            const btn = e.target.closest('.menu-item-link');
-            if (!btn) return;
-            const newTheme = btn.getAttribute('data-theme');
+        function mI222(hD223) {
+            hD223.stopPropagation();
+            const lB224 = hD223.target.closest('.jC36');
+            if (!lB224) return;
+            const pX225 = lB224.getAttribute('data-theme');
 
-            tempTheme = newTheme;
-            applyTheme(tempTheme);
-            updateSelectedButton(themeOptions, 'theme', tempTheme);
-            updateHeaderButtonState();
-        }
-        
-        function setAwakePreview(e) { 
-            e.stopPropagation();
-            const btn = e.target.closest('.menu-item-link');
-            if (!btn) return;
-            const newState = btn.getAttribute('data-awake') === 'on';
-
-            tempIsScreenAwake = newState;
-            // Apply temp state without saving to local storage
-            toggleScreenAwake(tempIsScreenAwake, false); 
-            updateSelectedButton(awakeOptions, 'awake', tempIsScreenAwake);
-            updateHeaderButtonState();
-        }
-
-        /**
-         * Handles the change event for the gesture toggle input.
-         */
-        function setGesturePreview() { 
-            const newState = gestureToggleInput.checked; 
-            tempIsSwipeGestureEnabled = newState;
-            // Apply temp state without saving to local storage
-            toggleSwipeGesture(tempIsSwipeGestureEnabled, false); 
-            updateHeaderButtonState();
+            tK141 = pX225;
+            wE158(tK141);
+            vR177(gQ111, 'theme', tK141);
+            xS175();
         }
         
-        // NEW function to toggle the gesture state when the label is clicked
-        function toggleGestureStateFromLabel() {
-            // Toggle the underlying checkbox state
-            gestureToggleInput.checked = !gestureToggleInput.checked;
-            // Then run the preview handler to update temp state and header button
-            setGesturePreview();
+        function dS226(eM227) { 
+            eM227.stopPropagation();
+            const gK228 = eM227.target.closest('.jC36');
+            if (!gK228) return;
+            const nA229 = gK228.getAttribute('data-awake') === 'on';
+
+            yF142 = nA229;
+            xI199(yF142, false); 
+            vR177(wM112, 'awake', yF142);
+            xS175();
         }
 
-        // --- END PREVIEW HANDLERS ---
+        function fP230() { 
+            const uZ231 = hM121.checked; 
+            zJ143 = uZ231;
+            hK200(zJ143, false); 
+            xS175();
+        }
         
-        /**
-         * Toggles the Wake Lock API state.
-         * @param {boolean} enable - True to enable the wake lock, false to disable.
-         * @param {boolean} saveToStorage - Whether to save the state to localStorage (usually true for permanent state).
-         */
-        async function toggleScreenAwake(enable, saveToStorage = true) {
+        function vB232() {
+            hM121.checked = !hM121.checked;
+            fP230();
+        }
+
+        async function xI199(iT233, lO234 = true) {
             if (!('wakeLock' in navigator)) {
-                return; // API not supported
+                return;
             }
 
-            if (enable) {
+            if (iT233) {
                 try {
-                    if (!wakeLock) {
-                        wakeLock = await navigator.wakeLock.request('screen');
-                        wakeLock.addEventListener('release', () => {
-                            // Automatically released by OS/browser (e.g., tab closed, visibility hidden)
-                            isScreenAwake = false;
-                            if (saveToStorage) localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
-                            updateSelectedButton(awakeOptions, 'awake', isScreenAwake);
+                    if (!jV136) {
+                        jV136 = await navigator.wakeLock.request('screen');
+                        jV136.addEventListener('release', () => {
+                            gD129 = false;
+                            if (lO234) localStorage.setItem(gZ150, gD129);
+                            vR177(wM112, 'awake', gD129);
                         });
-                        console.log("Wake Lock active.");
                     }
-                } catch (err) {
-                    console.error(`Wake Lock failed: ${err.name}, ${err.message}`);
-                    isScreenAwake = false; // Ensure state reflects failure
-                    if (saveToStorage) localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
+                } catch (eQ235) {
+                    gD129 = false;
+                    if (lO234) localStorage.setItem(gZ150, gD129);
                 }
             } else {
-                if (wakeLock) {
+                if (jV136) {
                     try {
-                        await wakeLock.release();
-                        wakeLock = null;
-                        console.log("Wake Lock released.");
-                    } catch (err) {
-                        console.error("Failed to release Wake Lock:", err);
+                        await jV136.release();
+                        jV136 = null;
+                    } catch (yB237) {
                     }
                 }
             }
 
-            if (saveToStorage) {
-                isScreenAwake = enable;
-                localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
+            if (lO234) {
+                gD129 = iT233;
+                localStorage.setItem(gZ150, gD129);
             }
         }
         
-        /**
-         * Toggles the swipe gesture (Swipe Left to Reset) state.
-         * @param {boolean} enable - True to enable the gesture, false to disable.
-         * @param {boolean} saveToStorage - Whether to save the state to localStorage.
-         */
-        function toggleSwipeGesture(enable, saveToStorage = true) {
-            if (saveToStorage) {
-                isSwipeGestureEnabled = enable;
-                localStorage.setItem(STORAGE_KEY_SWIPE_GESTURE, isSwipeGestureEnabled);
+        function hK200(aW238, bC239 = true) {
+            if (bC239) {
+                oP130 = aW238;
+                localStorage.setItem(wD151, oP130);
             }
-            gestureToggleInput.checked = enable;
+            hM121.checked = aW238;
         }
 
-
-        /**
-         * Saves the target goal value to permanent state/storage. Resets counter if goal changes.
-         */
-        function saveTargetGoal(forceSave = false) { 
-            let newGoal = sanitizeInput(goalInput.textContent, 0, MAX_SAFE_INTEGER);
+        function sO204(cI240 = false) { 
+            let dJ241 = kR152(rL102.textContent, 0, iQ82);
             
-            // Reformat input display to clean value or empty
-            goalInput.textContent = newGoal === 0 ? '' : newGoal.toString(); 
+            rL102.textContent = dJ241 === 0 ? '' : dJ241.toString(); 
 
-            const reallyChanged = targetGoal !== newGoal;
+            const eL242 = vX124 !== dJ241;
             
-            if (reallyChanged || forceSave) {
+            if (eL242 || cI240) {
                 
-                if (reallyChanged) {
-                    count = 0;
-                    localStorage.setItem(STORAGE_KEY_COUNT, count);
-                    // Reset tap state for new goal
-                    hasTapped = false; 
-                    showInstruction(); 
+                if (eL242) {
+                    aV123 = 0;
+                    localStorage.setItem(eK144, aV123);
+                    iW132 = false; 
+                    fO174(); 
                 }
 
-                targetGoal = newGoal;
-                localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
-            }
-            
-            // We call updateCounterDisplay() in saveChangesAndGoBack()
-        }
-        
-        /**
-         * Saves the step value to permanent state/storage.
-         */
-        function saveStepValue(forceSave = false) { 
-            // Min value is 1, so the counter must always increment by at least 1
-            let newStep = sanitizeInput(stepInput.textContent, 1, MAX_SAFE_INTEGER);
-
-            // Reformat input display to clean value
-            stepInput.textContent = newStep.toString();
-
-            const reallyChanged = stepValue !== newStep;
-
-            if (reallyChanged || forceSave) {
-                stepValue = newStep;
-                localStorage.setItem(STORAGE_KEY_STEP, stepValue);
+                vX124 = dJ241;
+                localStorage.setItem(bJ148, vX124);
             }
         }
         
-        function enterSizeEditMode(e) { enterSubMenuMode(e, sizeControlsContainer); }
-        function enterWeightEditMode(e) { enterSubMenuMode(e, weightControlsContainer); }
-        function enterGoalEditMode(e) { enterSubMenuMode(e, goalControlsContainer); }
-        function enterStepEditMode(e) { enterSubMenuMode(e, stepControlsContainer); }
-        function enterThemeEditMode(e) { enterSubMenuMode(e, themeControlsContainer); }
-        function enterAwakeEditMode(e) { enterSubMenuMode(e, awakeControlsContainer); } 
-        function enterGestureEditMode(e) { enterSubMenuMode(e, gestureControlsContainer); } 
+        function bZ205(fL243 = false) { 
+            let gM244 = kR152(sP103.textContent, 1, iQ82);
+
+            sP103.textContent = gM244.toString();
+
+            const hT245 = dD125 !== gM244;
+
+            if (hT245 || fL243) {
+                dD125 = gM244;
+                localStorage.setItem(fN149, dD125);
+            }
+        }
         
-        function editNumber(e) {
-            if (e) e.stopPropagation();
-            toggleMenu('hide'); 
-            setNumberEditModeState(true); 
+        function iN246(jO247) { aG208(jO247, tJ113); }
+        function kP248(lQ249) { aG208(lQ249, bB114); }
+        function mR250(nS251) { aG208(nS251, yN115); }
+        function oT252(pU253) { aG208(pU253, pS116); }
+        function qV254(rW255) { aG208(rW255, uX117); }
+        function sX256(tY257) { aG208(tY257, zP118); } 
+        function uZ258(vA259) { aG208(vA259, xT119); } 
+        
+        function wB260(xD261) {
+            if (xD261) xD261.stopPropagation();
+            yQ191('hide'); 
+            aO195(true); 
         }
 
-        /**
-         * Decrements the counter by the current step value, preventing negative numbers.
-         */
-        function decrementCounter(e) {
-            if (e) e.stopPropagation();
-            toggleMenu('hide'); // Close menu after action
+        function yE262(zF263) {
+            if (zF263) zF263.stopPropagation();
+            yQ191('hide'); 
             
-            if (isEditMode || isGoalReached) {
+            if (cJ133 || bV131) {
                 return;
             }
             
-            hideInstruction();
+            vM173();
 
-            if (count - stepValue < 0) {
-                count = 0;
+            if (aV123 - dD125 < 0) {
+                aV123 = 0;
             } else {
-                count -= stepValue;
+                aV123 -= dD125;
             }
             
-            updateCounterDisplay();
-
-            // Do not apply transient effects on decrement to keep it simple/distinction from increment
-            checkGoalStatus(); 
+            gN190();
+            nZ171(); 
         }
 
+        function aG264() {
+            if (!bV131) return;
+            
+            aV123 = 0;
+            vX124 = 0; 
+            dD125 = 1; 
+            xI127 = jZ84;
+            oL128 = 100;
 
-        /**
-         * Exits the Goal Reached/Max Limit mode (resets counter/goal/step to 0/0/1).
-         */
-        function exitGoalMode() {
-            if (!isGoalReached) return;
+            localStorage.setItem(eK144, aV123);
+            localStorage.setItem(bJ148, vX124);
+            localStorage.setItem(fN149, dD125); 
+            localStorage.setItem(vO146, xI127);
+            localStorage.setItem(xC147, oL128);
             
-            count = 0;
-            targetGoal = 0; 
-            stepValue = 1; 
-            fontScale = NORMAL_SCALE;
-            fontWeight = 100;
-
-            localStorage.setItem(STORAGE_KEY_COUNT, count);
-            localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
-            localStorage.setItem(STORAGE_KEY_STEP, stepValue); 
-            localStorage.setItem(STORAGE_KEY_FONT_SCALE, fontScale);
-            localStorage.setItem(STORAGE_KEY_FONT_WEIGHT, fontWeight);
+            bV131 = false; 
             
-            isGoalReached = false; 
+            if (dH134) clearTimeout(dH134);
+            if (mG135) clearTimeout(mG135);
+            sF87.classList.remove('gV7');
+            sF87.classList.remove('goal-reached-pulse'); 
             
-            if (transientEffectTimer) clearTimeout(transientEffectTimer);
-            if (goalGlowTimer) clearTimeout(goalGlowTimer);
-            counterElement.classList.remove('ultimate-effect');
-            counterElement.classList.remove('goal-reached-pulse'); 
+            vH88.textContent = "Tap anywhere to count"; 
+            iW132 = false;
+            fO174();
             
-            instructionElement.textContent = "Tap anywhere to count"; 
-            hasTapped = false;
-            showInstruction();
-            
-            updateCounterDisplay(); 
-            updateHeaderButtonState();
+            gN190(); 
+            xS175();
         }
 
-        /**
-         * Applies a temporary visual effect for certain counts (e.g., 33, 66, 99).
-         */
-        function checkAndApplyTransientEffect(currentCount, force = false) {
-            if (targetGoal > 0 && !force) {
-                counterElement.classList.remove('ultimate-effect'); 
-                checkGoalStatus(); 
+        function qW170(hI265, iJ266 = false) {
+            if (vX124 > 0 && !iJ266) {
+                sF87.classList.remove('gV7'); 
+                nZ171(); 
                 return;
             }
             
-            if (transientEffectTimer) {
-                clearTimeout(transientEffectTimer);
-                transientEffectTimer = null;
+            if (dH134) {
+                clearTimeout(dH134);
+                dH134 = null;
             }
             
-            counterElement.classList.remove('ultimate-effect');
+            sF87.classList.remove('gV7');
             
-            let effectClass = null;
-            if (currentCount > 0 && currentCount < 100) {
-                if (currentCount % 33 === 0) {
-                    effectClass = 'ultimate-effect'; 
+            let jK267 = null;
+            if (hI265 > 0 && hI265 < 100) {
+                if (hI265 % 33 === 0) {
+                    jK267 = 'gV7'; 
                 }
             }
 
-            if (effectClass) {
-                counterElement.classList.add(effectClass);
+            if (jK267) {
+                sF87.classList.add(jK267);
 
-                transientEffectTimer = setTimeout(() => {
-                    if (parseInt(counterElement.textContent.replace(/,/g, ''), 10) === currentCount) {
-                        counterElement.classList.remove('ultimate-effect');
+                dH134 = setTimeout(() => {
+                    if (parseInt(sF87.textContent.replace(/,/g, ''), 10) === hI265) {
+                        sF87.classList.remove('gV7');
                     }
-                    transientEffectTimer = null;
+                    dH134 = null;
                 }, 400); 
             }
             
-            checkGoalStatus(); 
+            nZ171(); 
         }
 
-        /**
-         * Increments the counter by the current step value.
-         */
-        function incrementCounter() {
-            if (isEditMode || getActiveSubMenu() || fullScreenMenu.classList.contains('visible') || isGoalReached) {
+        function mN268() {
+            if (cJ133 || lP176() || hC108.classList.contains('hT24') || bV131) {
                 return;
             }
             
-            if (count + stepValue > MAX_SAFE_INTEGER) {
-                count = MAX_SAFE_INTEGER;
-                checkGoalStatus(); 
+            if (aV123 + dD125 > iQ82) {
+                aV123 = iQ82;
+                nZ171(); 
                 return;
             }
             
-            hideInstruction();
+            vM173();
             
-            count += stepValue; 
-            updateCounterDisplay();
+            aV123 += dD125; 
+            gN190();
 
-            checkAndApplyTransientEffect(count);
+            qW170(aV123);
         }
 
-        /**
-         * Resets the counter, goal, and step value to defaults.
-         */
-        function resetCounter(e) {
-            if (e) e.stopPropagation();
+        function oP269(pQ270) {
+            if (pQ270) pQ270.stopPropagation();
             
-            if (isEditMode) {
-                saveNewCount();
+            if (cJ133) {
+                rS271();
             }
             
-            count = 0;
-            targetGoal = 0; 
-            stepValue = 1; 
-            fontScale = NORMAL_SCALE;
-            fontWeight = 100;
-            currentTheme = 'dark'; // Explicitly reset theme
+            aV123 = 0;
+            vX124 = 0; 
+            dD125 = 1; 
+            xI127 = jZ84;
+            oL128 = 100;
+            mZ126 = 'dark';
             
-            // Reset screen awake setting
-            toggleScreenAwake(false, true); 
-            isScreenAwake = false;
-            localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
-            
-            // NOTE: isSwipeGestureEnabled is NOT reset here to keep the user's preference after a reset.
-            // If the user wants to turn it off, they must use the menu.
+            xI199(false, true); 
+            gD129 = false;
+            localStorage.setItem(gZ150, gD129);
 
-            localStorage.setItem(STORAGE_KEY_COUNT, count);
-            localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
-            localStorage.setItem(STORAGE_KEY_STEP, stepValue); 
-            localStorage.setItem(STORAGE_KEY_FONT_SCALE, fontScale);
-            localStorage.setItem(STORAGE_KEY_FONT_WEIGHT, fontWeight);
-            localStorage.setItem(STORAGE_KEY_THEME, currentTheme);
+            localStorage.setItem(eK144, aV123);
+            localStorage.setItem(bJ148, vX124);
+            localStorage.setItem(fN149, dD125); 
+            localStorage.setItem(vO146, xI127);
+            localStorage.setItem(xC147, oL128);
+            localStorage.setItem(hB145, mZ126);
             
-            isGoalReached = false; 
+            bV131 = false; 
             
-            if (transientEffectTimer) clearTimeout(transientEffectTimer);
-            if (goalGlowTimer) clearTimeout(goalGlowTimer);
-            counterElement.classList.remove('ultimate-effect');
-            counterElement.classList.remove('goal-reached-pulse'); 
+            if (dH134) clearTimeout(dH134);
+            if (mG135) clearTimeout(mG135);
+            sF87.classList.remove('gV7');
+            sF87.classList.remove('goal-reached-pulse'); 
             
-            instructionElement.textContent = "Tap anywhere to count";
+            vH88.textContent = "Tap anywhere to count";
             
-            hasTapped = false;
-            showInstruction();
+            iW132 = false;
+            fO174();
 
-            goalInput.textContent = ''; 
-            stepInput.textContent = stepValue; 
+            rL102.textContent = ''; 
+            sP103.textContent = dD125; 
 
-            // Re-apply permanent theme and weight
-            applyTheme(currentTheme);
-            counterElement.style.fontWeight = fontWeight;
+            wE158(mZ126);
+            sF87.style.fontWeight = oL128;
             
-            updateCounterDisplay(); 
-            // Only hide menu if reset was called from the button, not from a swipe on the main screen
-            if (e && e.target.id === 'reset-btn') {
-                toggleMenu('hide');
+            gN190(); 
+            if (pQ270 && pQ270.target.id === 'lH54') {
+                yQ191('hide');
             }
         }
 
-        function saveNewCount() {
-            if (!isEditMode) return;
+        function rS271() {
+            if (!cJ133) return;
             
-            let newCount = sanitizeInput(counterElement.textContent, 0, MAX_SAFE_INTEGER);
+            let tU272 = kR152(sF87.textContent, 0, iQ82);
             
-            count = newCount;
-            updateCounterDisplay();
-            setNumberEditModeState(false); 
+            aV123 = tU272;
+            gN190();
+            aO195(false); 
             
-            checkAndApplyTransientEffect(count); 
+            qW170(aV123); 
         }
 
-        function toggleFullScreen(e) {
-            if (e) e.stopPropagation();
+        function uV273(vW274) {
+            if (vW274) vW274.stopPropagation();
             if (document.fullscreenElement) {
                 document.exitFullscreen();
             } else {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.error("Fullscreen API error:", err.message);
+                document.documentElement.requestFullscreen().catch(wX275 => {
                 });
             }
         }
 
-        function handleFullscreenChange() {
+        function xY276() {
             if (document.fullscreenElement) {
-                fullscreenTextEl.textContent = "Exit Fullscreen";
+                rT91.textContent = "Exit Fullscreen";
             } else {
-                fullscreenTextEl.textContent = "Fullscreen";
+                rT91.textContent = "Fullscreen";
             }
             
-            if (fullScreenMenu.classList.contains('visible')) {
-                toggleMenu('hide');
+            if (hC108.classList.contains('hT24')) {
+                yQ191('hide');
             }
         }
         
-        function addSubMenuTransitionEndListeners(container) {
-            container.addEventListener('transitionend', function() {
-                if (!container.classList.contains('sub-menu-active')) {
-                    container.style.visibility = 'hidden';
+        function zA277(bE278) {
+            bE278.addEventListener('transitionend', function() {
+                if (!bE278.classList.contains('rZ35')) {
+                    bE278.style.visibility = 'hidden';
                 }
             });
         }
         
-        // --- SWIPE GESTURE HANDLERS ---
-        
-        function handleTouchStart(e) {
-            // Only track single touches
-            if (e.touches.length === 1) {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
+        function cD279(dF280) {
+            if (dF280.touches.length === 1) {
+                pO137 = dF280.touches[0].clientX;
+                qG138 = dF280.touches[0].clientY;
             }
         }
 
-        function handleTouchEnd(e) {
-            if (e.changedTouches.length !== 1) return;
+        function eG281(fH282) {
+            if (fH282.changedTouches.length !== 1) return;
 
-            const touchEndX = e.changedTouches[0].clientX;
-            const touchEndY = e.changedTouches[0].clientY;
+            const gI283 = fH282.changedTouches[0].clientX;
+            const jL286 = fH282.changedTouches[0].clientY;
             
-            const deltaX = touchStartX - touchEndX; // positive for left swipe
-            const deltaY = touchEndY - touchStartY; // positive for down swipe
+            const kM287 = pO137 - gI283;
+            const nQ290 = qG138 - jL286;
 
-            const isSubMenuVisible = getActiveSubMenu();
+            const rT292 = lP176();
             
-            // 1. Menu Swipe UP to Close (deltaY must be negative, significantly larger than deltaX)
-            if (fullScreenMenu.classList.contains('visible')) {
-                // Check for a sufficient up swipe (negative deltaY, significantly larger magnitude than deltaX)
-                if (deltaY < -SWIPE_THRESHOLD && Math.abs(deltaY) > Math.abs(deltaX)) {
-                    // Back from sub-menu is still swipe UP
-                    if (isSubMenuVisible) {
-                        goBackFromSubMenu(e); 
+            if (hC108.classList.contains('hT24')) {
+                if (nQ290 < -kE86 && Math.abs(nQ290) > Math.abs(kM287)) {
+                    if (rT292) {
+                        iL196(fH282); 
                     } else {
-                        toggleMenu('hide');
+                        yQ191('hide');
                     }
-                    e.preventDefault(); 
+                    fH282.preventDefault(); 
                     return;
                 }
             } 
             
-            // 2. Counter Swipe Left to Reset
-            // Only allow interaction on the main screen, not while editing, or if a control was the touch target
-            if (!fullScreenMenu.classList.contains('visible') && !isEditMode) {
+            if (!hC108.classList.contains('hT24') && !cJ133) {
                 
-                // ONLY ALLOW SWIPE RESET IF THE GESTURE IS ENABLED
-                if (isSwipeGestureEnabled) {
-                    // Check for a sufficient left swipe (deltaX positive, significantly larger than deltaY)
-                    if (deltaX > SWIPE_THRESHOLD && deltaX > Math.abs(deltaY)) {
-                        // Ignore swipe if touch started on a header button or specific interactive elements
-                        const isControlTarget = e.target.closest('.header-btn') || e.target.closest('#counter') && counterElement.contentEditable === 'true';
+                if (oP130) {
+                    if (kM287 > kE86 && kM287 > Math.abs(nQ290)) {
+                        const sU293 = fH282.target.closest('.lK14') || fH282.target.closest('#nJ6') && sF87.contentEditable === 'true';
                         
-                        if (!isControlTarget) {
-                            resetCounter(e);
-                            e.preventDefault();
+                        if (!sU293) {
+                            oP269(fH282);
+                            fH282.preventDefault();
                         }
                     }
                 }
             }
         }
 
-        // --- END SWIPE GESTURE HANDLERS ---
-
-        /**
-         * Initializes the application state, loads local storage, and sets up listeners.
-         */
-        function init() {
-            const subMenuContainers = [sizeControlsContainer, weightControlsContainer, goalControlsContainer, stepControlsContainer, themeControlsContainer, awakeControlsContainer, gestureControlsContainer]; 
+        function zW294() {
+            const aX295 = [tJ113, bB114, yN115, pS116, uX117, zP118, xT119]; 
             
-            subMenuContainers.forEach(container => {
-                container.style.visibility = 'hidden';
-                addSubMenuTransitionEndListeners(container);
+            aX295.forEach(bY296 => {
+                bY296.style.visibility = 'hidden';
+                zA277(bY296);
             });
             
-            // --- LOAD PERMANENT STATE ---
-            count = sanitizeInput(localStorage.getItem(STORAGE_KEY_COUNT) || '0', 0, MAX_SAFE_INTEGER);
-            fontScale = parseFloat(localStorage.getItem(STORAGE_KEY_FONT_SCALE) || NORMAL_SCALE);
-            fontWeight = parseInt(localStorage.getItem(STORAGE_KEY_FONT_WEIGHT) || '100', 10);
-            targetGoal = sanitizeInput(localStorage.getItem(STORAGE_KEY_GOAL) || '0', 0, MAX_SAFE_INTEGER);
-            stepValue = sanitizeInput(localStorage.getItem(STORAGE_KEY_STEP) || '1', 1, MAX_SAFE_INTEGER);
-            currentTheme = localStorage.getItem(STORAGE_KEY_THEME) || 'dark';
-            isScreenAwake = localStorage.getItem(STORAGE_KEY_SCREEN_AWAKE) === 'true'; 
-            // Load Swipe Gesture
-            isSwipeGestureEnabled = localStorage.getItem(STORAGE_KEY_SWIPE_GESTURE) === 'true'; 
+            aV123 = kR152(localStorage.getItem(eK144) || '0', 0, iQ82);
+            xI127 = parseFloat(localStorage.getItem(vO146) || jZ84);
+            oL128 = parseInt(localStorage.getItem(xC147) || '100', 10);
+            vX124 = kR152(localStorage.getItem(bJ148) || '0', 0, iQ82);
+            dD125 = kR152(localStorage.getItem(fN149) || '1', 1, iQ82);
+            mZ126 = localStorage.getItem(hB145) || 'dark';
+            gD129 = localStorage.getItem(gZ150) === 'true'; 
+            oP130 = localStorage.getItem(wD151) === 'true'; 
             
-            // --- INITIALIZE TEMPORARY STATE ---
-            tempFontScale = fontScale;
-            tempFontWeight = fontWeight;
-            tempTheme = currentTheme;
-            tempIsScreenAwake = isScreenAwake; 
-            // Temp Swipe Gesture
-            tempIsSwipeGestureEnabled = isSwipeGestureEnabled;
+            rI139 = xI127;
+            sM140 = oL128;
+            tK141 = mZ126;
+            yF142 = gD129; 
+            zJ143 = oP130;
             
-            // --- APPLY PERMANENT STATE TO UI ---
-            applyTheme(currentTheme); 
-            counterElement.style.fontWeight = fontWeight;
+            wE158(mZ126); 
+            sF87.style.fontWeight = oL128;
             
-            goalInput.textContent = targetGoal === 0 ? '' : targetGoal.toString();
-            stepInput.textContent = stepValue.toString(); 
+            rL102.textContent = vX124 === 0 ? '' : vX124.toString();
+            sP103.textContent = dD125.toString(); 
             
-            // Apply saved screen awake state
-            toggleScreenAwake(isScreenAwake, true);
-            // Apply saved swipe gesture state (sets the toggle visual)
-            toggleSwipeGesture(isSwipeGestureEnabled, true);
+            xI199(gD129, true);
+            hK200(oP130, true);
 
-            updateCounterDisplay(); // Sets initial count, font size, and checks goal
+            gN190(); 
             
-            if (count > 0 && !isGoalReached) {
-                hasTapped = true;
-                hideInstruction();
-                checkAndApplyTransientEffect(count);
-            } else if (!isGoalReached) {
-                hasTapped = false;
-                showInstruction();
+            if (aV123 > 0 && !bV131) {
+                iW132 = true;
+                vM173();
+                qW170(aV123);
+            } else if (!bV131) {
+                iW132 = false;
+                fO174();
             }
 
-            handleFullscreenChange();
-            updateHeaderButtonState(); 
+            xY276();
+            xS175(); 
 
-            // --- Event Listeners ---
-            
-            // Add Touch Listeners for Swipe Gestures
-            // Passive true allows scrolling/touch feedback, passive false allows preventDefault for the swipe action
-            document.body.addEventListener('touchstart', handleTouchStart, { passive: true }); 
-            document.body.addEventListener('touchend', handleTouchEnd, { passive: false }); 
+            document.body.addEventListener('touchstart', cD279, { passive: true }); 
+            document.body.addEventListener('touchend', eG281, { passive: false }); 
 
-            document.body.addEventListener('click', (e) => {
-                if (e.target.closest('.header-controls') || getActiveSubMenu()) {
+            document.body.addEventListener('click', (kQ300) => {
+                if (kQ300.target.closest('.lJ10') || lP176()) {
                     return;
                 }
                 
-                if (fullScreenMenu.classList.contains('visible')) {
-                    toggleMenu('hide');
+                if (hC108.classList.contains('hT24')) {
+                    yQ191('hide');
                     return;
                 }
                 
-                if (isEditMode || isGoalReached) {
+                if (cJ133 || bV131) {
                     return;
                 }
 
-                // If the click target is the counter or the main wrapper, increment
-                if (e.target === counterElement || e.target === document.body || e.target === document.getElementById('main-content-wrapper') || e.target === instructionElement) {
-                    incrementCounter();
+                if (kQ300.target === sF87 || kQ300.target === document.body || kQ300.target === document.getElementById('yP4') || kQ300.target === vH88) {
+                    mN268();
                 }
             });
             
-            // Counter Edit Mode Handlers
-            counterElement.addEventListener('blur', saveNewCount);
-            counterElement.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    counterElement.blur(); 
+            sF87.addEventListener('blur', rS271);
+            sF87.addEventListener('keydown', (lR301) => {
+                if (lR301.key === 'Enter') {
+                    lR301.preventDefault();
+                    sF87.blur(); 
                 }
             });
             
-            // Goal Input Handlers (Only checks for done/back status)
-            goalInput.addEventListener('blur', () => { if (getActiveSubMenu() && !openMenuBtn.classList.contains('is-done-mode')) goBackFromSubMenu(); });
-            goalInput.addEventListener('keydown', (e) => {
-                 if (e.key === 'Enter') {
-                    e.preventDefault();
-                    goalInput.blur(); 
-                    if (getActiveSubMenu() && getActiveSubMenu().id === 'goal-controls-container') {
-                        saveChangesAndGoBack(e); 
+            rL102.addEventListener('blur', () => { if (lP176() && !fF104.classList.contains('oT15')) iL196(); });
+            rL102.addEventListener('keydown', (mS302) => {
+                 if (mS302.key === 'Enter') {
+                    mS302.preventDefault();
+                    rL102.blur(); 
+                    if (lP176() && lP176().id === 'zL30') {
+                        zE201(mS302); 
                     }
                 }
             });
-            goalInput.addEventListener('input', updateHeaderButtonState);
+            rL102.addEventListener('input', xS175);
             
-            // Step Input Handlers
-            stepInput.addEventListener('blur', () => { if (getActiveSubMenu() && !openMenuBtn.classList.contains('is-done-mode')) goBackFromSubMenu(); });
-            stepInput.addEventListener('keydown', (e) => {
-                 if (e.key === 'Enter') {
-                    e.preventDefault();
-                    stepInput.blur(); 
-                    if (getActiveSubMenu() && getActiveSubMenu().id === 'step-controls-container') {
-                        saveChangesAndGoBack(e); 
+            sP103.addEventListener('blur', () => { if (lP176() && !fF104.classList.contains('oT15')) iL196(); });
+            sP103.addEventListener('keydown', (nT303) => {
+                 if (nT303.key === 'Enter') {
+                    nT303.preventDefault();
+                    sP103.blur(); 
+                    if (lP176() && lP176().id === 'fR31') {
+                        zE201(nT303); 
                     }
                 }
             });
-            stepInput.addEventListener('input', updateHeaderButtonState);
+            sP103.addEventListener('input', xS175);
 
 
-            // Header Button Handlers
-            openMenuBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
+            fF104.addEventListener('click', (oU304) => {
+                oU304.stopPropagation();
 
-                const isMenuOpen = fullScreenMenu.classList.contains('visible');
-                const isSubMenuVisible = getActiveSubMenu();
+                const pV305 = hC108.classList.contains('hT24');
+                const qW306 = lP176();
                 
-                if (isSubMenuVisible && openMenuBtn.classList.contains('is-done-mode')) {
-                    saveChangesAndGoBack(e);
+                if (qW306 && fF104.classList.contains('oT15')) {
+                    zE201(oU304);
                     return;
                 }
                 
-                if (isGoalReached && !isMenuOpen && !isSubMenuVisible) {
-                    exitGoalMode(); 
+                if (bV131 && !pV305 && !qW306) {
+                    aG264(); 
                     return;
                 }
                 
-                if (!isMenuOpen) {
-                    toggleMenu('show');
+                if (!pV305) {
+                    yQ191('show');
                 } else {
-                    toggleMenu('hide');
+                    yQ191('hide');
                 }
             });
             
-            backBtn.addEventListener('click', goBackFromSubMenu);
+            wL105.addEventListener('click', iL196);
 
 
-            // Main Menu Item Handlers
-            fullscreenBtn.addEventListener('click', (e) => {
-                toggleFullScreen(e);
-                toggleMenu('hide');
+            gL90.addEventListener('click', (rX307) => {
+                uV273(rX307);
+                yQ191('hide');
             });
-            resetBtn.addEventListener('click', resetCounter);
-            editBtn.addEventListener('click', editNumber);
-            decrementBtn.addEventListener('click', decrementCounter); 
+            bD92.addEventListener('click', oP269);
+            cG93.addEventListener('click', wB260);
+            hA94.addEventListener('click', yE262); 
             
-            // Sub-Menu Entry Handlers
-            sizeEntryBtn.addEventListener('click', enterSizeEditMode);
-            weightEntryBtn.addEventListener('click', enterWeightEditMode);
-            goalEntryBtn.addEventListener('click', enterGoalEditMode); 
-            stepEntryBtn.addEventListener('click', enterStepEditMode); 
-            themeEntryBtn.addEventListener('click', enterThemeEditMode);
-            awakeEntryBtn.addEventListener('click', enterAwakeEditMode); 
-            gestureEntryBtn.addEventListener('click', enterGestureEditMode); 
+            qY95.addEventListener('click', iN246);
+            kL96.addEventListener('click', kP248);
+            dN97.addEventListener('click', mR250); 
+            uE98.addEventListener('click', oT252); 
+            iJ99.addEventListener('click', qV254);
+            jD100.addEventListener('click', sX256); 
+            mX101.addEventListener('click', uZ258); 
 
-            // Control Option Handlers (use Preview handlers)
-            sizeOptions.addEventListener('click', setSizePreview);
-            weightOptions.addEventListener('click', setWeightPreview);
-            themeOptions.addEventListener('click', setThemePreview);
-            awakeOptions.addEventListener('click', setAwakePreview);
+            kG109.addEventListener('click', bN214);
+            fS110.addEventListener('click', cK218);
+            gQ111.addEventListener('click', mI222);
+            wM112.addEventListener('click', dS226);
             
-            // Gesture Toggle Handlers
-            gestureToggleInput.addEventListener('change', setGesturePreview); 
-            gestureToggleLabel.addEventListener('click', toggleGestureStateFromLabel); // NEW: Click label to toggle
+            hM121.addEventListener('change', fP230); 
+            rK122.addEventListener('click', vB232);
 
-            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            document.addEventListener('fullscreenchange', xY276);
             
-            // Re-request wake lock if visibility changes back to visible
             document.addEventListener('visibilitychange', () => {
-                if (wakeLock !== null && document.visibilityState === 'visible' && isScreenAwake) {
-                    toggleScreenAwake(true, false); // Re-request lock, don't re-save to storage
+                if (jV136 !== null && document.visibilityState === 'visible' && gD129) {
+                    xI199(true, false); 
                 }
             });
             
-            // Prevent double-tap zooming on mobile
-            document.addEventListener('dblclick', function(event) {
-                event.preventDefault();
+            document.addEventListener('dblclick', function(yY308) {
+                yY308.preventDefault();
             }, { passive: false });
 
-            // Keyboard Shortcuts
-            document.addEventListener('keydown', (e) => {
-                if (isEditMode) {
-                    if (e.key === 'Enter') return; 
+            document.addEventListener('keydown', (zZ309) => {
+                if (cJ133) {
+                    if (zZ309.key === 'Enter') return; 
                     return; 
                 }
                 
-                if (e.code === 'Space' || e.code === 'Enter' || e.key === '+' || e.key === '=') {
-                    if (!e.target.matches('input, textarea, button, [contenteditable="true"]')) {
-                        incrementCounter();
-                        e.preventDefault();
+                if (zZ309.code === 'Space' || zZ309.code === 'Enter' || zZ309.key === '+' || zZ309.key === '=') {
+                    if (!zZ309.target.matches('input, textarea, button, [contenteditable="true"]')) {
+                        mN268();
+                        zZ309.preventDefault();
                     }
-                } else if (e.key === '-' || e.key === '_') { // Decrement shortcut
-                    if (!e.target.matches('input, textarea, [contenteditable="true"]')) {
-                        decrementCounter();
-                        e.preventDefault();
+                } else if (zZ309.key === '-' || zZ309.key === '_') { 
+                    if (!zZ309.target.matches('input, textarea, [contenteditable="true"]')) {
+                        yE262();
+                        zZ309.preventDefault();
                     }
-                } else if (e.key === 'r' || e.key === 'R') {
-                    resetCounter();
-                } else if (e.key === 'e' || e.key === 'E') {
-                    editNumber();
-                } else if (e.key === 's' || e.key === 'S') {
-                    enterSizeEditMode();
-                    e.preventDefault();
-                } else if (e.key === 'w' || e.key === 'W') { 
-                    enterWeightEditMode();
-                    e.preventDefault();
-                } else if (e.key === 'g' || e.key === 'G') { 
-                    enterGoalEditMode();
-                    e.preventDefault();
-                } else if (e.key === 'i' || e.key === 'I') { 
-                    enterStepEditMode();
-                    e.preventDefault();
-                } else if (e.key === 't' || e.key === 'T') {
-                    enterThemeEditMode();
-                    e.preventDefault();
-                } else if (e.key === 'a' || e.key === 'A') { 
-                    enterAwakeEditMode();
-                    e.preventDefault();
-                } else if (e.key === 'j' || e.key === 'J') { 
-                    enterGestureEditMode();
-                    e.preventDefault();
-                } else if (e.key === 'Escape') {
-                    const activeSubMenu = getActiveSubMenu();
-                    if (activeSubMenu) {
-                        goBackFromSubMenu();
-                    } else if (fullScreenMenu.classList.contains('visible')) {
-                        toggleMenu('hide');
+                } else if (zZ309.key === 'r' || zZ309.key === 'R') {
+                    oP269();
+                } else if (zZ309.key === 'e' || zZ309.key === 'E') {
+                    wB260();
+                } else if (zZ309.key === 's' || zZ309.key === 'S') {
+                    iN246();
+                    zZ309.preventDefault();
+                } else if (zZ309.key === 'w' || zZ309.key === 'W') { 
+                    kP248();
+                    zZ309.preventDefault();
+                } else if (zZ309.key === 'g' || zZ309.key === 'G') { 
+                    mR250();
+                    zZ309.preventDefault();
+                } else if (zZ309.key === 'i' || zZ309.key === 'I') { 
+                    oT252();
+                    zZ309.preventDefault();
+                } else if (zZ309.key === 't' || zZ309.key === 'T') {
+                    qV254();
+                    zZ309.preventDefault();
+                } else if (zZ309.key === 'a' || zZ309.key === 'A') { 
+                    sX256();
+                    zZ309.preventDefault();
+                } else if (zZ309.key === 'j' || zZ309.key === 'J') { 
+                    uZ258();
+                    zZ309.preventDefault();
+                } else if (zZ309.key === 'Escape') {
+                    const aX310 = lP176();
+                    if (aX310) {
+                        iL196();
+                    } else if (hC108.classList.contains('hT24')) {
+                        yQ191('hide');
                     }
                 }
             });
         }
 
-        init();
+        zW294();
     </script>
 </body>
 </html>
