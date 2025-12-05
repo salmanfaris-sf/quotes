@@ -326,7 +326,8 @@
         #weight-controls-container,
         #goal-controls-container,
         #step-controls-container, 
-        #theme-controls-container {
+        #theme-controls-container,
+        #awake-controls-container { /* Added new container */
             position: fixed; 
             top: 0; 
             left: 0;
@@ -393,6 +394,7 @@
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(6) { animation-delay: 0.35s; }
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(7) { animation-delay: 0.4s; }
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(8) { animation-delay: 0.45s; }
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(9) { animation-delay: 0.5s; } /* New item */
 
 
         .menu-sub-header {
@@ -543,6 +545,9 @@
                 <button id="theme-entry-btn" class="menu-item-link" aria-label="Adjust Theme" title="Adjust Theme">
                     Theme
                 </button>
+                <button id="awake-entry-btn" class="menu-item-link" aria-label="Screen Awake" title="Screen Awake">
+                    Screen Awake
+                </button>
             </nav>
         </div>
     </div>
@@ -604,6 +609,22 @@
             </button>
         </div>
     </div>
+    
+    <!-- AWAKE CONTROL CONTAINER (New Feature) -->
+    <div id="awake-controls-container">
+        <h2 class="menu-sub-header">Screen Awake</h2>
+        <p class="info-text" id="awake-info-text">Stops the screen from turning off automatically.</p>
+        <div id="awake-options" class="control-options">
+            <button id="awake-on-btn" class="menu-item-link" data-awake="on">
+                On
+                <span class="option-description">Screen stays awake.</span>
+            </button>
+            <button id="awake-off-btn" class="menu-item-link" data-awake="off">
+                Off
+                <span class="option-description">Screen follows device sleep settings.</span>
+            </button>
+        </div>
+    </div>
 
 
     <div id="main-content-wrapper">
@@ -633,6 +654,7 @@
         const goalEntryBtn = document.getElementById('goal-entry-btn'); 
         const stepEntryBtn = document.getElementById('step-entry-btn'); 
         const themeEntryBtn = document.getElementById('theme-entry-btn');
+        const awakeEntryBtn = document.getElementById('awake-entry-btn'); // Updated text in HTML/CSS
         
         const goalInput = document.getElementById('goal-input'); 
         const stepInput = document.getElementById('step-input'); 
@@ -648,12 +670,15 @@
         const sizeOptions = document.getElementById('size-options');
         const weightOptions = document.getElementById('weight-options');
         const themeOptions = document.getElementById('theme-options');
+        const awakeOptions = document.getElementById('awake-options'); // New
         
         const sizeControlsContainer = document.getElementById('size-controls-container');
         const weightControlsContainer = document.getElementById('weight-controls-container');
         const goalControlsContainer = document.getElementById('goal-controls-container');
         const stepControlsContainer = document.getElementById('step-controls-container'); 
         const themeControlsContainer = document.getElementById('theme-controls-container');
+        const awakeControlsContainer = document.getElementById('awake-controls-container'); // New
+        const awakeInfoText = document.getElementById('awake-info-text'); // New
         
         // --- Permanent State Variables (Saved to Storage) ---
         let count = 0;
@@ -662,6 +687,7 @@
         let currentTheme = 'dark';
         let fontScale = NORMAL_SCALE;
         let fontWeight = 100; 
+        let isScreenAwake = false; // New
 
         // --- Transient State Variables ---
         let isGoalReached = false; 
@@ -669,11 +695,13 @@
         let isEditMode = false; 
         let transientEffectTimer = null; 
         let goalGlowTimer = null; 
-        
+        let wakeLock = null; // New
+
         // --- TEMPORARY STATE VARIABLES (For Menu Preview) ---
         let tempFontScale;
         let tempFontWeight;
         let tempTheme;
+        let tempIsScreenAwake; // New
 
 
         // --- Local Storage Keys ---
@@ -683,6 +711,7 @@
         const STORAGE_KEY_FONT_WEIGHT = 'minimalCounterFontWeight';
         const STORAGE_KEY_GOAL = 'minimalCounterTargetGoal'; 
         const STORAGE_KEY_STEP = 'minimalCounterStepValue'; 
+        const STORAGE_KEY_SCREEN_AWAKE = 'minimalCounterScreenAwake'; // New
 
         /**
          * Cleans and validates a numeric string input, respecting MAX_SAFE_INTEGER.
@@ -859,6 +888,11 @@
                     if (currentValue === btnValue) {
                          btn.classList.add('selected');
                     }
+                } else if (dataType === 'awake') { // New
+                    const awakeState = currentValue ? 'on' : 'off';
+                    if (awakeState === btnValue) {
+                        btn.classList.add('selected');
+                    }
                 }
             });
         }
@@ -891,6 +925,8 @@
                     hasPendingChanges = tempFontWeight !== fontWeight;
                 } else if (activeSubMenu.id === 'theme-controls-container') {
                     hasPendingChanges = tempTheme !== currentTheme;
+                } else if (activeSubMenu.id === 'awake-controls-container') { // New
+                    hasPendingChanges = tempIsScreenAwake !== isScreenAwake;
                 }
                 
                 if (hasPendingChanges) {
@@ -1008,6 +1044,9 @@
                 } else if (activeSubMenu.id === 'step-controls-container') {
                      // Revert input text to permanent step value
                      stepInput.textContent = stepValue.toString();
+                } else if (activeSubMenu.id === 'awake-controls-container') { // New
+                     // Revert screen awake state to permanent
+                     toggleScreenAwake(isScreenAwake, false); 
                 }
                 // -------------------------------------------------------------
 
@@ -1038,6 +1077,10 @@
                  currentTheme = tempTheme;
                  localStorage.setItem(STORAGE_KEY_THEME, currentTheme);
                  // applyTheme was already called, just the state needed saving
+             } else if (activeSubMenu.id === 'awake-controls-container') { // New
+                 isScreenAwake = tempIsScreenAwake;
+                 localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
+                 // toggleScreenAwake was already called, just the state needed saving
              }
 
              // 2. COMMIT INPUT VALUES (Goal/Step) and save
@@ -1135,6 +1178,19 @@
                     } catch (error) {
                     }
                 }, 450);
+            } else if (containerElement.id === 'awake-controls-container') { // New
+                // The HTML holds the simple, user-requested text: "Stops the screen from turning off automatically."
+                awakeInfoText.textContent = "Stops the screen from turning off automatically.";
+
+                if (!('wakeLock' in navigator)) {
+                    // Update text to warn user about lack of support
+                    awakeInfoText.textContent = "This feature is not supported by your current browser.";
+                }
+                
+                tempIsScreenAwake = isScreenAwake;
+                // Apply temp state for preview (but don't save to perm state yet)
+                toggleScreenAwake(tempIsScreenAwake, false); 
+                updateSelectedButton(awakeOptions, 'awake', tempIsScreenAwake);
             }
             // ---------------------------------------------
 
@@ -1178,8 +1234,66 @@
             updateSelectedButton(themeOptions, 'theme', tempTheme);
             updateHeaderButtonState();
         }
+        
+        function setAwakePreview(e) { // New
+            e.stopPropagation();
+            const btn = e.target.closest('.menu-item-link');
+            if (!btn) return;
+            const newState = btn.getAttribute('data-awake') === 'on';
+
+            tempIsScreenAwake = newState;
+            // Apply temp state without saving to local storage
+            toggleScreenAwake(tempIsScreenAwake, false); 
+            updateSelectedButton(awakeOptions, 'awake', tempIsScreenAwake);
+            updateHeaderButtonState();
+        }
 
         // --- END PREVIEW HANDLERS ---
+        
+        /**
+         * Toggles the Wake Lock API state.
+         * @param {boolean} enable - True to enable the wake lock, false to disable.
+         * @param {boolean} saveToStorage - Whether to save the state to localStorage (usually true for permanent state).
+         */
+        async function toggleScreenAwake(enable, saveToStorage = true) {
+            if (!('wakeLock' in navigator)) {
+                return; // API not supported
+            }
+
+            if (enable) {
+                try {
+                    if (!wakeLock) {
+                        wakeLock = await navigator.wakeLock.request('screen');
+                        wakeLock.addEventListener('release', () => {
+                            // Automatically released by OS/browser (e.g., tab closed, visibility hidden)
+                            isScreenAwake = false;
+                            if (saveToStorage) localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
+                            updateSelectedButton(awakeOptions, 'awake', isScreenAwake);
+                        });
+                        console.log("Wake Lock active.");
+                    }
+                } catch (err) {
+                    console.error(`Wake Lock failed: ${err.name}, ${err.message}`);
+                    isScreenAwake = false; // Ensure state reflects failure
+                    if (saveToStorage) localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
+                }
+            } else {
+                if (wakeLock) {
+                    try {
+                        await wakeLock.release();
+                        wakeLock = null;
+                        console.log("Wake Lock released.");
+                    } catch (err) {
+                        console.error("Failed to release Wake Lock:", err);
+                    }
+                }
+            }
+
+            if (saveToStorage) {
+                isScreenAwake = enable;
+                localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
+            }
+        }
 
 
         /**
@@ -1233,6 +1347,8 @@
         function enterGoalEditMode(e) { enterSubMenuMode(e, goalControlsContainer); }
         function enterStepEditMode(e) { enterSubMenuMode(e, stepControlsContainer); }
         function enterThemeEditMode(e) { enterSubMenuMode(e, themeControlsContainer); }
+        function enterAwakeEditMode(e) { enterSubMenuMode(e, awakeControlsContainer); } // New
+        
         function editNumber(e) {
             if (e) e.stopPropagation();
             toggleMenu('hide'); 
@@ -1350,6 +1466,11 @@
             fontWeight = 100;
             currentTheme = 'dark'; // Explicitly reset theme
             
+            // New: Reset screen awake setting
+            toggleScreenAwake(false, true); 
+            isScreenAwake = false;
+            localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
+
             localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
             localStorage.setItem(STORAGE_KEY_STEP, stepValue); 
             localStorage.setItem(STORAGE_KEY_FONT_SCALE, fontScale);
@@ -1426,7 +1547,7 @@
          * Initializes the application state, loads local storage, and sets up listeners.
          */
         function init() {
-            const subMenuContainers = [sizeControlsContainer, weightControlsContainer, goalControlsContainer, stepControlsContainer, themeControlsContainer];
+            const subMenuContainers = [sizeControlsContainer, weightControlsContainer, goalControlsContainer, stepControlsContainer, themeControlsContainer, awakeControlsContainer];
             
             subMenuContainers.forEach(container => {
                 container.style.visibility = 'hidden';
@@ -1440,11 +1561,13 @@
             targetGoal = sanitizeInput(localStorage.getItem(STORAGE_KEY_GOAL) || '0', 0, MAX_SAFE_INTEGER);
             stepValue = sanitizeInput(localStorage.getItem(STORAGE_KEY_STEP) || '1', 1, MAX_SAFE_INTEGER);
             currentTheme = localStorage.getItem(STORAGE_KEY_THEME) || 'dark';
+            isScreenAwake = localStorage.getItem(STORAGE_KEY_SCREEN_AWAKE) === 'true'; // New
             
             // --- INITIALIZE TEMPORARY STATE ---
             tempFontScale = fontScale;
             tempFontWeight = fontWeight;
             tempTheme = currentTheme;
+            tempIsScreenAwake = isScreenAwake; // New
             
             // --- APPLY PERMANENT STATE TO UI ---
             applyTheme(currentTheme); 
@@ -1452,6 +1575,9 @@
             
             goalInput.textContent = targetGoal === 0 ? '' : targetGoal.toString();
             stepInput.textContent = stepValue.toString(); 
+            
+            // Apply saved screen awake state
+            toggleScreenAwake(isScreenAwake, true);
 
             updateCounterDisplay(); // Sets initial count, font size, and checks goal
             
@@ -1564,13 +1690,22 @@
             goalEntryBtn.addEventListener('click', enterGoalEditMode); 
             stepEntryBtn.addEventListener('click', enterStepEditMode); 
             themeEntryBtn.addEventListener('click', enterThemeEditMode);
+            awakeEntryBtn.addEventListener('click', enterAwakeEditMode); // New
 
             // Control Option Handlers (use Preview handlers)
             sizeOptions.addEventListener('click', setSizePreview);
             weightOptions.addEventListener('click', setWeightPreview);
             themeOptions.addEventListener('click', setThemePreview);
+            awakeOptions.addEventListener('click', setAwakePreview); // New
 
             document.addEventListener('fullscreenchange', handleFullscreenChange);
+            
+            // Re-request wake lock if visibility changes back to visible
+            document.addEventListener('visibilitychange', () => {
+                if (wakeLock !== null && document.visibilityState === 'visible' && isScreenAwake) {
+                    toggleScreenAwake(true, false); // Re-request lock, don't re-save to storage
+                }
+            });
             
             // Prevent double-tap zooming on mobile
             document.addEventListener('dblclick', function(event) {
@@ -1607,6 +1742,9 @@
                     e.preventDefault();
                 } else if (e.key === 't' || e.key === 'T') {
                     enterThemeEditMode();
+                    e.preventDefault();
+                } else if (e.key === 'a' || e.key === 'A') { // New shortcut for Awake
+                    enterAwakeEditMode();
                     e.preventDefault();
                 } else if (e.key === 'Escape') {
                     const activeSubMenu = getActiveSubMenu();
