@@ -14,6 +14,7 @@
       gtag('config', 'G-1K1TKBQFFK');
     </script>
     <style>
+        /* Styles remain largely the same, only minor adjustments for clarity and consistency */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -32,7 +33,7 @@
             --selected-bg: #333333;
             --selected-text: #FFFFFF;
             --ios-blue: #007AFF;
-            --ios-red: #FF3B30; /* For decrement/reset actions (NO LONGER USED IN MENU) */
+            --ios-red: #FF3B30;
         }
         
         body.theme-white {
@@ -64,7 +65,7 @@
             --text-color: #ffffff;
             --control-color: #ffffff;
             --instruction-color: rgba(255, 255, 255, 0.5);
-            --menu-bg: #1B1B1D; /* Darker than pure black */
+            --menu-bg: #1B1B1D;
             --menu-text: #FFFFFF;
             --menu-hover: rgba(255, 255, 255, 0.1);
             --selected-bg: #333333;
@@ -84,7 +85,7 @@
             align-items: center;
             cursor: pointer;
             user-select: none;
-            touch-action: manipulation;
+            touch-action: pan-y; /* Allow vertical scrolling, but handle taps/horizontal swipes */
             position: relative;
             transition: background-color 0.3s, color 0.3s;
         }
@@ -312,7 +313,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            padding-top: 20px;
+            padding-top: 0px;
             padding-left: 30px; 
             padding-right: 30px; 
             overflow-y: auto;
@@ -328,7 +329,8 @@
         #goal-controls-container,
         #step-controls-container, 
         #theme-controls-container,
-        #awake-controls-container { 
+        #awake-controls-container,
+        #gesture-controls-container { /* Added gesture container */
             position: fixed; 
             top: 0; 
             left: 0;
@@ -378,11 +380,6 @@
             transition: background-color 0.2s, color 0.2s;
         }
         
-        /* The .decrement-color class is removed from the HTML for reset/decrement buttons */
-        /* .menu-item-link.decrement-color {
-            color: var(--ios-red);
-        } */ 
-
         #menu-nav-list .menu-item-link {
             opacity: 0;
             transform: translateY(10px);
@@ -401,7 +398,8 @@
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(7) { animation-delay: 0.4s; }
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(8) { animation-delay: 0.45s; }
         #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(9) { animation-delay: 0.5s; } 
-        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(10) { animation-delay: 0.55s; } /* Decrement button */
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(10) { animation-delay: 0.55s; } 
+        #full-screen-menu.visible #menu-nav-list .menu-item-link:nth-child(11) { animation-delay: 0.60s; } /* New item delay */
 
 
         .menu-sub-header {
@@ -486,6 +484,73 @@
             margin-bottom: 10px; 
         }
 
+        /* Custom iOS-style Toggle Switch */
+        .toggle-switch-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .toggle-switch-label {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--menu-text);
+            /* Make the label take up more space to be touchable */
+            flex-grow: 1; 
+            cursor: pointer; /* Indicate it's clickable */
+            user-select: none;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 51px;
+            height: 31px;
+            flex-shrink: 0; /* Keep the switch size fixed */
+        }
+
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #767680; /* iOS Off Gray */
+            transition: .4s;
+            border-radius: 31px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 27px;
+            width: 27px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--ios-blue); /* iOS On Blue */
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        /* End Custom Toggle Switch */
+
+
         @media (max-width: 400px) {
             .menu-item-link {
                 font-size: 2rem;
@@ -500,6 +565,13 @@
                 padding: 15px;
             }
         }
+        #menu-nav-list .menu-item-link,
+     #menu-nav-list .menu-item-link:hover,
+     #menu-nav-list .menu-item-link:active {
+      background: none !important;
+     border-radius: 0 !important;
+    }
+    
     </style>
 </head>
 <body>
@@ -528,45 +600,38 @@
         <div class="menu-header"></div> 
         <div id="menu-inner-container">
             <nav id="menu-nav-list">
-                <!-- 1. Full screen -->
                 <button id="fullscreen-btn" class="menu-item-link" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
                     <span id="fullscreen-text">Fullscreen</span>
                 </button>
-                <!-- 2. Reset -->
-                <button id="reset-btn" class="menu-item-link" aria-label="Reset Counter" title="Reset Counter">
+                <button id="reset-btn" class="menu-item-link" aria-label="Reset Counter (Swipe Left on Counter)" title="Reset Counter (Swipe Left on Counter)">
                     Reset
                 </button>
-                <!-- 3. Edit -->
                 <button id="edit-btn" class="menu-item-link" aria-label="Edit Number" title="Edit">
                     Edit
                 </button>
-                <!-- 4. Decrement -->
                 <button id="decrement-btn" class="menu-item-link" aria-label="Decrement Counter" title="Decrement Counter">
                     Decrement
                 </button>
-                <!-- 5. Step Value -->
                 <button id="step-entry-btn" class="menu-item-link" aria-label="Adjust Increment Step" title="Adjust Increment Step">
                     Step Value
                 </button>
-                <!-- 6. Goal -->
                 <button id="goal-entry-btn" class="menu-item-link" aria-label="Set Target Goal" title="Set Target Goal">
                     Goal
                 </button>
-                <!-- 7. Size -->
                 <button id="size-entry-btn" class="menu-item-link" aria-label="Adjust Font Size" title="Adjust Font Size">
                     Size
                 </button>
-                <!-- 8. Thickness -->
                 <button id="weight-entry-btn" class="menu-item-link" aria-label="Adjust Font Thickness" title="Adjust Font Thickness">
                     Thickness
                 </button>
-                <!-- 9. Theme -->
                 <button id="theme-entry-btn" class="menu-item-link" aria-label="Adjust Theme" title="Adjust Theme">
                     Theme
                 </button>
-                <!-- 10. Screen Awake -->
                 <button id="awake-entry-btn" class="menu-item-link" aria-label="Screen Awake" title="Screen Awake">
                     Screen Awake
+                </button>
+                <button id="gesture-entry-btn" class="menu-item-link" aria-label="Toggle Swipe Gestures" title="Toggle Swipe Gestures">
+                    Swipe Gestures
                 </button>
             </nav>
         </div>
@@ -602,7 +667,6 @@
         </div>
     </div>
     
-    <!-- STEP VALUE CONTROL CONTAINER -->
     <div id="step-controls-container">
         <h2 class="menu-sub-header">Step Value</h2>
         <p class="info-text">Enter the amount the counter should increment by on each tap. To return to default, set to 1.</p>
@@ -630,7 +694,6 @@
         </div>
     </div>
     
-    <!-- AWAKE CONTROL CONTAINER -->
     <div id="awake-controls-container">
         <h2 class="menu-sub-header">Screen Awake</h2>
         <p class="info-text" id="awake-info-text">Stops the screen from turning off automatically.</p>
@@ -643,6 +706,18 @@
                 Off
                 <span class="option-description">Screen follows device sleep settings.</span>
             </button>
+        </div>
+    </div>
+    
+    <div id="gesture-controls-container">
+        <h2 class="menu-sub-header">Swipe Gestures</h2>
+        <p class="info-text">Enables/disables the special swipe gestures on the counter. Swipe up to close the menu.</p>
+        <div class="toggle-switch-wrapper">
+            <span class="toggle-switch-label" id="gesture-toggle-label">Swipe Left to Reset</span>
+            <label class="switch">
+                <input type="checkbox" id="gesture-toggle-input">
+                <span class="slider"></span>
+            </label>
         </div>
     </div>
 
@@ -658,6 +733,7 @@
         const SHRINK_THRESHOLD = 10000;
         const NORMAL_SCALE = 0.6;
         const LARGE_SCALE = 1.3;
+        const SWIPE_THRESHOLD = 50; // Minimum pixels for a successful swipe
 
         // --- DOM Elements ---
         const counterElement = document.getElementById('counter');
@@ -668,7 +744,7 @@
         const fullscreenTextEl = document.getElementById('fullscreen-text');
         const resetBtn = document.getElementById('reset-btn');
         const editBtn = document.getElementById('edit-btn');
-        const decrementBtn = document.getElementById('decrement-btn'); // New Decrement Button
+        const decrementBtn = document.getElementById('decrement-btn'); 
         
         const sizeEntryBtn = document.getElementById('size-entry-btn');
         const weightEntryBtn = document.getElementById('weight-entry-btn'); 
@@ -676,6 +752,7 @@
         const stepEntryBtn = document.getElementById('step-entry-btn'); 
         const themeEntryBtn = document.getElementById('theme-entry-btn');
         const awakeEntryBtn = document.getElementById('awake-entry-btn'); 
+        const gestureEntryBtn = document.getElementById('gesture-entry-btn'); 
         
         const goalInput = document.getElementById('goal-input'); 
         const stepInput = document.getElementById('step-input'); 
@@ -699,8 +776,12 @@
         const stepControlsContainer = document.getElementById('step-controls-container'); 
         const themeControlsContainer = document.getElementById('theme-controls-container');
         const awakeControlsContainer = document.getElementById('awake-controls-container'); 
-        const awakeInfoText = document.getElementById('awake-info-text'); 
+        const gestureControlsContainer = document.getElementById('gesture-controls-container'); 
         
+        const awakeInfoText = document.getElementById('awake-info-text'); 
+        const gestureToggleInput = document.getElementById('gesture-toggle-input'); 
+        const gestureToggleLabel = document.getElementById('gesture-toggle-label'); // NEW DOM ELEMENT
+
         // --- Permanent State Variables (Saved to Storage) ---
         let count = 0;
         let targetGoal = 0; 
@@ -709,6 +790,7 @@
         let fontScale = NORMAL_SCALE;
         let fontWeight = 100; 
         let isScreenAwake = false; 
+        let isSwipeGestureEnabled = false; 
 
         // --- Transient State Variables ---
         let isGoalReached = false; 
@@ -717,12 +799,15 @@
         let transientEffectTimer = null; 
         let goalGlowTimer = null; 
         let wakeLock = null; 
+        let touchStartX = 0; // For swipe gesture
+        let touchStartY = 0; // For swipe gesture
 
         // --- TEMPORARY STATE VARIABLES (For Menu Preview) ---
         let tempFontScale;
         let tempFontWeight;
         let tempTheme;
         let tempIsScreenAwake; 
+        let tempIsSwipeGestureEnabled; 
 
 
         // --- Local Storage Keys ---
@@ -733,6 +818,7 @@
         const STORAGE_KEY_GOAL = 'minimalCounterTargetGoal'; 
         const STORAGE_KEY_STEP = 'minimalCounterStepValue'; 
         const STORAGE_KEY_SCREEN_AWAKE = 'minimalCounterScreenAwake'; 
+        const STORAGE_KEY_SWIPE_GESTURE = 'minimalCounterSwipeGesture'; 
 
         /**
          * Cleans and validates a numeric string input, respecting MAX_SAFE_INTEGER.
@@ -893,29 +979,32 @@
          */
         function updateSelectedButton(container, dataType, currentValue) {
             if (!container) return;
-            Array.from(container.children).forEach(btn => {
-                btn.classList.remove('selected');
-                const btnValue = btn.getAttribute(`data-${dataType}`);
+            // Only used for button list controls
+            if (dataType !== 'awake') {
+                Array.from(container.children).forEach(btn => {
+                    btn.classList.remove('selected');
+                    const btnValue = btn.getAttribute(`data-${dataType}`);
 
-                if (dataType === 'scale') {
-                    if (Math.abs(currentValue - parseFloat(btnValue)) < 0.001) {
-                         btn.classList.add('selected');
+                    if (dataType === 'scale') {
+                        if (Math.abs(currentValue - parseFloat(btnValue)) < 0.001) {
+                             btn.classList.add('selected');
+                        }
+                    } else if (dataType === 'weight') {
+                        if (currentValue === parseInt(btnValue, 10)) {
+                             btn.classList.add('selected');
+                        }
+                    } else if (dataType === 'theme') {
+                        if (currentValue === btnValue) {
+                             btn.classList.add('selected');
+                        }
+                    } else if (dataType === 'awake') { 
+                        const awakeState = currentValue ? 'on' : 'off';
+                        if (awakeState === btnValue) {
+                            btn.classList.add('selected');
+                        }
                     }
-                } else if (dataType === 'weight') {
-                    if (currentValue === parseInt(btnValue, 10)) {
-                         btn.classList.add('selected');
-                    }
-                } else if (dataType === 'theme') {
-                    if (currentValue === btnValue) {
-                         btn.classList.add('selected');
-                    }
-                } else if (dataType === 'awake') { 
-                    const awakeState = currentValue ? 'on' : 'off';
-                    if (awakeState === btnValue) {
-                        btn.classList.add('selected');
-                    }
-                }
-            });
+                });
+            }
         }
 
         /**
@@ -948,6 +1037,8 @@
                     hasPendingChanges = tempTheme !== currentTheme;
                 } else if (activeSubMenu.id === 'awake-controls-container') { 
                     hasPendingChanges = tempIsScreenAwake !== isScreenAwake;
+                } else if (activeSubMenu.id === 'gesture-controls-container') { 
+                    hasPendingChanges = tempIsSwipeGestureEnabled !== isSwipeGestureEnabled;
                 }
                 
                 if (hasPendingChanges) {
@@ -1073,6 +1164,9 @@
                 } else if (activeSubMenu.id === 'awake-controls-container') { 
                      // Revert screen awake state to permanent
                      toggleScreenAwake(isScreenAwake, false); 
+                } else if (activeSubMenu.id === 'gesture-controls-container') { 
+                     // Revert gesture state to permanent
+                     toggleSwipeGesture(isSwipeGestureEnabled, false);
                 }
                 // -------------------------------------------------------------
 
@@ -1107,6 +1201,9 @@
                  isScreenAwake = tempIsScreenAwake;
                  localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
                  // toggleScreenAwake was already called, just the state needed saving
+             } else if (activeSubMenu.id === 'gesture-controls-container') { 
+                 isSwipeGestureEnabled = tempIsSwipeGestureEnabled;
+                 localStorage.setItem(STORAGE_KEY_SWIPE_GESTURE, isSwipeGestureEnabled);
              }
 
              // 2. COMMIT INPUT VALUES (Goal/Step) and save
@@ -1216,6 +1313,10 @@
                 // Apply temp state for preview (but don't save to perm state yet)
                 toggleScreenAwake(tempIsScreenAwake, false); 
                 updateSelectedButton(awakeOptions, 'awake', tempIsScreenAwake);
+            } else if (containerElement.id === 'gesture-controls-container') { 
+                 tempIsSwipeGestureEnabled = isSwipeGestureEnabled;
+                 // Set the toggle visual based on the temporary state
+                 toggleSwipeGesture(tempIsSwipeGestureEnabled, false); 
             }
             // ---------------------------------------------
 
@@ -1273,6 +1374,25 @@
             updateHeaderButtonState();
         }
 
+        /**
+         * Handles the change event for the gesture toggle input.
+         */
+        function setGesturePreview() { 
+            const newState = gestureToggleInput.checked; 
+            tempIsSwipeGestureEnabled = newState;
+            // Apply temp state without saving to local storage
+            toggleSwipeGesture(tempIsSwipeGestureEnabled, false); 
+            updateHeaderButtonState();
+        }
+        
+        // NEW function to toggle the gesture state when the label is clicked
+        function toggleGestureStateFromLabel() {
+            // Toggle the underlying checkbox state
+            gestureToggleInput.checked = !gestureToggleInput.checked;
+            // Then run the preview handler to update temp state and header button
+            setGesturePreview();
+        }
+
         // --- END PREVIEW HANDLERS ---
         
         /**
@@ -1318,6 +1438,19 @@
                 isScreenAwake = enable;
                 localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
             }
+        }
+        
+        /**
+         * Toggles the swipe gesture (Swipe Left to Reset) state.
+         * @param {boolean} enable - True to enable the gesture, false to disable.
+         * @param {boolean} saveToStorage - Whether to save the state to localStorage.
+         */
+        function toggleSwipeGesture(enable, saveToStorage = true) {
+            if (saveToStorage) {
+                isSwipeGestureEnabled = enable;
+                localStorage.setItem(STORAGE_KEY_SWIPE_GESTURE, isSwipeGestureEnabled);
+            }
+            gestureToggleInput.checked = enable;
         }
 
 
@@ -1373,6 +1506,7 @@
         function enterStepEditMode(e) { enterSubMenuMode(e, stepControlsContainer); }
         function enterThemeEditMode(e) { enterSubMenuMode(e, themeControlsContainer); }
         function enterAwakeEditMode(e) { enterSubMenuMode(e, awakeControlsContainer); } 
+        function enterGestureEditMode(e) { enterSubMenuMode(e, gestureControlsContainer); } 
         
         function editNumber(e) {
             if (e) e.stopPropagation();
@@ -1520,7 +1654,11 @@
             toggleScreenAwake(false, true); 
             isScreenAwake = false;
             localStorage.setItem(STORAGE_KEY_SCREEN_AWAKE, isScreenAwake);
+            
+            // NOTE: isSwipeGestureEnabled is NOT reset here to keep the user's preference after a reset.
+            // If the user wants to turn it off, they must use the menu.
 
+            localStorage.setItem(STORAGE_KEY_COUNT, count);
             localStorage.setItem(STORAGE_KEY_GOAL, targetGoal);
             localStorage.setItem(STORAGE_KEY_STEP, stepValue); 
             localStorage.setItem(STORAGE_KEY_FONT_SCALE, fontScale);
@@ -1547,7 +1685,10 @@
             counterElement.style.fontWeight = fontWeight;
             
             updateCounterDisplay(); 
-            toggleMenu('hide');
+            // Only hide menu if reset was called from the button, not from a swipe on the main screen
+            if (e && e.target.id === 'reset-btn') {
+                toggleMenu('hide');
+            }
         }
 
         function saveNewCount() {
@@ -1593,11 +1734,69 @@
             });
         }
         
+        // --- SWIPE GESTURE HANDLERS ---
+        
+        function handleTouchStart(e) {
+            // Only track single touches
+            if (e.touches.length === 1) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }
+        }
+
+        function handleTouchEnd(e) {
+            if (e.changedTouches.length !== 1) return;
+
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            
+            const deltaX = touchStartX - touchEndX; // positive for left swipe
+            const deltaY = touchEndY - touchStartY; // positive for down swipe
+
+            const isSubMenuVisible = getActiveSubMenu();
+            
+            // 1. Menu Swipe UP to Close (deltaY must be negative, significantly larger than deltaX)
+            if (fullScreenMenu.classList.contains('visible')) {
+                // Check for a sufficient up swipe (negative deltaY, significantly larger magnitude than deltaX)
+                if (deltaY < -SWIPE_THRESHOLD && Math.abs(deltaY) > Math.abs(deltaX)) {
+                    // Back from sub-menu is still swipe UP
+                    if (isSubMenuVisible) {
+                        goBackFromSubMenu(e); 
+                    } else {
+                        toggleMenu('hide');
+                    }
+                    e.preventDefault(); 
+                    return;
+                }
+            } 
+            
+            // 2. Counter Swipe Left to Reset
+            // Only allow interaction on the main screen, not while editing, or if a control was the touch target
+            if (!fullScreenMenu.classList.contains('visible') && !isEditMode) {
+                
+                // ONLY ALLOW SWIPE RESET IF THE GESTURE IS ENABLED
+                if (isSwipeGestureEnabled) {
+                    // Check for a sufficient left swipe (deltaX positive, significantly larger than deltaY)
+                    if (deltaX > SWIPE_THRESHOLD && deltaX > Math.abs(deltaY)) {
+                        // Ignore swipe if touch started on a header button or specific interactive elements
+                        const isControlTarget = e.target.closest('.header-btn') || e.target.closest('#counter') && counterElement.contentEditable === 'true';
+                        
+                        if (!isControlTarget) {
+                            resetCounter(e);
+                            e.preventDefault();
+                        }
+                    }
+                }
+            }
+        }
+
+        // --- END SWIPE GESTURE HANDLERS ---
+
         /**
          * Initializes the application state, loads local storage, and sets up listeners.
          */
         function init() {
-            const subMenuContainers = [sizeControlsContainer, weightControlsContainer, goalControlsContainer, stepControlsContainer, themeControlsContainer, awakeControlsContainer];
+            const subMenuContainers = [sizeControlsContainer, weightControlsContainer, goalControlsContainer, stepControlsContainer, themeControlsContainer, awakeControlsContainer, gestureControlsContainer]; 
             
             subMenuContainers.forEach(container => {
                 container.style.visibility = 'hidden';
@@ -1612,12 +1811,16 @@
             stepValue = sanitizeInput(localStorage.getItem(STORAGE_KEY_STEP) || '1', 1, MAX_SAFE_INTEGER);
             currentTheme = localStorage.getItem(STORAGE_KEY_THEME) || 'dark';
             isScreenAwake = localStorage.getItem(STORAGE_KEY_SCREEN_AWAKE) === 'true'; 
+            // Load Swipe Gesture
+            isSwipeGestureEnabled = localStorage.getItem(STORAGE_KEY_SWIPE_GESTURE) === 'true'; 
             
             // --- INITIALIZE TEMPORARY STATE ---
             tempFontScale = fontScale;
             tempFontWeight = fontWeight;
             tempTheme = currentTheme;
             tempIsScreenAwake = isScreenAwake; 
+            // Temp Swipe Gesture
+            tempIsSwipeGestureEnabled = isSwipeGestureEnabled;
             
             // --- APPLY PERMANENT STATE TO UI ---
             applyTheme(currentTheme); 
@@ -1628,6 +1831,8 @@
             
             // Apply saved screen awake state
             toggleScreenAwake(isScreenAwake, true);
+            // Apply saved swipe gesture state (sets the toggle visual)
+            toggleSwipeGesture(isSwipeGestureEnabled, true);
 
             updateCounterDisplay(); // Sets initial count, font size, and checks goal
             
@@ -1645,6 +1850,11 @@
 
             // --- Event Listeners ---
             
+            // Add Touch Listeners for Swipe Gestures
+            // Passive true allows scrolling/touch feedback, passive false allows preventDefault for the swipe action
+            document.body.addEventListener('touchstart', handleTouchStart, { passive: true }); 
+            document.body.addEventListener('touchend', handleTouchEnd, { passive: false }); 
+
             document.body.addEventListener('click', (e) => {
                 if (e.target.closest('.header-controls') || getActiveSubMenu()) {
                     return;
@@ -1659,7 +1869,10 @@
                     return;
                 }
 
-                incrementCounter();
+                // If the click target is the counter or the main wrapper, increment
+                if (e.target === counterElement || e.target === document.body || e.target === document.getElementById('main-content-wrapper') || e.target === instructionElement) {
+                    incrementCounter();
+                }
             });
             
             // Counter Edit Mode Handlers
@@ -1672,7 +1885,6 @@
             });
             
             // Goal Input Handlers (Only checks for done/back status)
-            // Blur saves only if Done is pressed and the sub-menu is closed (handled by saveChangesAndGoBack)
             goalInput.addEventListener('blur', () => { if (getActiveSubMenu() && !openMenuBtn.classList.contains('is-done-mode')) goBackFromSubMenu(); });
             goalInput.addEventListener('keydown', (e) => {
                  if (e.key === 'Enter') {
@@ -1733,7 +1945,7 @@
             });
             resetBtn.addEventListener('click', resetCounter);
             editBtn.addEventListener('click', editNumber);
-            decrementBtn.addEventListener('click', decrementCounter); // New Decrement Handler
+            decrementBtn.addEventListener('click', decrementCounter); 
             
             // Sub-Menu Entry Handlers
             sizeEntryBtn.addEventListener('click', enterSizeEditMode);
@@ -1742,12 +1954,17 @@
             stepEntryBtn.addEventListener('click', enterStepEditMode); 
             themeEntryBtn.addEventListener('click', enterThemeEditMode);
             awakeEntryBtn.addEventListener('click', enterAwakeEditMode); 
+            gestureEntryBtn.addEventListener('click', enterGestureEditMode); 
 
             // Control Option Handlers (use Preview handlers)
             sizeOptions.addEventListener('click', setSizePreview);
             weightOptions.addEventListener('click', setWeightPreview);
             themeOptions.addEventListener('click', setThemePreview);
-            awakeOptions.addEventListener('click', setAwakePreview); 
+            awakeOptions.addEventListener('click', setAwakePreview);
+            
+            // Gesture Toggle Handlers
+            gestureToggleInput.addEventListener('change', setGesturePreview); 
+            gestureToggleLabel.addEventListener('click', toggleGestureStateFromLabel); // NEW: Click label to toggle
 
             document.addEventListener('fullscreenchange', handleFullscreenChange);
             
@@ -1802,6 +2019,9 @@
                 } else if (e.key === 'a' || e.key === 'A') { 
                     enterAwakeEditMode();
                     e.preventDefault();
+                } else if (e.key === 'j' || e.key === 'J') { 
+                    enterGestureEditMode();
+                    e.preventDefault();
                 } else if (e.key === 'Escape') {
                     const activeSubMenu = getActiveSubMenu();
                     if (activeSubMenu) {
@@ -1817,4 +2037,3 @@
     </script>
 </body>
 </html>
-
