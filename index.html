@@ -312,7 +312,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            padding-top: 0px;
+            padding-top: 20px;
             padding-left: 30px; 
             padding-right: 30px; 
             overflow-y: auto;
@@ -328,7 +328,6 @@
         #zL30,
         #fR31, 
         #cD32,
-        #eG33,
         #hU34 {
             position: fixed; 
             top: 0; 
@@ -396,9 +395,8 @@
         #jK23.hT24 #aS27 .jC36:nth-child(6) { animation-delay: 0.35s; }
         #jK23.hT24 #aS27 .jC36:nth-child(7) { animation-delay: 0.4s; }
         #jK23.hT24 #aS27 .jC36:nth-child(8) { animation-delay: 0.45s; }
-        #jK23.hT24 #aS27 .jC36:nth-child(9) { animation-delay: 0.5s; } 
+        #jK23.hT24 #aS27 .jC36:nth-child(9) { animation-delay: 0.5s; }
         #jK23.hT24 #aS27 .jC36:nth-child(10) { animation-delay: 0.55s; } 
-        #jK23.hT24 #aS27 .jC36:nth-child(11) { animation-delay: 0.60s; }
 
 
         .sD37 {
@@ -622,9 +620,6 @@
                 <button id="xH61" class="jC36" aria-label="Adjust Theme" title="Adjust Theme">
                     Theme
                 </button>
-                <button id="rV62" class="jC36" aria-label="Screen Awake" title="Screen Awake">
-                    Screen Awake
-                </button>
                 <button id="mB63" class="jC36" aria-label="Toggle Swipe Gestures" title="Toggle Swipe Gestures">
                     Swipe Gestures
                 </button>
@@ -689,20 +684,6 @@
         </div>
     </div>
     
-    <div id="eG33">
-        <h2 class="sD37">Screen Awake</h2>
-        <p class="oU41" id="aF76">Stops the screen from turning off automatically.</p>
-        <div id="gR77" class="iH39">
-            <button id="hQ78" class="jC36" data-awake="on">
-                On
-                <span class="lM40">Screen stays awake.</span>
-            </button>
-            <button id="jP79" class="jC36" data-awake="off">
-                Off
-                <span class="lM40">Screen follows device sleep settings.</span>
-            </button>
-        </div>
-    </div>
     
     <div id="hU34">
         <h2 class="sD37">Swipe Gestures</h2>
@@ -744,7 +725,6 @@
         const dN97 = document.getElementById('yE58'); 
         const uE98 = document.getElementById('pP57'); 
         const iJ99 = document.getElementById('xH61');
-        const jD100 = document.getElementById('rV62'); 
         const mX101 = document.getElementById('mB63'); 
         
         const rL102 = document.getElementById('fT44'); 
@@ -761,17 +741,14 @@
         const kG109 = document.getElementById('oZ64');
         const fS110 = document.getElementById('eL68');
         const gQ111 = document.getElementById('eR72');
-        const wM112 = document.getElementById('gR77'); 
         
         const tJ113 = document.getElementById('wI28');
         const bB114 = document.getElementById('qK29');
         const yN115 = document.getElementById('zL30');
         const pS116 = document.getElementById('fR31'); 
         const uX117 = document.getElementById('cD32');
-        const zP118 = document.getElementById('eG33'); 
         const xT119 = document.getElementById('hU34'); 
         
-        const qF120 = document.getElementById('aF76'); 
         const hM121 = document.getElementById('cE81'); 
         const rK122 = document.getElementById('bP80');
 
@@ -781,7 +758,7 @@
         let mZ126 = 'dark';
         let xI127 = jZ84;
         let oL128 = 100; 
-        let gD129 = false; 
+        let gD129 = true; // Screen Awake is default ON
         let oP130 = false; 
 
         let bV131 = false; 
@@ -796,7 +773,6 @@
         let rI139;
         let sM140;
         let tK141;
-        let yF142; 
         let zJ143; 
 
         const eK144 = 'minimalCounterCount';
@@ -943,31 +919,25 @@
         
         function vR177(sA178, hP179, nI180) {
             if (!sA178) return;
-            if (hP179 !== 'awake') {
-                Array.from(sA178.children).forEach(zN181 => {
-                    zN181.classList.remove('zQ38');
-                    const wF182 = zN181.getAttribute(`data-${hP179}`);
+            
+            Array.from(sA178.children).forEach(zN181 => {
+                zN181.classList.remove('zQ38');
+                const wF182 = zN181.getAttribute(`data-${hP179}`);
 
-                    if (hP179 === 'scale') {
-                        if (Math.abs(nI180 - parseFloat(wF182)) < 0.001) {
-                             zN181.classList.add('zQ38');
-                        }
-                    } else if (hP179 === 'weight') {
-                        if (nI180 === parseInt(wF182, 10)) {
-                             zN181.classList.add('zQ38');
-                        }
-                    } else if (hP179 === 'theme') {
-                        if (nI180 === wF182) {
-                             zN181.classList.add('zQ38');
-                        }
-                    } else if (hP179 === 'awake') { 
-                        const oE183 = nI180 ? 'on' : 'off';
-                        if (oE183 === wF182) {
-                            zN181.classList.add('zQ38');
-                        }
+                if (hP179 === 'scale') {
+                    if (Math.abs(nI180 - parseFloat(wF182)) < 0.001) {
+                         zN181.classList.add('zQ38');
                     }
-                });
-            }
+                } else if (hP179 === 'weight') {
+                    if (nI180 === parseInt(wF182, 10)) {
+                         zN181.classList.add('zQ38');
+                    }
+                } else if (hP179 === 'theme') {
+                    if (nI180 === wF182) {
+                         zN181.classList.add('zQ38');
+                    }
+                } 
+            });
         }
 
         function xS175() {
@@ -994,8 +964,6 @@
                     rM187 = sM140 !== oL128;
                 } else if (cL185.id === 'cD32') {
                     rM187 = tK141 !== mZ126;
-                } else if (cL185.id === 'eG33') { 
-                    rM187 = yF142 !== gD129;
                 } else if (cL185.id === 'hU34') { 
                     rM187 = zJ143 !== oP130;
                 }
@@ -1096,8 +1064,6 @@
                      rL102.textContent = vX124 === 0 ? '' : vX124.toString();
                 } else if (pC198.id === 'fR31') {
                      sP103.textContent = dD125.toString();
-                } else if (pC198.id === 'eG33') { 
-                     xI199(gD129, false); 
                 } else if (pC198.id === 'hU34') { 
                      hK200(oP130, false);
                 }
@@ -1124,9 +1090,6 @@
              } else if (jM203.id === 'cD32') {
                  mZ126 = tK141;
                  localStorage.setItem(hB145, mZ126);
-             } else if (jM203.id === 'eG33') { 
-                 gD129 = yF142;
-                 localStorage.setItem(gZ150, gD129);
              } else if (jM203.id === 'hU34') { 
                  oP130 = zJ143;
                  localStorage.setItem(wD151, oP130);
@@ -1217,16 +1180,6 @@
                     } catch (yL213) {
                     }
                 }, 450);
-            } else if (cX210.id === 'eG33') { 
-                qF120.textContent = "Stops the screen from turning off automatically.";
-
-                if (!('wakeLock' in navigator)) {
-                    qF120.textContent = "This feature is not supported by your current browser.";
-                }
-                
-                yF142 = gD129;
-                xI199(yF142, false); 
-                vR177(wM112, 'awake', yF142);
             } else if (cX210.id === 'hU34') { 
                  zJ143 = oP130;
                  hK200(zJ143, false); 
@@ -1271,18 +1224,6 @@
             xS175();
         }
         
-        function dS226(eM227) { 
-            eM227.stopPropagation();
-            const gK228 = eM227.target.closest('.jC36');
-            if (!gK228) return;
-            const nA229 = gK228.getAttribute('data-awake') === 'on';
-
-            yF142 = nA229;
-            xI199(yF142, false); 
-            vR177(wM112, 'awake', yF142);
-            xS175();
-        }
-
         function fP230() { 
             const uZ231 = hM121.checked; 
             zJ143 = uZ231;
@@ -1307,7 +1248,6 @@
                         jV136.addEventListener('release', () => {
                             gD129 = false;
                             if (lO234) localStorage.setItem(gZ150, gD129);
-                            vR177(wM112, 'awake', gD129);
                         });
                     }
                 } catch (eQ235) {
@@ -1377,7 +1317,6 @@
         function mR250(nS251) { aG208(nS251, yN115); }
         function oT252(pU253) { aG208(pU253, pS116); }
         function qV254(rW255) { aG208(rW255, uX117); }
-        function sX256(tY257) { aG208(tY257, zP118); } 
         function uZ258(vA259) { aG208(vA259, xT119); } 
         
         function wB260(xD261) {
@@ -1504,9 +1443,7 @@
             oL128 = 100;
             mZ126 = 'dark';
             
-            xI199(false, true); 
-            gD129 = false;
-            localStorage.setItem(gZ150, gD129);
+            xI199(true, true); // Keep screen awake on full reset
 
             localStorage.setItem(eK144, aV123);
             localStorage.setItem(bJ148, vX124);
@@ -1600,15 +1537,7 @@
             const rT292 = lP176();
             
             if (hC108.classList.contains('hT24')) {
-                if (nQ290 < -kE86 && Math.abs(nQ290) > Math.abs(kM287)) {
-                    if (rT292) {
-                        iL196(fH282); 
-                    } else {
-                        yQ191('hide');
-                    }
-                    fH282.preventDefault(); 
-                    return;
-                }
+                
             } 
             
             if (!hC108.classList.contains('hT24') && !cJ133) {
@@ -1627,7 +1556,7 @@
         }
 
         function zW294() {
-            const aX295 = [tJ113, bB114, yN115, pS116, uX117, zP118, xT119]; 
+            const aX295 = [tJ113, bB114, yN115, pS116, uX117, xT119]; 
             
             aX295.forEach(bY296 => {
                 bY296.style.visibility = 'hidden';
@@ -1640,13 +1569,12 @@
             vX124 = kR152(localStorage.getItem(bJ148) || '0', 0, iQ82);
             dD125 = kR152(localStorage.getItem(fN149) || '1', 1, iQ82);
             mZ126 = localStorage.getItem(hB145) || 'dark';
-            gD129 = localStorage.getItem(gZ150) === 'true'; 
+            gD129 = localStorage.getItem(gZ150) === 'false' ? false : true; // Default to true now
             oP130 = localStorage.getItem(wD151) === 'true'; 
             
             rI139 = xI127;
             sM140 = oL128;
             tK141 = mZ126;
-            yF142 = gD129; 
             zJ143 = oP130;
             
             wE158(mZ126); 
@@ -1766,13 +1694,11 @@
             dN97.addEventListener('click', mR250); 
             uE98.addEventListener('click', oT252); 
             iJ99.addEventListener('click', qV254);
-            jD100.addEventListener('click', sX256); 
             mX101.addEventListener('click', uZ258); 
 
             kG109.addEventListener('click', bN214);
             fS110.addEventListener('click', cK218);
             gQ111.addEventListener('click', mI222);
-            wM112.addEventListener('click', dS226);
             
             hM121.addEventListener('change', fP230); 
             rK122.addEventListener('click', vB232);
@@ -1823,9 +1749,6 @@
                     zZ309.preventDefault();
                 } else if (zZ309.key === 't' || zZ309.key === 'T') {
                     qV254();
-                    zZ309.preventDefault();
-                } else if (zZ309.key === 'a' || zZ309.key === 'A') { 
-                    sX256();
                     zZ309.preventDefault();
                 } else if (zZ309.key === 'j' || zZ309.key === 'J') { 
                     uZ258();
