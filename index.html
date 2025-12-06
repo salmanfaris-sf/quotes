@@ -695,7 +695,14 @@
                 <span class="eZ49"></span>
             </label>
         </div>
-    </div>
+        <div class="xL46">
+            <span class="gA47" id="dP312">Swipe Up/Down for Menu</span>
+            <label class="qB48">
+                <input type="checkbox" id="eQ313" checked> 
+                <span class="eZ49"></span>
+            </label>
+        </div>
+        </div>
 
 
     <div id="yP4">
@@ -751,6 +758,10 @@
         
         const hM121 = document.getElementById('cE81'); 
         const rK122 = document.getElementById('bP80');
+        // NEW: Vertical Swipe Toggle elements
+        const dP312 = document.getElementById('dP312');
+        const eQ313 = document.getElementById('eQ313');
+        // END NEW
 
         let aV123 = 0;
         let vX124 = 0; 
@@ -760,6 +771,9 @@
         let oL128 = 100; 
         let gD129 = true; // Screen Awake is default ON
         let oP130 = false; 
+        // NEW: Vertical Swipe State
+        let fR314 = true; // State for Vertical Swipe Gesture (Default ON)
+        // END NEW
 
         let bV131 = false; 
         let iW132 = false;
@@ -774,6 +788,9 @@
         let sM140;
         let tK141;
         let zJ143; 
+        // NEW: Menu Swipe Initial State for comparison
+        let kX319;
+        // END NEW
 
         const eK144 = 'minimalCounterCount';
         const hB145 = 'minimalCounterTheme';
@@ -783,6 +800,9 @@
         const fN149 = 'minimalCounterStepValue'; 
         const gZ150 = 'minimalCounterScreenAwake'; 
         const wD151 = 'minimalCounterSwipeGesture'; 
+        // NEW: Local Storage Key for Menu Swipe
+        const gS315 = 'minimalCounterMenuSwipe'; 
+        // END NEW
 
         function kR152(aL153, dX154 = 0, fV155 = iQ82) {
             let bE156 = aL153.trim().replace(/[^\d]/g, '');
@@ -965,7 +985,9 @@
                 } else if (cL185.id === 'cD32') {
                     rM187 = tK141 !== mZ126;
                 } else if (cL185.id === 'hU34') { 
-                    rM187 = zJ143 !== oP130;
+                    // MODIFIED: Check both horizontal swipe and new vertical swipe toggles
+                    const eL320 = eQ313.checked; // Current state of menu swipe toggle
+                    rM187 = zJ143 !== oP130 || kX319 !== eL320;
                 }
                 
                 if (rM187) {
@@ -1066,6 +1088,7 @@
                      sP103.textContent = dD125.toString();
                 } else if (pC198.id === 'hU34') { 
                      hK200(oP130, false);
+                     hT316(fR314, false); // NEW: Revert menu swipe state
                 }
 
                 pC198.classList.remove('rZ35');
@@ -1092,7 +1115,9 @@
                  localStorage.setItem(hB145, mZ126);
              } else if (jM203.id === 'hU34') { 
                  oP130 = zJ143;
+                 fR314 = eQ313.checked; // NEW: Capture the final menu swipe state
                  localStorage.setItem(wD151, oP130);
+                 localStorage.setItem(gS315, fR314); // NEW: Save menu swipe state
              }
 
              if (jM203.id === 'zL30') {
@@ -1182,7 +1207,9 @@
                 }, 450);
             } else if (cX210.id === 'hU34') { 
                  zJ143 = oP130;
+                 kX319 = fR314; // NEW: Set initial state for comparison
                  hK200(zJ143, false); 
+                 hT316(kX319, false); // NEW: Update menu swipe toggle UI
             }
 
             xS175(); 
@@ -1235,6 +1262,28 @@
             hM121.checked = !hM121.checked;
             fP230();
         }
+        
+        // NEW: Toggle Vertical Swipe Gesture State/UI
+        function iU317() { 
+            const uZ231 = eQ313.checked; 
+            fR314 = uZ231;
+            hT316(fR314, false); // Update internal state, but don't save yet
+            xS175();
+        }
+        
+        function jV318() {
+            eQ313.checked = !eQ313.checked;
+            iU317();
+        }
+        
+        function hT316(aW238, bC239 = true) {
+            if (bC239) {
+                fR314 = aW238;
+                localStorage.setItem(gS315, fR314);
+            }
+            eQ313.checked = aW238;
+        }
+        // END NEW
 
         async function xI199(iT233, lO234 = true) {
             if (!('wakeLock' in navigator)) {
@@ -1442,7 +1491,8 @@
             xI127 = jZ84;
             oL128 = 100;
             mZ126 = 'dark';
-            
+            fR314 = true; // NEW: Reset menu swipe toggle state
+
             xI199(true, true); // Keep screen awake on full reset
 
             localStorage.setItem(eK144, aV123);
@@ -1451,6 +1501,7 @@
             localStorage.setItem(vO146, xI127);
             localStorage.setItem(xC147, oL128);
             localStorage.setItem(hB145, mZ126);
+            localStorage.setItem(gS315, fR314); // NEW: Save reset menu swipe state
             
             bV131 = false; 
             
@@ -1469,6 +1520,7 @@
 
             wE158(mZ126);
             sF87.style.fontWeight = oL128;
+            hT316(fR314, false); // NEW: Update UI
             
             gN190(); 
             if (pQ270 && pQ270.target.id === 'lH54') {
@@ -1535,12 +1587,31 @@
             const nQ290 = qG138 - jL286;
 
             const rT292 = lP176();
+            const zR311 = hC108.classList.contains('hT24'); 
             
-            if (hC108.classList.contains('hT24')) {
-                
-            } 
+            // NEW: Vertical Swipe Logic for Menu
+            if (fR314 && !rT292 && !cJ133) {
+                 // Check if vertical swipe is dominant and significant
+                if (Math.abs(nQ290) > kE86 && Math.abs(nQ290) > Math.abs(kM287)) {
+                    
+                    if (nQ290 < -kE86 && !zR311) { // Swipe Down (nQ290 is negative)
+                        yQ191('show');
+                        fH282.preventDefault();
+                        return;
+                    } 
+                    
+                    if (nQ290 > kE86 && zR311) { // Swipe Up (nQ290 is positive)
+                        yQ191('hide');
+                        fH282.preventDefault();
+                        return;
+                    }
+                }
+            }
+            // END NEW
+
             
-            if (!hC108.classList.contains('hT24') && !cJ133) {
+            // Existing Horizontal Swipe Logic for Reset
+            if (!zR311 && !cJ133) {
                 
                 if (oP130) {
                     if (kM287 > kE86 && kM287 > Math.abs(nQ290)) {
@@ -1569,13 +1640,19 @@
             vX124 = kR152(localStorage.getItem(bJ148) || '0', 0, iQ82);
             dD125 = kR152(localStorage.getItem(fN149) || '1', 1, iQ82);
             mZ126 = localStorage.getItem(hB145) || 'dark';
-            gD129 = localStorage.getItem(gZ150) === 'false' ? false : true; // Default to true now
+            gD129 = localStorage.getItem(gZ150) === 'false' ? false : true; 
             oP130 = localStorage.getItem(wD151) === 'true'; 
+            // NEW: Load Menu Swipe State
+            fR314 = localStorage.getItem(gS315) === 'false' ? false : true; 
+            // END NEW
             
             rI139 = xI127;
             sM140 = oL128;
             tK141 = mZ126;
             zJ143 = oP130;
+            // NEW: Initialize Menu Swipe State for comparison
+            kX319 = fR314;
+            // END NEW
             
             wE158(mZ126); 
             sF87.style.fontWeight = oL128;
@@ -1585,6 +1662,9 @@
             
             xI199(gD129, true);
             hK200(oP130, true);
+            // NEW: Initialize Menu Swipe UI
+            hT316(fR314, true); 
+            // END NEW
 
             gN190(); 
             
@@ -1694,7 +1774,12 @@
             dN97.addEventListener('click', mR250); 
             uE98.addEventListener('click', oT252); 
             iJ99.addEventListener('click', qV254);
-            mX101.addEventListener('click', uZ258); 
+            // MODIFIED: Update to capture current menu swipe state for comparison
+            mX101.addEventListener('click', (vA259) => { 
+                aG208(vA259, xT119);
+                kX319 = fR314; // Capture initial state for comparison
+            }); 
+            // END MODIFIED
 
             kG109.addEventListener('click', bN214);
             fS110.addEventListener('click', cK218);
@@ -1702,6 +1787,10 @@
             
             hM121.addEventListener('change', fP230); 
             rK122.addEventListener('click', vB232);
+            // NEW: Add event listeners for the new toggle
+            eQ313.addEventListener('change', iU317); 
+            dP312.addEventListener('click', jV318);
+            // END NEW
 
             document.addEventListener('fullscreenchange', xY276);
             
