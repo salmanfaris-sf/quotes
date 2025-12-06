@@ -651,7 +651,7 @@
     
     <div id="zL30">
         <h2 class="sD37">Set Target Goal</h2>
-        <p class="oU41">Enter the number you want to reach. The counter will briefly glow and vibrate when reached. Setting a new goal will reset the counter to zero.</p>
+        <p class="oU41">Enter the number you want to reach. The counter will briefly glow and vibrate when reached.</p>
         <div id="jG42">
             <div id="fT44" contenteditable="true" inputmode="numeric"></div> 
         </div>
@@ -696,10 +696,9 @@
             </label>
         </div>
         <div class="xL46">
-            <span class="gA47" id="dP312">Swipe Up/Down for Menu</span>
+            <span class="gA47" id="dP312">Swipe Down/Up for Menu</span>
             <label class="qB48">
-                <input type="checkbox" id="eQ313" checked> 
-                <span class="eZ49"></span>
+                <input type="checkbox" id="eQ313"> <span class="eZ49"></span>
             </label>
         </div>
         </div>
@@ -899,9 +898,8 @@
             if (vX124 > 0 && aV123 >= vX124) {
                 bV131 = true;
                 
-                if (!hL172) {
-                    fJ169(); 
-                }
+                // MODIFICATION: Removed 'if (!hL172)' so glow triggers on every tap past the goal
+                fJ169(); 
                 
                 sF87.classList.remove('goal-reached-pulse'); 
                 
@@ -1327,26 +1325,33 @@
             hM121.checked = aW238;
         }
 
+        // --- START MODIFIED sO204 FUNCTION (Goal Set) ---
         function sO204(cI240 = false) { 
             let dJ241 = kR152(rL102.textContent, 0, iQ82);
             
+            // Update the display format of the goal input
             rL102.textContent = dJ241 === 0 ? '' : dJ241.toString(); 
 
             const eL242 = vX124 !== dJ241;
             
             if (eL242 || cI240) {
                 
+                // CRITICAL CHANGE: Removed logic that reset aV123 (the counter) to 0
+                /*
                 if (eL242) {
                     aV123 = 0;
                     localStorage.setItem(eK144, aV123);
                     iW132 = false; 
                     fO174(); 
                 }
+                */
+                // Counter aV123 and its state (iW132/fO174) are now preserved when the goal changes.
 
-                vX124 = dJ241;
-                localStorage.setItem(bJ148, vX124);
+                vX124 = dJ241; // Update goal value
+                localStorage.setItem(bJ148, vX124); // Save new goal
             }
         }
+        // --- END MODIFIED sO204 FUNCTION ---
         
         function bZ205(fL243 = false) { 
             let gM244 = kR152(sP103.textContent, 1, iQ82);
@@ -1378,12 +1383,10 @@
             if (zF263) zF263.stopPropagation();
             yQ191('hide'); 
             
-            if (cJ133 || bV131) {
+            if (cJ133 || lP176() || hC108.classList.contains('hT24') || bV131) {
                 return;
             }
             
-            vM173();
-
             if (aV123 - dD125 < 0) {
                 aV123 = 0;
             } else {
@@ -1394,20 +1397,24 @@
             nZ171(); 
         }
 
-        function aG264() {
-            if (!bV131) return;
-            
+        // --- START MODIFIED aG264 FUNCTION (Reset Counter and Goal) ---
+        /**
+         * Resets only the counter AND the goal.
+         * This function is now used for the 'Reset' button and 'Swipe Left' gesture, 
+         * and the 'Done' button when the goal is reached.
+         */
+        function aG264(pQ270) {
+            if (pQ270) pQ270.stopPropagation();
+
             aV123 = 0;
-            vX124 = 0; 
-            dD125 = 1; 
-            xI127 = jZ84;
-            oL128 = 100;
+            
+            // --- MODIFICATION START (As requested) ---
+            vX124 = 0; // Reset the goal value
+            localStorage.setItem(bJ148, vX124); // Save the reset goal to local storage
+            rL102.textContent = ''; // Clear the goal input display
+            // --- MODIFICATION END ---
 
             localStorage.setItem(eK144, aV123);
-            localStorage.setItem(bJ148, vX124);
-            localStorage.setItem(fN149, dD125); 
-            localStorage.setItem(vO146, xI127);
-            localStorage.setItem(xC147, oL128);
             
             bV131 = false; 
             
@@ -1421,8 +1428,12 @@
             fO174();
             
             gN190(); 
+            if (pQ270 && pQ270.target.id === 'lH54') {
+                yQ191('hide');
+            }
             xS175();
         }
+        // --- END MODIFIED aG264 FUNCTION ---
 
         function qW170(hI265, iJ266 = false) {
             if (vX124 > 0 && !iJ266) {
@@ -1478,6 +1489,10 @@
             qW170(aV123);
         }
 
+        /**
+         * Resets ALL values (counter, goal, step, size, thickness, theme, gestures)
+         * This function is now only used as a hidden 'full reset' shortcut (key 'R').
+         */
         function oP269(pQ270) {
             if (pQ270) pQ270.stopPropagation();
             
@@ -1491,7 +1506,8 @@
             xI127 = jZ84;
             oL128 = 100;
             mZ126 = 'dark';
-            fR314 = true; // NEW: Reset menu swipe toggle state
+            oP130 = false; // Reset Swipe Left
+            fR314 = false; // Reset menu swipe toggle state (Default to false - THE FIX)
 
             xI199(true, true); // Keep screen awake on full reset
 
@@ -1502,7 +1518,8 @@
             localStorage.setItem(xC147, oL128);
             localStorage.setItem(hB145, mZ126);
             localStorage.setItem(gZ150, true); // Force save "Screen Awake" to true
-            localStorage.setItem(gS315, fR314); // NEW: Save reset menu swipe state
+            localStorage.setItem(wD151, oP130);
+            localStorage.setItem(gS315, fR314); // Save reset menu swipe state
             
             bV131 = false; 
             
@@ -1521,12 +1538,14 @@
 
             wE158(mZ126);
             sF87.style.fontWeight = oL128;
-            hT316(fR314, false); // NEW: Update UI
+            hK200(oP130, false); // Update UI
+            hT316(fR314, false); // Update UI
             
             gN190(); 
-            if (pQ270 && pQ270.target.id === 'lH54') {
-                yQ191('hide');
-            }
+            // Note: Menu is not hidden on R key press, only on button click
+            // if (pQ270 && pQ270.target.id === 'lH54') {
+            //     yQ191('hide');
+            // }
         }
 
         function rS271() {
@@ -1619,7 +1638,8 @@
                         const sU293 = fH282.target.closest('.lK14') || fH282.target.closest('#nJ6') && sF87.contentEditable === 'true';
                         
                         if (!sU293) {
-                            oP269(fH282);
+                            // MODIFIED: Use the modified reset function aG264()
+                            aG264(fH282); 
                             fH282.preventDefault();
                         }
                     }
@@ -1650,8 +1670,8 @@
             // gD129 = localStorage.getItem(gZ150) === 'false' ? false : true; 
             
             oP130 = localStorage.getItem(wD151) === 'true'; 
-            // NEW: Load Menu Swipe State
-            fR314 = localStorage.getItem(gS315) === 'false' ? false : true; 
+            // NEW: Load Menu Swipe State - CRUCIAL FIX HERE: Default to false if not saved as 'true'
+            fR314 = localStorage.getItem(gS315) === 'true'; // FIX: Default to false
             // END NEW
             
             rI139 = xI127;
@@ -1755,7 +1775,8 @@
                 }
                 
                 if (bV131 && !pV305 && !qW306) {
-                    aG264(); 
+                    // MODIFIED: Use the isolated reset function aG264()
+                    aG264(oU304); 
                     return;
                 }
                 
@@ -1773,7 +1794,9 @@
                 uV273(rX307);
                 yQ191('hide');
             });
-            bD92.addEventListener('click', oP269);
+            // MODIFIED: 'Reset' button now calls aG264() - the isolated reset
+            bD92.addEventListener('click', aG264); 
+            
             cG93.addEventListener('click', wB260);
             hA94.addEventListener('click', yE262); 
             
@@ -1831,7 +1854,8 @@
                         zZ309.preventDefault();
                     }
                 } else if (zZ309.key === 'r' || zZ309.key === 'R') {
-                    oP269();
+                    // This now triggers the FULL reset function oP269()
+                    oP269(); 
                 } else if (zZ309.key === 'e' || zZ309.key === 'E') {
                     wB260();
                 } else if (zZ309.key === 's' || zZ309.key === 'S') {
