@@ -1501,6 +1501,7 @@
             localStorage.setItem(vO146, xI127);
             localStorage.setItem(xC147, oL128);
             localStorage.setItem(hB145, mZ126);
+            localStorage.setItem(gZ150, true); // Force save "Screen Awake" to true
             localStorage.setItem(gS315, fR314); // NEW: Save reset menu swipe state
             
             bV131 = false; 
@@ -1640,7 +1641,14 @@
             vX124 = kR152(localStorage.getItem(bJ148) || '0', 0, iQ82);
             dD125 = kR152(localStorage.getItem(fN149) || '1', 1, iQ82);
             mZ126 = localStorage.getItem(hB145) || 'dark';
-            gD129 = localStorage.getItem(gZ150) === 'false' ? false : true; 
+            
+            // START MODIFICATION FOR SCREEN AWAKE
+            gD129 = true; // Force Screen Awake to true as requested
+            // END MODIFICATION
+            
+            // Original line, now modified to not rely on potentially 'false' value from local storage
+            // gD129 = localStorage.getItem(gZ150) === 'false' ? false : true; 
+            
             oP130 = localStorage.getItem(wD151) === 'true'; 
             // NEW: Load Menu Swipe State
             fR314 = localStorage.getItem(gS315) === 'false' ? false : true; 
@@ -1795,7 +1803,9 @@
             document.addEventListener('fullscreenchange', xY276);
             
             document.addEventListener('visibilitychange', () => {
-                if (jV136 !== null && document.visibilityState === 'visible' && gD129) {
+                // If the app is visible and the desired state (gD129) is true, request lock again.
+                // Since we force gD129=true, this re-requests the lock when the tab becomes active.
+                if (jV136 !== null && document.visibilityState === 'visible' && gD129) { 
                     xI199(true, false); 
                 }
             });
